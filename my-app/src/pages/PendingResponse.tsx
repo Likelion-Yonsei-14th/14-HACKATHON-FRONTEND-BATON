@@ -22,10 +22,10 @@ export function PendingResponse() {
     if (!batonId) return
     api.getClassification(batonId).then(async (c) => {
       setClassification(c)
-      if (c) {
-        const baton = await api.getBaton(batonId)
+      const baton = await api.getBaton(batonId)
+      if (baton.replyMessageId) {
         const messages = await api.getMessages(baton.conversationId)
-        setReplyMessage(messages.find((m) => m.id === c.replyMessageId) ?? null)
+        setReplyMessage(messages.find((m) => m.id === baton.replyMessageId) ?? null)
       }
     })
     api.getBranches(batonId).then(setBranches)
@@ -39,15 +39,22 @@ export function PendingResponse() {
     )
   }
 
-  const candidateBranches = branches.filter((b) => classification.candidateBranchIds?.includes(b.id))
-  const canSend = classification.containsNewQuestion ? !!customText.trim() : !!selectedBranchId
+  // isAmbiguous가 true일 때만 분기 선택 UI를 쓴다. 그 외(containsNewQuestion 포함, 그리고
+  // NO_MATCH/GUARDRAIL_REJECTED처럼 둘 다 false인 경우)는 항상 직접 작성으로 폴백한다.
+  const useManualPath = !classification.isAmbiguous || classification.containsNewQuestion
+  // candidateBranchIds는 실제 API에 없는 필드라 항상 null이다 — 폴백으로 해당 바통의
+  // branches 전체를 후보로 보여준다 (docs/api-integration.md 참고).
+  const candidateBranches = classification.candidateBranchIds
+    ? branches.filter((b) => classification.candidateBranchIds?.includes(b.id))
+    : branches
+  const canSend = useManualPath ? !!customText.trim() : !!selectedBranchId
 
   async function handleConfirmSend() {
     if (!batonId) return
-    if (classification!.containsNewQuestion) {
-      await api.submitPendingResponse(batonId, { customText })
+    if (useManualPath) {
+      await api.resolveBaton(batonId, { customText })
     } else if (selectedBranchId) {
-      await api.submitPendingResponse(batonId, { branchId: selectedBranchId })
+      await api.resolveBaton(batonId, { branchId: selectedBranchId })
     }
     navigate('/home')
   }
@@ -81,11 +88,13 @@ export function PendingResponse() {
         </Panel>
       )}
 
-      {classification.containsNewQuestion ? (
+      {useManualPath ? (
         <div className="mt-6 max-w-3xl">
           <h2 className="font-suit text-base font-semibold text-ink">상대의 새 질문에 직접 응답 작성</h2>
           <p className="mt-2 text-sm text-muted">
-            새 질문이 포함되어 있어 확신도와 무관하게 분기 선택 없이 직접 작성해야 합니다.
+            {classification.containsNewQuestion
+              ? '새 질문이 포함되어 있어 확신도와 무관하게 분기 선택 없이 직접 작성해야 합니다.'
+              : 'AI가 어느 분기와도 명확히 매칭하지 못했습니다. 직접 응답을 작성해 주세요.'}
           </p>
           <textarea
             className="font-suit mt-3 w-full rounded-[6px] border border-border p-4 text-sm outline-none focus:border-primary"

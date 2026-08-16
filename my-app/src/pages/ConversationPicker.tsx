@@ -31,11 +31,11 @@ export function ConversationPicker() {
           <Panel className="flex items-center justify-between" key={conversation.id}>
             <div>
               <p className="font-semibold text-ink">
-                {conversation.conversationType === 'channel' ? '# ' : '@ '}
+                {conversation.conversationType === 'CHANNEL' ? '# ' : '@ '}
                 {conversation.title ?? conversation.counterpartName}
               </p>
               <p className="mt-1 text-sm text-muted">
-                {conversation.conversationType === 'channel' ? '채널' : 'DM'}
+                {conversation.conversationType === 'CHANNEL' ? '채널' : 'DM'}
               </p>
             </div>
             <Link className={buttonClasses('primary')} to={`/conversations/${conversation.id}/compose`}>

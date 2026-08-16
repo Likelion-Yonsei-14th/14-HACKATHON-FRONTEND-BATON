@@ -34,15 +34,25 @@ function formatLocalTime(timezone: string | null) {
 }
 
 function statusMeta(baton: Baton, classification: Classification | null) {
-  if (baton.status === 'sent') {
+  if (baton.status === 'COMPLETED' || baton.status === 'EXECUTED') {
     return { border: 'border-l-emerald-600', label: '발송 완료 — Slack에서 확인하세요', action: '결과 확인', to: `/batons/${baton.id}/result` }
   }
-  if (baton.status === 'held') {
+  if (baton.status === 'PENDING_REVIEW') {
     const label = classification?.containsNewQuestion
       ? '검토 필요 — 직접 확인이 필요해요'
       : '검토 필요 — AI가 판단하지 못했어요'
     return { border: 'border-l-amber-500', label, action: '응답 처리', to: `/batons/${baton.id}/pending` }
   }
+  if (baton.status === 'EXPIRED') {
+    return { border: 'border-l-border-strong', label: '만료됨 — 답장이 오지 않았어요', action: '상세 보기', to: `/batons/${baton.id}` }
+  }
+  if (baton.status === 'CANCELLED') {
+    return { border: 'border-l-border-strong', label: '취소됨', action: '상세 보기', to: `/batons/${baton.id}` }
+  }
+  if (baton.status === 'ERROR') {
+    return { border: 'border-l-red-500', label: '오류 발생', action: '상세 보기', to: `/batons/${baton.id}` }
+  }
+  // WAITING (및 DRAFT/ARMED — 정상 흐름에선 activateBaton이 끝나야 홈에 표시되므로 실질적으로 안 나타남)
   return { border: 'border-l-border-strong', label: '답장 기다리는 중', action: '상세 보기', to: `/batons/${baton.id}` }
 }
 
@@ -54,8 +64,10 @@ export function Home() {
   useEffect(() => {
     api.getBatons().then(async (list) => {
       setBatons(list)
-      const held = list.filter((b) => b.status === 'held')
-      const entries = await Promise.all(held.map(async (b) => [b.id, await api.getClassification(b.id)] as const))
+      const pendingReview = list.filter((b) => b.status === 'PENDING_REVIEW')
+      const entries = await Promise.all(
+        pendingReview.map(async (b) => [b.id, await api.getClassification(b.id)] as const),
+      )
       setClassifications(Object.fromEntries(entries))
     })
     api.getConversations().then(setConversations)
@@ -63,9 +75,9 @@ export function Home() {
 
   const counts = {
     전체: batons.length,
-    '발송 완료': batons.filter((b) => b.status === 'sent').length,
-    대기중: batons.filter((b) => b.status === 'active').length,
-    '검토 필요': batons.filter((b) => b.status === 'held').length,
+    '발송 완료': batons.filter((b) => b.status === 'COMPLETED' || b.status === 'EXECUTED').length,
+    대기중: batons.filter((b) => b.status === 'WAITING').length,
+    '검토 필요': batons.filter((b) => b.status === 'PENDING_REVIEW').length,
   }
 
   return (
@@ -110,7 +122,7 @@ export function Home() {
                 <div>
                   <p className="text-[13px] font-bold text-ink">{name}</p>
                   <p className="text-[13px] text-ink">
-                    {conversation?.conversationType === 'channel'
+                    {conversation?.conversationType === 'CHANNEL'
                       ? `# ${conversation.title ?? ''}`
                       : conversation?.title
                         ? `DM · # ${conversation.title}`

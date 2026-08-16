@@ -1,9 +1,18 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
 import { Header } from '../components/layout/Header'
+import { api } from '../api'
 import slackLogo from '../assets/slack-logo.png'
 import slackIconWhite from '../assets/slack-icon-white.png'
 
 export function SlackConnect() {
+  const [connecting, setConnecting] = useState(false)
+
+  async function handleConnect() {
+    setConnecting(true)
+    const { redirectUrl } = await api.startSlackConnect()
+    window.location.href = redirectUrl
+  }
+
   return (
     <div className="min-h-screen bg-landing">
       <Header />
@@ -20,14 +29,15 @@ export function SlackConnect() {
             <br />
             AI가 대신 답변해드립니다.
           </p>
-          {/* 실제로는 Slack OAuth authorize URL로 이동. 스켈레톤 단계라 콜백 화면으로 바로 링크. */}
-          <Link
-            className="font-suit mt-10 inline-flex items-center gap-3 rounded-[10px] bg-primary px-8 py-4 text-xl font-semibold text-white hover:opacity-90"
-            to="/connect/callback"
+          <button
+            className="font-suit mt-10 inline-flex items-center gap-3 rounded-[10px] bg-primary px-8 py-4 text-xl font-semibold text-white hover:opacity-90 disabled:opacity-60"
+            disabled={connecting}
+            onClick={handleConnect}
+            type="button"
           >
             <img alt="" className="h-6 w-6" src={slackIconWhite} />
-            Slack 연결하기
-          </Link>
+            {connecting ? '연결 중...' : 'Slack 연결하기'}
+          </button>
         </div>
       </div>
     </div>

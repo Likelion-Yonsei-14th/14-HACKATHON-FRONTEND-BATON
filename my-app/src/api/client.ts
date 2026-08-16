@@ -10,13 +10,16 @@ import type {
 } from '../types'
 
 /**
- * 프론트가 백엔드에 기대하는 API 계약. 지금은 mock/client.ts가 구현하고,
- * 실제 백엔드가 준비되면 이 인터페이스를 그대로 구현하는 fetch 기반 클라이언트로
- * src/api/index.ts의 export만 바꿔치기하면 된다.
+ * 프론트가 백엔드에 기대하는 API 계약. "BATON API 명세서"(실제 엔드포인트 문서) 기준으로
+ * 설계했다. 지금은 mock/client.ts와 http/client.ts 두 구현체가 있고, src/api/index.ts가
+ * 환경변수(VITE_BATON_API_BASE_URL 존재 여부)로 둘 중 하나를 고른다.
  */
 export interface BatonApiClient {
   getCurrentUser(): Promise<User>
   getPlatformConnection(): Promise<PlatformConnection | null>
+
+  /** Slack OAuth authorize URL을 발급받는다. 호출 측은 반환된 redirectUrl로 location을 이동시키면 된다. */
+  startSlackConnect(): Promise<{ redirectUrl: string }>
 
   getConversations(): Promise<Conversation[]>
   getConversation(conversationId: string): Promise<Conversation>
@@ -25,35 +28,45 @@ export interface BatonApiClient {
   getBatons(): Promise<Baton[]>
   getBaton(batonId: string): Promise<Baton>
 
-  /** 핵심 기능 ① — LLM 호출 1회: 분기 3개 제안 생성. 아직 저장 전(발송 전) 상태. */
-  generateBranches(conversationId: string, triggerMessageText: string): Promise<Branch[]>
-
   /**
-   * 발송 확인(3단계) 화면에서 "바통 시작하기" 클릭 — 트리거 메시지 발송 + 분기 저장 +
-   * 바통 생성(status: active). autoSendEnabled/maxWaitHours는 그 화면의 "발송 설정" 값.
+   * 바통 생성(1단계 → 2단계 전이). 실제 백엔드는 세 단계로 나뉜다 —
+   * 트리거 메시지 발송 → BATON 초안(DRAFT) 생성 → AI 분기 3개 생성(생성 시점에 이미 저장됨).
+   * 이 메서드는 세 호출을 묶어서 노출한다. 반환된 branches는 이미 서버에 저장된 상태라
+   * id로 바로 updateBranch를 호출할 수 있다.
    */
-  createBaton(
+  startBaton(
     conversationId: string,
     triggerMessageText: string,
-    branches: Branch[],
+  ): Promise<{ baton: Baton; branches: Branch[] }>
+
+  /** 분기 준비(2단계) 화면에서 사용자가 응답 초안 등을 수정할 때. */
+  updateBranch(
+    batonId: string,
+    branchId: string,
+    patch: Partial<Pick<Branch, 'name' | 'description' | 'responseText'>>,
+  ): Promise<void>
+
+  /**
+   * 발송 확인(3단계) 화면에서 "바통 시작하기" 클릭 — 발송 설정(자동발송/최대 대기 시간) 반영 후
+   * BATON을 WAITING 상태로 활성화한다.
+   */
+  activateBaton(
+    batonId: string,
     options: { autoSendEnabled: boolean; maxWaitHours: number },
   ): Promise<Baton>
 
   getBranches(batonId: string): Promise<Branch[]>
+  /** 가장 최근 판정 1건. 아직 판정이 없으면(답장 전) null. */
   getClassification(batonId: string): Promise<Classification | null>
+  /** 가장 최근 실행 1건. 아직 실행이 없으면 null. */
   getExecution(batonId: string): Promise<Execution | null>
 
   /**
-   * 보류 응답 처리 화면에서 "발송" 클릭.
-   * isAmbiguous 케이스면 branchId를, containsNewQuestion(또는 직접 작성) 케이스면
-   * customText를 넘긴다 — branches.action_type이 send_message로 고정이라 그 외
-   * 액션 종류는 없음.
+   * 보류(PENDING_REVIEW) 응답 처리 화면에서 "발송" 클릭.
+   * isAmbiguous 케이스면 branchId를, 그 외(containsNewQuestion 등)엔 customText를 넘긴다.
    */
-  submitPendingResponse(
+  resolveBaton(
     batonId: string,
     response: { branchId: string } | { customText: string },
   ): Promise<void>
-
-  /** 자동 발송 결과 확인 화면 진입 — completedAt을 채워 "미확인" 배지를 없앤다. */
-  confirmResult(batonId: string): Promise<void>
 }

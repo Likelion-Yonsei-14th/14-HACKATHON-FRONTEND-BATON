@@ -42,7 +42,7 @@ export function BatonDetail() {
 
   const summary = [
     ['대화 상대', `${conversation?.counterpartName ?? ''} · ${conversation?.title ?? ''}`],
-    ['상태', baton.status === 'active' ? '대기 중 — 답장 없음' : baton.status],
+    ['상태', baton.status === 'WAITING' ? '대기 중 — 답장 없음' : baton.status],
     ['경과 시간', formatElapsed(baton.activatedAt)],
     ['상대 업무시간', '오전 9:00 – 오후 6:00'],
     ['현지 시각', conversation?.counterpartTimezone ?? '—'],
@@ -84,7 +84,7 @@ export function BatonDetail() {
           <Panel className="flex items-center justify-between" key={branch.id}>
             <div>
               <p className="font-semibold text-ink">{branch.name}</p>
-              <p className="mt-1 text-sm text-muted">{branch.executionMode === 'auto' ? '자동 처리 예정' : '사용자 확인 필요'}</p>
+              <p className="mt-1 text-sm text-muted">{branch.executionMode === 'AUTO' ? '자동 처리 예정' : '사용자 확인 필요'}</p>
             </div>
             <p className="max-w-md text-sm text-muted">{branch.responseText}</p>
           </Panel>

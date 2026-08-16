@@ -62,12 +62,20 @@ Figma "Baton 와이어프레임 - 디자인" (`fileKey: Yt1Vc8rpDDku0IEdXaXQ30`)
 ## 디렉토리
 
 - `src/types/` — 도메인 타입. `baton-server.sql` 1:1이 아니라 프론트가 쓰는 형태로 정리한 것. 서버 전용 컬럼(토큰, model_name 등)과 UI에 노출 안 하는 컬럼(action_type 등)은 제외했다.
-- `src/types/enums.ts` — 스키마의 VARCHAR 상태 컬럼들의 제안 값. **백엔드와 합의된 값이 아니다.** 실제 값은 `docs/enum-proposals.md` 참고, 바뀌면 여기부터 고칠 것.
+- `src/types/enums.ts` — 스키마의 VARCHAR 상태 컬럼 값. "BATON API 명세서"(저장소 루트의
+  `BATON API 명세서/` 디렉터리)로 확정된 실제 값이다 — 더 이상 추측이 아니다. 배경은
+  `docs/api-integration.md` 참고.
 - `src/api/client.ts` — `BatonApiClient` 인터페이스 (API 계약).
-- `src/api/mock/` — 목 데이터 구현체. 지금은 `src/api/index.ts`가 이걸 export한다. **실제 백엔드가 준비되면 `src/api/index.ts`의 export만 fetch 기반 구현으로 바꾸면 된다** — 나머지 코드는 `BatonApiClient` 인터페이스에만 의존.
+- `src/api/mock/` — 목 데이터 구현체.
+- `src/api/http/` — 실제 백엔드에 붙는 fetch 기반 구현체. 공통 응답 wrapper 처리는
+  `request.ts`, snake_case→camelCase 매핑은 `mappers.ts`.
+- `src/api/index.ts` — `VITE_BATON_API_BASE_URL` 환경변수가 있으면 `http/client.ts`, 없으면
+  `mock/client.ts`를 export한다. 나머지 코드는 `BatonApiClient` 인터페이스에만 의존.
 - `src/pages/` — 화면 컴포넌트. 목록과 각 화면의 목적/데이터/전이는 `docs/screens.md` 참고.
 - `docs/screens.md` — 화면 목록 + 데모 시연 동선.
-- `docs/enum-proposals.md` — enum 값 제안 + 백엔드와 논의해야 할 스키마 관련 항목들.
+- `docs/api-integration.md` — 실제 백엔드 연동 방법, 확정된 API 흐름, 아직 남은 응답 스키마
+  간극(후보 분기 목록 없음, 결과 확인 API 없음 등).
+- `docs/enum-proposals.md` — (폐기됨, 히스토리 참고용) enum 값이 확정되기 전 프론트의 추측 기록.
 
 ## 데모 시연 동선
 
@@ -77,12 +85,16 @@ Figma "Baton 와이어프레임 - 디자인" (`fileKey: Yt1Vc8rpDDku0IEdXaXQ30`)
 
 라이브 전체 흐름(Slack 연결 → 대화 선택 → 바통 생성 → 분기 준비 → 발송)도 목 데이터로 끝까지 동작한다 (`/conversations` → 대화 선택 → 메시지 작성 → 분기 준비 → 발송 → Home에 새 바통 반영).
 
-## 아직 안 풀린 것들 (백엔드와 협의 필요, `docs/enum-proposals.md`에 상세)
+## 아직 안 풀린 것들 (실제 API 응답 자체의 한계, `docs/api-integration.md`에 상세)
 
-- `batons.status` 등 모든 VARCHAR 상태 값의 실제 후보.
-- `branches.execution_mode`와 `batons.auto_send_enabled`의 관계 — 프론트는 `auto_send_enabled`로 단일화하는 걸 추천했음.
-- `branches`의 `name`/`description`/`condition_text`/`decision_text` 중 어떤 걸 분기 카드 "유형 라벨"로 쓸지.
-- `classifications`에 "후보 분기 2개"(is_ambiguous 케이스) 저장할 컬럼이 없음 — 프론트 타입엔 `candidateBranchIds`를 옵셔널로 추가해뒀지만 실제 스키마엔 없다.
+VARCHAR 상태 값들은 "BATON API 명세서"로 전부 확정됐다 — 아래는 그 이후에도 남아있는,
+API 응답 스키마 자체의 간극이다.
+
+- `classifications` 응답에 "후보 분기 2개"(is_ambiguous 케이스) 필드가 없음 — 화면에서는
+  해당 바통의 branches 전체를 후보로 보여주는 것으로 폴백 중.
+- 결과를 "확인"했다는 사실을 서버에 남길 API가 없음 — `ResultConfirm`의 "확인" 버튼은
+  그냥 홈으로 이동만 한다.
+- `messages`에 번역문을 담을 컬럼/필드가 없음 — `translatedContent`는 항상 null.
 
 ## 지켜야 할 것
 

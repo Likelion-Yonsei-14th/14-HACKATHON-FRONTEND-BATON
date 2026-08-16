@@ -11,17 +11,23 @@ export function BranchPrep() {
   const { conversationId } = useParams()
   const location = useLocation()
   const navigate = useNavigate()
-  const triggerMessageText = (location.state as { triggerMessageText?: string } | null)?.triggerMessageText ?? ''
+  const state = location.state as { batonId?: string; branches?: Branch[] } | null
+  const batonId = state?.batonId
 
-  const [branches, setBranches] = useState<Branch[]>([])
+  const [branches, setBranches] = useState<Branch[]>(state?.branches ?? [])
 
   useEffect(() => {
-    if (!conversationId) return
-    api.generateBranches(conversationId, triggerMessageText).then(setBranches)
-  }, [conversationId, triggerMessageText])
+    if (!batonId) navigate(`/conversations/${conversationId}/compose`, { replace: true })
+  }, [batonId, conversationId, navigate])
+
+  if (!batonId) return null
 
   function updateDraft(id: string, responseText: string) {
     setBranches((prev) => prev.map((b) => (b.id === id ? { ...b, responseText } : b)))
+  }
+
+  function persistDraft(id: string, responseText: string) {
+    api.updateBranch(batonId!, id, { responseText })
   }
 
   return (
@@ -50,6 +56,7 @@ export function BranchPrep() {
             <label className="mt-3 block text-sm text-ink">후속 응답 초안</label>
             <textarea
               className="font-suit mt-2 w-full rounded-[6px] border border-border p-3 text-sm outline-none focus:border-primary"
+              onBlur={(e) => persistDraft(branch.id, e.target.value)}
               onChange={(e) => updateDraft(branch.id, e.target.value)}
               rows={3}
               value={branch.responseText}
@@ -61,16 +68,14 @@ export function BranchPrep() {
       <div className="mt-6 flex max-w-3xl items-center justify-between">
         <button
           className="font-suit text-sm text-muted-2 hover:text-ink"
-          onClick={() => navigate(`/conversations/${conversationId}/compose`, { state: { triggerMessageText } })}
+          onClick={() => navigate(`/conversations/${conversationId}/compose`)}
           type="button"
         >
           이전 단계로
         </button>
         <Button
           disabled={branches.length === 0}
-          onClick={() =>
-            navigate(`/conversations/${conversationId}/confirm`, { state: { triggerMessageText, branches } })
-          }
+          onClick={() => navigate(`/conversations/${conversationId}/confirm`, { state: { batonId } })}
         >
           발송 확인으로
         </Button>

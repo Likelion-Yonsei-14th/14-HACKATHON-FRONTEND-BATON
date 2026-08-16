@@ -38,11 +38,12 @@ export function ResultConfirm() {
     })
   }, [batonId])
 
-  const matchedBranch = branches.find((b) => b.id === execution?.branchId)
+  // execution 응답엔 branch_id가 없다 — "어떤 분기가 선택됐는지"는 classification으로 확인한다.
+  const matchedBranch = branches.find((b) => b.id === classification?.selectedBranchId)
 
-  async function handleConfirm() {
-    if (!batonId) return
-    await api.confirmResult(batonId)
+  // 결과를 "확인"했다는 사실을 서버에 남길 API가 없다(백엔드 API 명세서 기준) — 화면만
+  // 벗어나면 되므로 그냥 홈으로 이동한다. docs/api-integration.md 참고.
+  function handleConfirm() {
     navigate('/home')
   }
 
@@ -70,7 +71,7 @@ export function ResultConfirm() {
             </div>
             <div className="mt-3 flex gap-4 text-sm">
               <span className="w-32 font-bold text-ink">자동발송 상태</span>
-              <span className="text-ink">{execution.executionStatus === 'success' ? '✓ 자동 발송 완료' : execution.executionStatus}</span>
+              <span className="text-ink">{execution.executionStatus === 'SUCCESS' ? '✓ 자동 발송 완료' : execution.executionStatus}</span>
             </div>
             {classification?.confidence != null && (
               <div className="mt-3 flex gap-4 text-sm">
@@ -115,7 +116,7 @@ export function ResultConfirm() {
             <div>
               <p className="text-sm text-muted">대화 채널</p>
               <p className="mt-1 text-sm font-bold text-ink">
-                {conversation?.title ?? (conversation?.conversationType === 'dm' ? 'DM' : '—')}
+                {conversation?.title ?? (conversation?.conversationType === 'DM' ? 'DM' : '—')}
               </p>
             </div>
           </div>

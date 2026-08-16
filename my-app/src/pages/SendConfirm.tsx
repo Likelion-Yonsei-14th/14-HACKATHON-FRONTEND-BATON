@@ -1,7 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { api } from '../api'
-import type { Branch } from '../types'
 import { AppShell } from '../components/layout/AppShell'
 import { Panel } from '../components/ui/Panel'
 import { StepTabs } from '../components/ui/StepTabs'
@@ -19,18 +18,21 @@ export function SendConfirm() {
   const { conversationId } = useParams()
   const location = useLocation()
   const navigate = useNavigate()
-  const state = location.state as { triggerMessageText?: string; branches?: Branch[] } | null
-  const triggerMessageText = state?.triggerMessageText ?? ''
-  const branches = state?.branches ?? []
+  const batonId = (location.state as { batonId?: string } | null)?.batonId
 
   const [autoSendEnabled, setAutoSendEnabled] = useState(false)
   const [maxWaitHours, setMaxWaitHours] = useState(24)
   const [starting, setStarting] = useState(false)
 
+  useEffect(() => {
+    if (!batonId) navigate(`/conversations/${conversationId}/compose`, { replace: true })
+  }, [batonId, conversationId, navigate])
+
+  if (!batonId) return null
+
   async function handleStart() {
-    if (!conversationId) return
     setStarting(true)
-    await api.createBaton(conversationId, triggerMessageText, branches, { autoSendEnabled, maxWaitHours })
+    await api.activateBaton(batonId!, { autoSendEnabled, maxWaitHours })
     navigate('/home')
   }
 
@@ -80,9 +82,7 @@ export function SendConfirm() {
       <div className="mt-6 flex max-w-2xl items-center justify-between">
         <button
           className="font-suit text-sm text-muted-2 hover:text-ink"
-          onClick={() =>
-            navigate(`/conversations/${conversationId}/branches`, { state: { triggerMessageText } })
-          }
+          onClick={() => navigate(`/conversations/${conversationId}/branches`, { state: { batonId } })}
           type="button"
         >
           이전 단계로

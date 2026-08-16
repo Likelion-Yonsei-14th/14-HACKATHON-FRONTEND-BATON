@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { api } from '../api'
 import { AppShell } from '../components/layout/AppShell'
 import { Panel } from '../components/ui/Panel'
 import { StepTabs } from '../components/ui/StepTabs'
@@ -8,6 +9,14 @@ export function ComposeBaton() {
   const { conversationId } = useParams()
   const navigate = useNavigate()
   const [text, setText] = useState('')
+  const [starting, setStarting] = useState(false)
+
+  async function handleStart() {
+    if (!conversationId || !text.trim()) return
+    setStarting(true)
+    const { baton, branches } = await api.startBaton(conversationId, text)
+    navigate(`/conversations/${conversationId}/branches`, { state: { batonId: baton.id, branches } })
+  }
 
   return (
     <AppShell>
@@ -20,13 +29,11 @@ export function ComposeBaton() {
         </div>
         <button
           className="font-suit rounded-[6px] bg-primary px-6 py-3 text-sm font-semibold text-white disabled:opacity-40"
-          disabled={!text.trim()}
-          onClick={() =>
-            navigate(`/conversations/${conversationId}/branches`, { state: { triggerMessageText: text } })
-          }
+          disabled={!text.trim() || starting}
+          onClick={handleStart}
           type="button"
         >
-          이 대화로 바통 만들기
+          {starting ? '메시지 발송 중...' : '이 대화로 바통 만들기'}
         </button>
       </div>
 
