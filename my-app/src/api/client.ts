@@ -16,7 +16,22 @@ import type {
  */
 export interface BatonApiClient {
   getCurrentUser(): Promise<User>
+  updateUser(patch: { language?: string; timezone?: string }): Promise<User>
   getPlatformConnection(): Promise<PlatformConnection | null>
+  /** 특정 Slack 연결의 대화 목록 메타데이터를 동기화한다. */
+  syncConversations(connectionId: string): Promise<void>
+  /** 특정 대화의 최근 메시지를 동기화한다. */
+  syncMessages(conversationId: string): Promise<void>
+  /** 홈 화면 KPI 지표를 조회한다. */
+  getDashboardMetrics(): Promise<{
+    activeBatons: number
+    needsAttention: number
+    completedWhileOffline: number
+    roundTripsSkipped: number
+    waitingTimeSavedMinutes: number
+  }>
+  /** 연결된 플랫폼을 해제한다. */
+  disconnectPlatform(connectionId: string): Promise<void>
 
   /** Slack OAuth authorize URL을 발급받는다. 호출 측은 반환된 redirectUrl로 location을 이동시키면 된다. */
   startSlackConnect(): Promise<{ redirectUrl: string }>

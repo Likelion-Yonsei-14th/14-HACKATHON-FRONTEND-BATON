@@ -60,6 +60,7 @@ export function Home() {
   const [batons, setBatons] = useState<Baton[]>([])
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [classifications, setClassifications] = useState<Record<string, Classification | null>>({})
+  const [kpi, setKpi] = useState<{ activeBatons: number; needsAttention: number } | null>(null)
 
   useEffect(() => {
     api.getBatons().then(async (list) => {
@@ -71,13 +72,14 @@ export function Home() {
       setClassifications(Object.fromEntries(entries))
     })
     api.getConversations().then(setConversations)
+    api.getDashboardMetrics().then(setKpi).catch(() => {})
   }, [])
 
   const counts = {
     전체: batons.length,
     '발송 완료': batons.filter((b) => b.status === 'COMPLETED' || b.status === 'EXECUTED').length,
-    대기중: batons.filter((b) => b.status === 'WAITING').length,
-    '검토 필요': batons.filter((b) => b.status === 'PENDING_REVIEW').length,
+    대기중: kpi?.activeBatons ?? batons.filter((b) => b.status === 'WAITING').length,
+    '검토 필요': kpi?.needsAttention ?? batons.filter((b) => b.status === 'PENDING_REVIEW').length,
   }
 
   return (

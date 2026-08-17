@@ -124,6 +124,8 @@ export interface RawBranch {
   baton_id?: number
   name: string
   description?: string | null
+  condition_text?: string | null
+  decision_text?: string | null
   response_text?: string | null
   execution_mode?: string
   sort_order?: number
@@ -134,7 +136,7 @@ export function mapBranch(raw: RawBranch, fallback: { batonId: string; sortOrder
     id: String(raw.id),
     batonId: raw.baton_id != null ? String(raw.baton_id) : fallback.batonId,
     name: raw.name,
-    description: raw.description ?? null,
+    description: raw.description ?? raw.condition_text ?? null,
     responseText: raw.response_text ?? '',
     executionMode: (raw.execution_mode as Branch['executionMode']) ?? 'AUTO',
     sortOrder: raw.sort_order ?? fallback.sortOrder,

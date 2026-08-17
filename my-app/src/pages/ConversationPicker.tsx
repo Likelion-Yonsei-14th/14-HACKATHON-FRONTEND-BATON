@@ -10,7 +10,14 @@ export function ConversationPicker() {
   const [conversations, setConversations] = useState<Conversation[]>([])
 
   useEffect(() => {
-    api.getConversations().then(setConversations)
+    async function load() {
+      try {
+        const conn = await api.getPlatformConnection()
+        if (conn) await api.syncConversations(conn.id)
+      } catch { /* 동기화 실패해도 기존 목록은 보여줌 */ }
+      api.getConversations().then(setConversations)
+    }
+    load()
   }, [])
 
   return (

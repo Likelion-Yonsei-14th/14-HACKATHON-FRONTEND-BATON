@@ -31,9 +31,49 @@ export const httpApiClient: BatonApiClient = {
     return mapUser(raw)
   },
 
+  async updateUser(patch) {
+    const raw = await request<RawUser>('/users/me', {
+      method: 'PATCH',
+      body: JSON.stringify({
+        ...(patch.language !== undefined ? { language: patch.language } : {}),
+        ...(patch.timezone !== undefined ? { timezone: patch.timezone } : {}),
+      }),
+    })
+    return mapUser(raw)
+  },
+
   async getPlatformConnection() {
     const { connections } = await request<{ connections: RawPlatformConnection[] }>('/platform-connections')
     return connections[0] ? mapPlatformConnection(connections[0]) : null
+  },
+
+  async syncConversations(connectionId) {
+    await request(`/platform-connections/${connectionId}/conversations/sync`, { method: 'POST', body: JSON.stringify({}) })
+  },
+
+  async syncMessages(conversationId) {
+    await request(`/conversations/${conversationId}/messages/sync`, { method: 'POST', body: JSON.stringify({}) })
+  },
+
+  async getDashboardMetrics() {
+    const data = await request<{
+      active_batons: number
+      needs_attention: number
+      completed_while_offline: number
+      round_trips_skipped: number
+      waiting_time_saved_minutes: number
+    }>('/dashboard/metrics')
+    return {
+      activeBatons: data.active_batons,
+      needsAttention: data.needs_attention,
+      completedWhileOffline: data.completed_while_offline,
+      roundTripsSkipped: data.round_trips_skipped,
+      waitingTimeSavedMinutes: data.waiting_time_saved_minutes,
+    }
+  },
+
+  async disconnectPlatform(connectionId) {
+    await request(`/platform-connections/${connectionId}`, { method: 'DELETE' })
   },
 
   async startSlackConnect() {

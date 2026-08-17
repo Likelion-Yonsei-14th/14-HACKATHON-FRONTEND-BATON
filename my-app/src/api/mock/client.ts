@@ -23,10 +23,41 @@ const batons = [...mockBatons]
 const branchesByBaton: Record<string, Branch[]> = { ...mockBranches }
 
 let nextDraftSeq = 0
+let currentUser = { ...mockUser }
 
 export const mockApiClient: BatonApiClient = {
   async getCurrentUser() {
-    return delay(mockUser)
+    return delay({ ...currentUser })
+  },
+
+  async updateUser(patch) {
+    currentUser = { ...currentUser, ...patch }
+    return delay({ ...currentUser })
+  },
+
+  async syncConversations(_connectionId) {
+    return delay(undefined)
+  },
+
+  async syncMessages(_conversationId) {
+    return delay(undefined)
+  },
+
+  async getDashboardMetrics() {
+    const activeBatons = batons.filter((b) => b.status === 'WAITING').length
+    const needsAttention = batons.filter((b) => b.status === 'PENDING_REVIEW').length
+    const completedWhileOffline = batons.filter((b) => b.status === 'COMPLETED' || b.status === 'EXECUTED').length
+    return delay({
+      activeBatons,
+      needsAttention,
+      completedWhileOffline,
+      roundTripsSkipped: completedWhileOffline,
+      waitingTimeSavedMinutes: completedWhileOffline * 30,
+    })
+  },
+
+  async disconnectPlatform(_connectionId) {
+    return delay(undefined)
   },
 
   async getPlatformConnection() {

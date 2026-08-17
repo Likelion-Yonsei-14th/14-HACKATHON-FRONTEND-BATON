@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { api } from '../api'
 import { AppShell } from '../components/layout/AppShell'
@@ -10,6 +10,11 @@ export function ComposeBaton() {
   const navigate = useNavigate()
   const [text, setText] = useState('')
   const [starting, setStarting] = useState(false)
+
+  useEffect(() => {
+    if (!conversationId) return
+    api.syncMessages(conversationId).catch(() => {})
+  }, [conversationId])
 
   async function handleStart() {
     if (!conversationId || !text.trim()) return
