@@ -82,8 +82,15 @@ export const httpApiClient: BatonApiClient = {
   },
 
   async getConversations() {
-    const { conversations } = await request<{ conversations: RawConversation[] }>('/conversations')
-    return conversations.map(mapConversation)
+    const all: RawConversation[] = []
+    let cursor: string | null = null
+    do {
+      const path = cursor ? `/conversations?cursor=${encodeURIComponent(cursor)}` : '/conversations'
+      const page = await request<{ conversations: RawConversation[]; next_cursor: string | null }>(path)
+      all.push(...page.conversations)
+      cursor = page.next_cursor
+    } while (cursor !== null)
+    return all.map(mapConversation)
   },
 
   async getConversation(conversationId) {
@@ -97,8 +104,15 @@ export const httpApiClient: BatonApiClient = {
   },
 
   async getBatons() {
-    const { batons } = await request<{ batons: RawBaton[] }>('/batons')
-    return batons.map(mapBaton)
+    const all: RawBaton[] = []
+    let cursor: string | null = null
+    do {
+      const path = cursor ? `/batons?cursor=${encodeURIComponent(cursor)}` : '/batons'
+      const page = await request<{ batons: RawBaton[]; next_cursor: string | null }>(path)
+      all.push(...page.batons)
+      cursor = page.next_cursor
+    } while (cursor !== null)
+    return all.map(mapBaton)
   },
 
   async getBaton(batonId) {
