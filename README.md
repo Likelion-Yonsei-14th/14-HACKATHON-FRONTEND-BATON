@@ -34,72 +34,77 @@ BATON은 범용 AI 채팅이나 빈 캔버스형 자동화 도구가 아닙니�
 
 ## 기술 스택
 
-초기 구성안이며 프로젝트 초기화 시 버전을 확정합니다.
+`my-app/` 하위에서 실제로 사용 중인 스택입니다.
 
 | 구분 | 기술 |
 | --- | --- |
-| 프레임워크 | Next.js · React |
+| 프레임워크 | Vite · React 19 |
 | 언어 | TypeScript |
-| 패키지 매니저 | pnpm |
-| 서버 상태 | TanStack Query |
-| 클라이언트 상태 | Zustand |
-| 폼·검증 | React Hook Form · Zod |
-| 스타일링 | Tailwind CSS · shadcn/ui |
-| 테스트 | Vitest · React Testing Library · Playwright |
+| 라우팅 | react-router-dom |
+| 패키지 매니저 | npm |
+| 스타일링 | Tailwind CSS v4 (`@tailwindcss/vite`) |
+| 린트 | oxlint |
+
+서버 상태 관리 라이브러리(TanStack Query 등), 폼 라이브러리, 테스트 러너는 아직 도입하지 않았습니다.
 
 ## 시작하기
 
 ### 사전 요구사항
 
 - Node.js LTS
-- pnpm
 
 ### 실행
 
 ```bash
-pnpm install
+cd my-app
+npm install
 cp .env.example .env.local
-pnpm dev
+npm run dev
 ```
 
 ### 검증 명령
 
 ```bash
-pnpm lint
-pnpm typecheck
-pnpm test
-pnpm build
+npm run lint
+npm run build
+npm run preview
 ```
 
-실제 스크립트가 확정되면 위 명령과 `package.json`을 함께 갱신합니다.
+`typecheck`/`test` 스크립트는 아직 없습니다. `npm run build`가 `tsc -b`를 포함해 타입 체크를 겸합니다.
 
 ## 환경변수
 
-로컬 값은 `.env.local`에 작성하고 저장소에 커밋하지 않습니다. 공개 가능한 키 목록과 예시는 [`.env.example`](.env.example)에만 유지합니다.
+로컬 값은 `my-app/.env.local`에 작성하고 저장소에 커밋하지 않습니다. 공개 가능한 키 목록과 예시는 [`my-app/.env.example`](my-app/.env.example)에만 유지합니다.
 
 | 변수 | 설명 |
 | --- | --- |
-| `NEXT_PUBLIC_API_BASE_URL` | BATON 백엔드 API 주소 |
-| `NEXT_PUBLIC_APP_NAME` | 화면에 표시할 서비스 이름 |
-| `NEXT_PUBLIC_USE_MOCK` | 로컬 mock API 사용 여부 |
+| `VITE_BATON_API_BASE_URL` | BATON 백엔드 API 주소 (origin까지만, `/api` prefix는 코드에서 자동으로 붙음). 비워두면 mock 데이터로 동작 |
+| `VITE_BATON_API_KEY` | 데모용 단일 사용자의 API Key. 로그인/회원가입 화면이 스코프 밖이라 백엔드 팀이 `POST /api/users`로 한 번 발급해 전달하는 값을 사용 |
 
-## 권장 폴더 구조
+## 폴더 구조
 
 ```text
-src/
-├── app/                 # 라우트와 레이아웃
-├── features/            # baton, conversation, platform, timeline 등 도메인
-├── components/
-│   ├── ui/              # 공용 UI primitives
-│   ├── workflow/        # Condition / Decision / Action 노드
-│   └── common/
-├── lib/                 # API client, env, query client
-├── hooks/
-├── styles/
-└── types/
+my-app/
+├── src/
+│   ├── pages/           # 화면 컴포넌트 (docs/screens.md 참고)
+│   ├── components/
+│   │   ├── ui/          # 공용 UI primitives (Button, Panel, Badge, Dialog, StepTabs)
+│   │   └── layout/      # AppShell, Header
+│   ├── api/
+│   │   ├── client.ts    # BatonApiClient 인터페이스 (API 계약)
+│   │   ├── index.ts     # VITE_BATON_API_BASE_URL 유무로 http/mock 클라이언트 선택
+│   │   ├── http/        # 실제 백엔드 fetch 클라이언트 (client/config/mappers/request)
+│   │   └── mock/        # mock 데이터 클라이언트
+│   ├── types/           # 도메인 타입, enum
+│   └── lib/
+├── docs/
+│   ├── api-integration.md  # 실제 백엔드 연동 방법, 확정된 API 흐름, 남은 응답 스키마 간극
+│   ├── enum-proposals.md   # 폐기됨, 히스토리 참고용
+│   └── screens.md          # 화면 목록, 데모 시연 동선
+└── CLAUDE.md             # my-app 작업 지침
 ```
 
-컴포넌트가 직접 네트워크 요청을 수행하지 않도록 `features/*/api`와 `features/*/hooks`를 통해 접근합니다. 외부 API DTO와 화면 모델은 필요한 경우 mapper로 분리합니다.
+컴포넌트가 직접 네트워크 요청을 수행하지 않도록 `src/api`를 통해 접근합니다. 백엔드 DTO(snake_case)와 화면 모델(camelCase) 변환은 `src/api/http/mappers.ts`에서 처리합니다.
 
 ## UI 상태
 
