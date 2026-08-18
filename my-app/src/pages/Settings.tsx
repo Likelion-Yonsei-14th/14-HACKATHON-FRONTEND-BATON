@@ -232,31 +232,10 @@ export function Settings() {
           </div>
         </section>
 
-       {/* 자동화 안전 기준 */}
-<section className="flex flex-col gap-3">
-  <h2 className="font-suit text-base font-semibold leading-[1.5] text-ink">자동화 안전 기준</h2>
-  <div className={`${panel} flex flex-col gap-4 p-5`}>
-    <div className="flex items-center gap-3">
-      <span className="font-suit text-sm font-semibold leading-[1.5] text-ink">
-        자동발송 설정하기 : {form.autoSendEnabled ? 'ON' : 'OFF'}
-      </span>
-      <Toggle
-        checked={form.autoSendEnabled}
-        onChange={(v) => set('autoSendEnabled', v)}
-      />
-    </div>
-            <p className="font-suit text-[13px] font-semibold leading-[1.5] text-muted">
-              자동발송은 기본적으로 꺼진 상태입니다. 활성화하면 확신도 임계값 이상의 판정에 한해 자동으로 발송됩니다.
-            </p>
-            <SelectField
-              label="확신도 임계값"
-              value={form.confidenceThreshold}
-              onChange={(v) => set('confidenceThreshold', v)}
-              options={CONFIDENCE_OPTIONS}
-            />
-            <p className="font-suit text-[13px] font-semibold leading-[1.5] text-muted">
-              임계값 미만의 판정은 보류 상태로 전환되어 수동 검토를 요청합니다.
-            </p>
+        {/* 대기 시간 설정 */}
+        <section className="flex flex-col gap-3">
+          <h2 className="font-suit text-base font-semibold leading-[1.5] text-ink">대기 시간 설정</h2>
+          <div className={`${panel} flex flex-col gap-4 p-5`}>
             <SelectField
               label="최대 대기 시간"
               value={form.maxWaitTime}

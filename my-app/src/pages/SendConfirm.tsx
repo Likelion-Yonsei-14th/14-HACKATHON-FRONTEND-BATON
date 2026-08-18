@@ -20,7 +20,7 @@ export function SendConfirm() {
   const navigate = useNavigate()
   const batonId = (location.state as { batonId?: string } | null)?.batonId
 
-  const [autoSendEnabled, setAutoSendEnabled] = useState(false)
+  const [autoSendEnabled] = useState(false)
   const [maxWaitHours, setMaxWaitHours] = useState(24)
   const [starting, setStarting] = useState(false)
 
@@ -46,22 +46,7 @@ export function SendConfirm() {
       <Panel className="mt-6 max-w-2xl">
         <p className="font-semibold text-ink">발송 설정</p>
 
-        <div className="mt-4 flex items-center gap-4">
-          <span className="text-sm text-ink">자동 발송 설정하기 :</span>
-          <button
-            aria-pressed={autoSendEnabled}
-            className={`relative h-5 w-9 rounded-full transition ${autoSendEnabled ? 'bg-primary' : 'bg-border-strong'}`}
-            onClick={() => setAutoSendEnabled((v) => !v)}
-            type="button"
-          >
-            <span
-              className={`absolute top-0.5 size-4 rounded-full bg-white transition ${autoSendEnabled ? 'left-4' : 'left-0.5'}`}
-            />
-          </button>
-          <span className="text-sm font-bold text-ink">{autoSendEnabled ? '자동발송 ON' : '자동발송 OFF (기본)'}</span>
-        </div>
-
-        <label className="mt-6 block text-sm text-ink" htmlFor="max-wait">
+        <label className="mt-4 block text-sm text-ink" htmlFor="max-wait">
           최대 대기 시간
         </label>
         <select
