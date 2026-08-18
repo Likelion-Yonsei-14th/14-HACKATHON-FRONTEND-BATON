@@ -26,6 +26,10 @@ let nextDraftSeq = 0
 let currentUser = { ...mockUser }
 
 export const mockApiClient: BatonApiClient = {
+  async signUp(_params) {
+    return delay({ userId: String(mockUser.id) })
+  },
+
   async getCurrentUser() {
     return delay({ ...currentUser })
   },

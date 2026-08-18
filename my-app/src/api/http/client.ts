@@ -26,6 +26,14 @@ function latestByCreatedAt<T extends { created_at?: string }>(items: T[]): T | n
 }
 
 export const httpApiClient: BatonApiClient = {
+  async signUp({ name, email, password }) {
+    const raw = await request<RawUser>('/users', {
+      method: 'POST',
+      body: JSON.stringify({ name, email, password }),
+    })
+    return { userId: String(raw.id) }
+  },
+
   async getCurrentUser() {
     const raw = await request<RawUser>('/users/me')
     return mapUser(raw)
@@ -85,7 +93,7 @@ export const httpApiClient: BatonApiClient = {
     const all: RawConversation[] = []
     let cursor: string | null = null
     do {
-      const path = cursor ? `/conversations?cursor=${encodeURIComponent(cursor)}` : '/conversations'
+      const path: string = cursor ? `/conversations?cursor=${encodeURIComponent(cursor)}` : '/conversations'
       const page = await request<{ conversations: RawConversation[]; next_cursor: string | null }>(path)
       all.push(...page.conversations)
       cursor = page.next_cursor
@@ -107,7 +115,7 @@ export const httpApiClient: BatonApiClient = {
     const all: RawBaton[] = []
     let cursor: string | null = null
     do {
-      const path = cursor ? `/batons?cursor=${encodeURIComponent(cursor)}` : '/batons'
+      const path: string = cursor ? `/batons?cursor=${encodeURIComponent(cursor)}` : '/batons'
       const page = await request<{ batons: RawBaton[]; next_cursor: string | null }>(path)
       all.push(...page.batons)
       cursor = page.next_cursor

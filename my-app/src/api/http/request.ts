@@ -1,4 +1,4 @@
-import { API_BASE_URL, API_KEY } from './config'
+import { API_BASE_URL, USER_ID_STORAGE_KEY } from './config'
 
 /** 백엔드 공통 에러 응답의 { code, message }를 그대로 들고 있는 에러. */
 export class BatonApiError extends Error {
@@ -26,11 +26,13 @@ export async function request<T>(path: string, init?: RequestInit): Promise<T> {
     throw new BatonApiError('CONFIG_MISSING', 'VITE_BATON_API_BASE_URL이 설정되지 않았습니다.')
   }
 
+  const userId = localStorage.getItem(USER_ID_STORAGE_KEY)
+
   const res = await fetch(`${API_BASE_URL}/api${path}`, {
     ...init,
     headers: {
       'Content-Type': 'application/json',
-      ...(API_KEY ? { Authorization: `Bearer ${API_KEY}` } : {}),
+      ...(userId ? { 'X-User-Id': userId } : {}),
       ...init?.headers,
     },
   })

@@ -15,6 +15,8 @@ import type {
  * 환경변수(VITE_BATON_API_BASE_URL 존재 여부)로 둘 중 하나를 고른다.
  */
 export interface BatonApiClient {
+  /** POST /api/users — 회원가입. 반환된 userId를 localStorage에 저장해 인증에 사용한다. */
+  signUp(params: { name: string; email: string; password: string }): Promise<{ userId: string }>
   getCurrentUser(): Promise<User>
   updateUser(patch: { language?: string; timezone?: string }): Promise<User>
   getPlatformConnection(): Promise<PlatformConnection | null>

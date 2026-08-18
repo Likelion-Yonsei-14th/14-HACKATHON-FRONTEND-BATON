@@ -1,5 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { Landing } from './pages/Landing'
+import { Login } from './pages/Login'
+import { Signup } from './pages/Signup'
 import { SlackConnect } from './pages/SlackConnect'
 import { ConnectCallback } from './pages/ConnectCallback'
 import { ConnectError } from './pages/ConnectError'
@@ -18,6 +20,8 @@ function App() {
   return (
     <Routes>
       <Route element={<Landing />} path="/" />
+      <Route element={<Signup />} path="/signup" />
+      <Route element={<Login />} path="/login" />
       <Route element={<SlackConnect />} path="/connect" />
       <Route element={<ConnectCallback />} path="/connect/callback" />
       <Route element={<ConnectError />} path="/connect/error" />

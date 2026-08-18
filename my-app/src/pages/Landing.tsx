@@ -12,10 +12,10 @@ export function Landing() {
           <span className="font-suit text-2xl text-ink">Baton 바통</span>
         </div>
         <div className="flex items-center gap-8">
-          <Link className="font-suit text-lg font-semibold text-primary" to="/connect">
+          <Link className="font-suit text-lg font-semibold text-primary" to="/login">
             로그인
           </Link>
-          <Link className={buttonClasses('primary', 'rounded-[10px] px-6 py-3 text-lg')} to="/connect">
+          <Link className={buttonClasses('primary', 'rounded-[10px] px-6 py-3 text-lg')} to="/signup">
             무료로 시작하기
           </Link>
         </div>
@@ -35,10 +35,10 @@ export function Landing() {
               대화를 다음 단계로 넘겨줍니다.
             </p>
             <div className="mt-10 flex gap-4">
-              <Link className={buttonClasses('secondary', 'px-8 py-4 text-lg rounded-[10px]')} to="/connect">
+              <Link className={buttonClasses('secondary', 'px-8 py-4 text-lg rounded-[10px]')} to="/login">
                 로그인
               </Link>
-              <Link className={buttonClasses('primary', 'px-8 py-4 text-lg rounded-[10px]')} to="/connect">
+              <Link className={buttonClasses('primary', 'px-8 py-4 text-lg rounded-[10px]')} to="/signup">
                 무료로 시작하기
               </Link>
             </div>
