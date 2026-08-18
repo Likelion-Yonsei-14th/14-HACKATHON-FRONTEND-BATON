@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { api } from '../api'
+import { API_KEY_STORAGE_KEY } from '../api/http/config'
 import type { PlatformConnection } from '../types'
 import { AppShell } from '../components/layout/AppShell'
 import { Button } from '../components/ui/Button'
@@ -125,6 +127,7 @@ const INITIAL = {
 const panel = 'rounded-[8px] border border-border bg-white'
 
 export function Settings() {
+  const navigate = useNavigate()
   const [form, setForm] = useState(INITIAL)
   const [committed, setCommitted] = useState(INITIAL)
   const [loading, setLoading] = useState(true)
@@ -165,6 +168,15 @@ export function Settings() {
     } catch { /* 해제 실패해도 OAuth 재시작 시도 */ }
     const { redirectUrl } = await api.startSlackConnect()
     window.location.href = redirectUrl
+  }
+
+  async function handleLogout() {
+    try {
+      await api.logout()
+    } finally {
+      localStorage.removeItem(API_KEY_STORAGE_KEY)
+      navigate('/login', { replace: true })
+    }
   }
 
   async function handleSave() {
@@ -318,6 +330,22 @@ export function Settings() {
           <Button onClick={handleSave} disabled={saving}>
             {saving ? '저장 중...' : '설정 저장'}
           </Button>
+        </div>
+
+        <div className="h-px bg-border" />
+
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-0.5">
+            <span className="font-suit text-sm font-semibold text-ink">로그아웃</span>
+            <span className="font-suit text-[13px] text-muted">현재 기기에서 로그아웃합니다.</span>
+          </div>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="cursor-pointer rounded-[6px] border border-red-200 bg-white px-3.5 py-2 font-suit text-[13px] font-semibold text-red-500 transition hover:bg-red-50"
+          >
+            로그아웃
+          </button>
         </div>
       </div>
     </AppShell>

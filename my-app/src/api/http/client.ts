@@ -27,11 +27,23 @@ function latestByCreatedAt<T extends { created_at?: string }>(items: T[]): T | n
 
 export const httpApiClient: BatonApiClient = {
   async signUp({ name, email, password }) {
-    const raw = await request<RawUser>('/users', {
+    const raw = await request<RawUser & { api_key: string }>('/users', {
       method: 'POST',
       body: JSON.stringify({ name, email, password }),
     })
-    return { userId: String(raw.id) }
+    return { apiKey: raw.api_key }
+  },
+
+  async login({ email, password }) {
+    const raw = await request<RawUser & { api_key: string }>('/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+    })
+    return { apiKey: raw.api_key }
+  },
+
+  async logout() {
+    await request('/logout', { method: 'POST', body: JSON.stringify({}) })
   },
 
   async getCurrentUser() {

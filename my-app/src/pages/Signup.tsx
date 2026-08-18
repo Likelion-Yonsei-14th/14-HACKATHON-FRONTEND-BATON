@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../api'
-import { USER_ID_STORAGE_KEY } from '../api/http/config'
+import { API_KEY_STORAGE_KEY } from '../api/http/config'
 import logo from '../assets/logo.png'
 import { buttonClasses } from '../lib/buttonClasses'
 
@@ -14,7 +14,7 @@ export function Signup() {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (localStorage.getItem(USER_ID_STORAGE_KEY)) {
+    if (localStorage.getItem(API_KEY_STORAGE_KEY)) {
       navigate('/home', { replace: true })
     }
   }, [navigate])
@@ -32,8 +32,8 @@ export function Signup() {
     setLoading(true)
     setError('')
     try {
-      const { userId } = await api.signUp({ name, email, password })
-      localStorage.setItem(USER_ID_STORAGE_KEY, userId)
+      const { apiKey } = await api.signUp({ name, email, password })
+      localStorage.setItem(API_KEY_STORAGE_KEY, apiKey)
       navigate('/home', { replace: true })
     } catch (err) {
       setError(err instanceof Error ? err.message : '회원가입에 실패했습니다.')

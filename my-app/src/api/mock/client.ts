@@ -27,7 +27,15 @@ let currentUser = { ...mockUser }
 
 export const mockApiClient: BatonApiClient = {
   async signUp(_params) {
-    return delay({ userId: String(mockUser.id) })
+    return delay({ apiKey: 'mock-api-key' })
+  },
+
+  async login(_params) {
+    return delay({ apiKey: 'mock-api-key' })
+  },
+
+  async logout() {
+    return delay(undefined)
   },
 
   async getCurrentUser() {

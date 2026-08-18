@@ -15,8 +15,12 @@ import type {
  * 환경변수(VITE_BATON_API_BASE_URL 존재 여부)로 둘 중 하나를 고른다.
  */
 export interface BatonApiClient {
-  /** POST /api/users — 회원가입. 반환된 userId를 localStorage에 저장해 인증에 사용한다. */
-  signUp(params: { name: string; email: string; password: string }): Promise<{ userId: string }>
+  /** POST /api/users — 회원가입. 반환된 apiKey를 localStorage에 저장해 Bearer 인증에 사용한다. */
+  signUp(params: { name: string; email: string; password: string }): Promise<{ apiKey: string }>
+  /** POST /api/login — 로그인. 반환된 apiKey를 localStorage에 저장해 Bearer 인증에 사용한다. */
+  login(params: { email: string; password: string }): Promise<{ apiKey: string }>
+  /** POST /api/logout — 로그아웃. 서버 세션 종료 후 로컬 apiKey를 제거한다. */
+  logout(): Promise<void>
   getCurrentUser(): Promise<User>
   updateUser(patch: { language?: string; timezone?: string }): Promise<User>
   getPlatformConnection(): Promise<PlatformConnection | null>

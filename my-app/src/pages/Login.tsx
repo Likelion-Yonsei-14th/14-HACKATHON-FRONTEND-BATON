@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { USER_ID_STORAGE_KEY } from '../api/http/config'
+import { api } from '../api'
+import { API_KEY_STORAGE_KEY } from '../api/http/config'
 import logo from '../assets/logo.png'
 import { buttonClasses } from '../lib/buttonClasses'
 
@@ -9,20 +10,26 @@ export function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (localStorage.getItem(USER_ID_STORAGE_KEY)) {
+    if (localStorage.getItem(API_KEY_STORAGE_KEY)) {
       navigate('/home', { replace: true })
     }
   }, [navigate])
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    const userId = localStorage.getItem(USER_ID_STORAGE_KEY)
-    if (userId) {
+    setLoading(true)
+    setError('')
+    try {
+      const { apiKey } = await api.login({ email, password })
+      localStorage.setItem(API_KEY_STORAGE_KEY, apiKey)
       navigate('/home', { replace: true })
-    } else {
-      setError('저장된 계정이 없습니다. 먼저 회원가입이 필요합니다.')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : '로그인에 실패했습니다.')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -63,20 +70,14 @@ export function Login() {
               />
             </div>
 
-            {error && (
-              <p className="text-[13px] text-red-500">
-                {error}{' '}
-                <Link className="font-semibold underline-offset-2 hover:underline" to="/signup">
-                  회원가입하기
-                </Link>
-              </p>
-            )}
+            {error && <p className="text-[13px] text-red-500">{error}</p>}
 
             <button
               className={buttonClasses('primary', 'mt-1 w-full rounded-lg py-3 text-base')}
+              disabled={loading}
               type="submit"
             >
-              로그인하기
+              {loading ? '로그인 중...' : '로그인하기'}
             </button>
           </form>
 
