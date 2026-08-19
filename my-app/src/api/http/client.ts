@@ -107,9 +107,11 @@ export const httpApiClient: BatonApiClient = {
     let cursor: string | null = null
     do {
       const path: string = cursor ? `/conversations?cursor=${encodeURIComponent(cursor)}` : '/conversations'
-      const page = await request<{ conversations: RawConversation[]; next_cursor: string | null }>(path)
+      const page = await request<{ conversations: RawConversation[]; next_cursor?: string | null }>(path)
       all.push(...page.conversations)
-      cursor = page.next_cursor
+      // 응답이 next_cursor 필드를 아예 생략하는 경우(null 값 직렬화 안 함)까지 종료 조건으로 처리 —
+      // cursor !== null만 보면 undefined는 통과해버려서 무한 루프에 빠진다.
+      cursor = page.next_cursor ?? null
     } while (cursor !== null)
     return all.map(mapConversation)
   },
@@ -129,9 +131,9 @@ export const httpApiClient: BatonApiClient = {
     let cursor: string | null = null
     do {
       const path: string = cursor ? `/batons?cursor=${encodeURIComponent(cursor)}` : '/batons'
-      const page = await request<{ batons: RawBaton[]; next_cursor: string | null }>(path)
+      const page = await request<{ batons: RawBaton[]; next_cursor?: string | null }>(path)
       all.push(...page.batons)
-      cursor = page.next_cursor
+      cursor = page.next_cursor ?? null
     } while (cursor !== null)
     return all.map(mapBaton)
   },
