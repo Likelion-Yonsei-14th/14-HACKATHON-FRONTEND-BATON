@@ -152,6 +152,7 @@ export interface RawClassification {
   contains_new_question: boolean
   reasoning_summary: string | null
   result_status: string
+  created_at?: string
 }
 
 export function mapClassification(raw: RawClassification, fallback: { batonId: string }): Classification {
@@ -177,6 +178,7 @@ export interface RawExecution {
   execution_status: string
   executed_at: string | null
   failure_reason: string | null
+  created_at?: string
 }
 
 export function mapExecution(raw: RawExecution, fallback: { batonId: string }): Execution {

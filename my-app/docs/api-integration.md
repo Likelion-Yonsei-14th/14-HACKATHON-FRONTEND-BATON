@@ -11,9 +11,11 @@ fetch 기반 클라이언트를 추가했다. 이 문서는 그 연동 내용과
 목데이터(`src/api/mock/client.ts`) 중 하나를 고른다. `.env.example`을 `.env.local`로 복사해서
 `VITE_BATON_API_BASE_URL`, `VITE_BATON_API_KEY`를 채우면 된다.
 
-- **API Key**: 로그인/회원가입 화면은 스코프 밖("절대 안 한다" 목록, `CLAUDE.md`)이라 프론트에
-  가입 폼이 없다. 백엔드 팀이 `POST /api/users`로 데모용 단일 사용자를 한 번 만들고, 응답의
-  `api_key`를 넘겨주면 그 값을 `.env.local`에 넣는 방식을 가정했다.
+- **API Key**: `/signup`, `/login` 화면에서 실제로 회원가입/로그인한다. `POST /api/users`(회원가입)와
+  `POST /api/login` 모두 응답으로 `api_key`를 내려주고, 프론트는 이 값을 `localStorage`
+  (`API_KEY_STORAGE_KEY`)에 저장해 이후 모든 요청에 `Authorization: Bearer <api_key>`로 자동 첨부한다.
+  로컬에서 백엔드 없이 데모 데이터로만 확인하려면 `.env.local`에서 `VITE_BATON_API_BASE_URL`을 비워두면
+  목데이터(`src/api/mock/client.ts`)로 동작한다.
 
 ## 공통 규약 (BATON API 명세서 "구현 차이 및 PR 이력" 기준)
 
