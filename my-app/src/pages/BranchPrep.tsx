@@ -11,8 +11,9 @@ export function BranchPrep() {
   const { conversationId } = useParams()
   const location = useLocation()
   const navigate = useNavigate()
-  const state = location.state as { batonId?: string; branches?: Branch[] } | null
+  const state = location.state as { batonId?: string; branches?: Branch[]; triggerMessage?: string } | null
   const batonId = state?.batonId
+  const triggerMessage = state?.triggerMessage
 
   const [branches, setBranches] = useState<Branch[]>(state?.branches ?? [])
 
@@ -41,7 +42,14 @@ export function BranchPrep() {
         </div>
       </div>
 
-      <Panel className="mt-6 max-w-3xl">
+      {triggerMessage && (
+        <Panel className="mt-6 max-w-3xl">
+          <p className="text-sm text-muted-2">내가 보낼 메시지</p>
+          <p className="font-suit mt-2 whitespace-pre-wrap text-sm text-ink">{triggerMessage}</p>
+        </Panel>
+      )}
+
+      <Panel className="mt-4 max-w-3xl">
         <p className="font-semibold text-ink">AI가 예상한 3가지 답변을 확인하세요</p>
         <p className="mt-2 text-sm text-muted">각 분기를 검토하고 필요한 경우 직접 수정하세요. 수정하지 않아도 됩니다.</p>
       </Panel>

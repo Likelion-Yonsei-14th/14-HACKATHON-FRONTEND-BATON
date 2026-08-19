@@ -32,7 +32,9 @@ export function ComposeBaton() {
     setStartError(null)
     try {
       const { baton, branches } = await api.startBaton(conversationId, text)
-      navigate(`/conversations/${conversationId}/branches`, { state: { batonId: baton.id, branches } })
+      navigate(`/conversations/${conversationId}/branches`, {
+        state: { batonId: baton.id, branches, triggerMessage: text },
+      })
     } catch {
       setStartError('분기를 생성하지 못했습니다. 다시 시도해주세요.')
       setStarting(false)

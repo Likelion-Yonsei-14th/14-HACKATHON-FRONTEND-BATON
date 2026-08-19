@@ -17,10 +17,10 @@ export function Header() {
         <img alt="" className="h-9 w-9 object-contain" src={logo} />
         <span className="font-suit text-2xl text-ink">Baton 바통</span>
       </Link>
-      <div className="flex items-center gap-3">
+      <Link className="flex items-center gap-3" to="/settings">
         <span className="font-suit text-lg font-semibold text-ink">{userName}</span>
-        <img alt="" className="h-10 w-10" src={userCircle} />
-      </div>
+        <img alt="개인설정" className="h-10 w-10" src={userCircle} />
+      </Link>
     </header>
   )
 }
