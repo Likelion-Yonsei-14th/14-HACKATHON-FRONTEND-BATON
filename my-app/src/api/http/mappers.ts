@@ -4,6 +4,7 @@ import type {
   Classification,
   Conversation,
   Execution,
+  LlmProvider,
   Message,
   PlatformConnection,
   User,
@@ -17,6 +18,7 @@ export interface RawUser {
   name: string
   timezone: string | null
   language: string | null
+  llm_provider?: LlmProvider
 }
 
 export function mapUser(raw: RawUser): User {
@@ -25,6 +27,7 @@ export function mapUser(raw: RawUser): User {
     name: raw.name,
     language: raw.language,
     timezone: raw.timezone,
+    llmProvider: raw.llm_provider ?? 'LOCAL',
   }
 }
 
