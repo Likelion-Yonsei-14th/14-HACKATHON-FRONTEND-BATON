@@ -58,6 +58,7 @@ export const httpApiClient: BatonApiClient = {
         ...(patch.name !== undefined ? { name: patch.name } : {}),
         ...(patch.language !== undefined ? { language: patch.language } : {}),
         ...(patch.timezone !== undefined ? { timezone: patch.timezone } : {}),
+        ...(patch.llmProvider !== undefined ? { llm_provider: patch.llmProvider } : {}),
       }),
     })
     return mapUser(raw)

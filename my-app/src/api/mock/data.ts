@@ -18,6 +18,7 @@ export const mockUser: User = {
   name: '김민준',
   language: 'ko',
   timezone: 'Asia/Seoul',
+  llmProvider: 'LOCAL',
 }
 
 export const mockPlatformConnection: PlatformConnection = {

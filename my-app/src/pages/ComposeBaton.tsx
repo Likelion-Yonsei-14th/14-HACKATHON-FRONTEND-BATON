@@ -5,11 +5,21 @@ import { AppShell } from '../components/layout/AppShell'
 import { Panel } from '../components/ui/Panel'
 import { StepTabs } from '../components/ui/StepTabs'
 
+function Spinner() {
+  return (
+    <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+    </svg>
+  )
+}
+
 export function ComposeBaton() {
   const { conversationId } = useParams()
   const navigate = useNavigate()
   const [text, setText] = useState('')
   const [starting, setStarting] = useState(false)
+  const [startError, setStartError] = useState<string | null>(null)
 
   useEffect(() => {
     if (!conversationId) return
@@ -19,8 +29,14 @@ export function ComposeBaton() {
   async function handleStart() {
     if (!conversationId || !text.trim()) return
     setStarting(true)
-    const { baton, branches } = await api.startBaton(conversationId, text)
-    navigate(`/conversations/${conversationId}/branches`, { state: { batonId: baton.id, branches } })
+    setStartError(null)
+    try {
+      const { baton, branches } = await api.startBaton(conversationId, text)
+      navigate(`/conversations/${conversationId}/branches`, { state: { batonId: baton.id, branches } })
+    } catch {
+      setStartError('분기를 생성하지 못했습니다. 다시 시도해주세요.')
+      setStarting(false)
+    }
   }
 
   return (
@@ -33,12 +49,13 @@ export function ComposeBaton() {
           </div>
         </div>
         <button
-          className="font-suit rounded-[6px] bg-primary px-6 py-3 text-sm font-semibold text-white disabled:opacity-40"
+          className="font-suit inline-flex items-center gap-2 rounded-[6px] bg-primary px-6 py-3 text-sm font-semibold text-white disabled:opacity-40"
           disabled={!text.trim() || starting}
           onClick={handleStart}
           type="button"
         >
-          {starting ? '메시지 발송 중...' : '이 대화로 바통 만들기'}
+          {starting && <Spinner />}
+          {starting ? 'AI가 분기 생성 중...' : '이 대화로 바통 만들기'}
         </button>
       </div>
 
@@ -65,6 +82,13 @@ export function ComposeBaton() {
           value={text}
         />
         <p className="mt-4 text-sm text-muted">이 바통은 한 번의 왕복(메시지 1회, 응답 1회)만 준비합니다.</p>
+        {starting && (
+          <p className="mt-3 flex items-center gap-2 text-sm text-primary">
+            <Spinner />
+            AI가 예상 답변 분기를 만들고 있어요. 로컬 모델은 최대 1분 정도 걸릴 수 있어요 — 오류 아니니 잠시만 기다려주세요.
+          </p>
+        )}
+        {startError && <p className="mt-3 text-sm text-red-500">{startError}</p>}
       </Panel>
     </AppShell>
   )

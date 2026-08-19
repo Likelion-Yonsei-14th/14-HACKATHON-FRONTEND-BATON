@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../api'
 import { API_KEY_STORAGE_KEY } from '../api/http/config'
-import type { PlatformConnection } from '../types'
+import type { LlmProvider, PlatformConnection } from '../types'
 import { AppShell } from '../components/layout/AppShell'
 import { Button } from '../components/ui/Button'
 
@@ -116,12 +116,18 @@ const WAIT_TIME_OPTIONS = [
   { value: '48h', label: '48시간' },
 ]
 
+const LLM_PROVIDER_OPTIONS = [
+  { value: 'LOCAL', label: '로컬 모델 (Qwen3 0.6B) — 무료' },
+  { value: 'OPENAI', label: 'OpenAI (gpt-4o-mini) — API 토큰 사용' },
+]
+
 const INITIAL = {
   language: 'ko',
   timezone: 'Asia/Seoul',
   autoSendEnabled: false,
   confidenceThreshold: '0.8',
   maxWaitTime: '24h',
+  llmProvider: 'LOCAL' as LlmProvider,
 }
 
 const panel = 'rounded-[8px] border border-border bg-white'
@@ -143,6 +149,7 @@ export function Settings() {
           ...INITIAL,
           language: user.language ?? INITIAL.language,
           timezone: user.timezone ?? INITIAL.timezone,
+          llmProvider: user.llmProvider ?? INITIAL.llmProvider,
         }
         setForm(loaded)
         setCommitted(loaded)
@@ -183,7 +190,7 @@ export function Settings() {
     setSaving(true)
     setSaveError(null)
     try {
-      await api.updateUser({ language: form.language, timezone: form.timezone })
+      await api.updateUser({ language: form.language, timezone: form.timezone, llmProvider: form.llmProvider })
       setCommitted(form)
     } catch {
       setSaveError('저장에 실패했습니다. 다시 시도해주세요.')
@@ -229,6 +236,22 @@ export function Settings() {
               onChange={(v) => set('timezone', v)}
               options={TIMEZONE_OPTIONS}
             />
+          </div>
+        </section>
+
+        {/* AI 모델 */}
+        <section className="flex flex-col gap-3">
+          <h2 className="font-suit text-base font-semibold leading-[1.5] text-ink">AI 모델</h2>
+          <div className={`${panel} flex flex-col gap-4 p-5`}>
+            <SelectField
+              label="답장 분류 · 분기 생성에 사용할 모델"
+              value={form.llmProvider}
+              onChange={(v) => set('llmProvider', v as LlmProvider)}
+              options={LLM_PROVIDER_OPTIONS}
+            />
+            <p className="font-suit text-[13px] font-semibold leading-[1.5] text-muted">
+              기본은 서버에 올라간 로컬 모델(Qwen3 0.6B)을 씁니다. OpenAI로 바꾸면 더 정확하지만 API 토큰을 소모합니다.
+            </p>
           </div>
         </section>
 
