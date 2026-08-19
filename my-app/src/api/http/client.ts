@@ -55,6 +55,7 @@ export const httpApiClient: BatonApiClient = {
     const raw = await request<RawUser>('/users/me', {
       method: 'PATCH',
       body: JSON.stringify({
+        ...(patch.name !== undefined ? { name: patch.name } : {}),
         ...(patch.language !== undefined ? { language: patch.language } : {}),
         ...(patch.timezone !== undefined ? { timezone: patch.timezone } : {}),
       }),
@@ -207,13 +208,13 @@ export const httpApiClient: BatonApiClient = {
     const { classifications } = await request<{ classifications: RawClassification[] }>(
       `/batons/${batonId}/classifications`,
     )
-    const latest = latestByCreatedAt(classifications as (RawClassification & { created_at?: string })[])
+    const latest = latestByCreatedAt(classifications)
     return latest ? mapClassification(latest, { batonId }) : null
   },
 
   async getExecution(batonId) {
     const { executions } = await request<{ executions: RawExecution[] }>(`/batons/${batonId}/executions`)
-    const latest = latestByCreatedAt(executions as (RawExecution & { created_at?: string })[])
+    const latest = latestByCreatedAt(executions)
     return latest ? mapExecution(latest, { batonId }) : null
   },
 

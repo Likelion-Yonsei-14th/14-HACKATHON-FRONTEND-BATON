@@ -22,7 +22,7 @@ export interface BatonApiClient {
   /** POST /api/logout — 로그아웃. 서버 세션 종료 후 로컬 apiKey를 제거한다. */
   logout(): Promise<void>
   getCurrentUser(): Promise<User>
-  updateUser(patch: { language?: string; timezone?: string }): Promise<User>
+  updateUser(patch: { name?: string; language?: string; timezone?: string }): Promise<User>
   getPlatformConnection(): Promise<PlatformConnection | null>
   /** 특정 Slack 연결의 대화 목록 메타데이터를 동기화한다. */
   syncConversations(connectionId: string): Promise<void>
