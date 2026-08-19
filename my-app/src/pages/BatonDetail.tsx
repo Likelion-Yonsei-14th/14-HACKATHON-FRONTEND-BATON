@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { api } from '../api'
 import type { Baton, Branch, Conversation, Message } from '../types'
 import { AppShell } from '../components/layout/AppShell'
 import { Panel } from '../components/ui/Panel'
+import { Dialog } from '../components/ui/Dialog'
 
 function formatElapsed(activatedAt: string | null) {
   if (!activatedAt) return '—'
@@ -15,10 +16,12 @@ function formatElapsed(activatedAt: string | null) {
 
 export function BatonDetail() {
   const { batonId } = useParams()
+  const navigate = useNavigate()
   const [baton, setBaton] = useState<Baton | null>(null)
   const [conversation, setConversation] = useState<Conversation | null>(null)
   const [branches, setBranches] = useState<Branch[]>([])
   const [triggerMessage, setTriggerMessage] = useState<Message | null>(null)
+  const [cancelling, setCancelling] = useState(false)
 
   useEffect(() => {
     if (!batonId) return
@@ -40,6 +43,14 @@ export function BatonDetail() {
     )
   }
 
+  async function handleCancel() {
+    if (!batonId) return
+    const updated = await api.cancelBaton(batonId)
+    setBaton(updated)
+    setCancelling(false)
+    navigate('/home')
+  }
+
   const summary = [
     ['대화 상대', `${conversation?.counterpartName ?? ''} · ${conversation?.title ?? ''}`],
     ['상태', baton.status === 'WAITING' ? '대기 중 — 답장 없음' : baton.status],
@@ -51,8 +62,21 @@ export function BatonDetail() {
 
   return (
     <AppShell>
-      <h1 className="font-suit text-2xl font-semibold text-ink">대기 상세</h1>
-      <p className="font-suit mt-1 text-sm text-muted">마지막 동기화: 3분 전</p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="font-suit text-2xl font-semibold text-ink">대기 상세</h1>
+          <p className="font-suit mt-1 text-sm text-muted">마지막 동기화: 3분 전</p>
+        </div>
+        {baton.status === 'WAITING' && (
+          <button
+            className="font-suit text-sm text-red-500 hover:text-red-600"
+            onClick={() => setCancelling(true)}
+            type="button"
+          >
+            바통 취소
+          </button>
+        )}
+      </div>
 
       <Panel className="mt-6 max-w-3xl">
         <p className="font-semibold text-ink">바통 상태 요약</p>
@@ -90,6 +114,21 @@ export function BatonDetail() {
           </Panel>
         ))}
       </div>
+
+      {cancelling && (
+        <Dialog
+          confirmLabel="바통 취소"
+          description={
+            <>
+              <p>이 바통을 취소하면 답장을 기다리지 않고 자동 발송도 실행되지 않습니다.</p>
+              <p>취소 후에는 되돌릴 수 없습니다.</p>
+            </>
+          }
+          onCancel={() => setCancelling(false)}
+          onConfirm={handleCancel}
+          title="바통을 취소할까요?"
+        />
+      )}
     </AppShell>
   )
 }

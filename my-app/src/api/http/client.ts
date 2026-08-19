@@ -202,6 +202,15 @@ export const httpApiClient: BatonApiClient = {
     return mapBaton(raw)
   },
 
+  async cancelBaton(batonId) {
+    await request<{ id: number; status: string; updated_at: string }>(`/batons/${batonId}/cancel`, {
+      method: 'POST',
+      body: JSON.stringify({}),
+    })
+    const raw = await request<RawBaton>(`/batons/${batonId}`)
+    return mapBaton(raw)
+  },
+
   async getBranches(batonId) {
     const { branches } = await request<{ branches: RawBranch[] }>(`/batons/${batonId}/branches`)
     return branches.map((b, i) => mapBranch(b, { batonId, sortOrder: i }))

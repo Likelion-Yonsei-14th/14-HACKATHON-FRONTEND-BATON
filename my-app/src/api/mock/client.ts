@@ -175,6 +175,13 @@ export const mockApiClient: BatonApiClient = {
     return delay(baton)
   },
 
+  async cancelBaton(batonId) {
+    const baton = batons.find((b) => b.id === batonId)
+    if (!baton) throw new Error(`baton not found: ${batonId}`)
+    baton.status = 'CANCELLED'
+    return delay(baton)
+  },
+
   async getBranches(batonId) {
     return delay(branchesByBaton[batonId] ?? [])
   },

@@ -77,6 +77,12 @@ export interface BatonApiClient {
     options: { autoSendEnabled: boolean; maxWaitHours: number },
   ): Promise<Baton>
 
+  /**
+   * WAITING 또는 PENDING_REVIEW 상태의 BATON을 사용자가 직접 취소한다 (→ CANCELLED).
+   * "BATON 취소" API(POST /api/batons/{id}/cancel) 대응.
+   */
+  cancelBaton(batonId: string): Promise<Baton>
+
   getBranches(batonId: string): Promise<Branch[]>
   /** 가장 최근 판정 1건. 아직 판정이 없으면(답장 전) null. */
   getClassification(batonId: string): Promise<Classification | null>
