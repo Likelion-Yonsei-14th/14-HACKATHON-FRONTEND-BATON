@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../api'
 import type { Conversation } from '../types'
 import { AppShell } from '../components/layout/AppShell'
@@ -8,17 +8,22 @@ import { buttonClasses } from '../lib/buttonClasses'
 
 export function ConversationPicker() {
   const [conversations, setConversations] = useState<Conversation[]>([])
+  const navigate = useNavigate()
 
   useEffect(() => {
     async function load() {
+      const conn = await api.getPlatformConnection().catch(() => null)
+      if (!conn || conn.connectionStatus !== 'CONNECTED') {
+        navigate('/connect', { replace: true })
+        return
+      }
       try {
-        const conn = await api.getPlatformConnection()
-        if (conn) await api.syncConversations(conn.id)
+        await api.syncConversations(conn.id)
       } catch { /* 동기화 실패해도 기존 목록은 보여줌 */ }
       api.getConversations().then(setConversations)
     }
     load()
-  }, [])
+  }, [navigate])
 
   return (
     <AppShell>
