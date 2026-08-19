@@ -1,16 +1,32 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Header } from '../components/layout/Header'
 import { api } from '../api'
+import { BatonApiError } from '../api/http/request'
+import { API_KEY_STORAGE_KEY } from '../api/http/config'
 import slackLogo from '../assets/slack-logo.png'
 import slackIconWhite from '../assets/slack-icon-white.png'
 
 export function SlackConnect() {
   const [connecting, setConnecting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const navigate = useNavigate()
 
   async function handleConnect() {
     setConnecting(true)
-    const { redirectUrl } = await api.startSlackConnect()
-    window.location.href = redirectUrl
+    setError(null)
+    try {
+      const { redirectUrl } = await api.startSlackConnect()
+      window.location.href = redirectUrl
+    } catch (e) {
+      if (e instanceof BatonApiError && e.code === 'UNAUTHORIZED') {
+        localStorage.removeItem(API_KEY_STORAGE_KEY)
+        navigate('/login', { replace: true })
+        return
+      }
+      setError('Slack 연결을 시작하지 못했습니다. 다시 시도해주세요.')
+      setConnecting(false)
+    }
   }
 
   return (
@@ -38,6 +54,9 @@ export function SlackConnect() {
             <img alt="" className="h-6 w-6" src={slackIconWhite} />
             {connecting ? '연결 중...' : 'Slack 연결하기'}
           </button>
+          {error && (
+            <p className="font-suit mt-4 text-sm text-red-500">{error}</p>
+          )}
         </div>
       </div>
     </div>
