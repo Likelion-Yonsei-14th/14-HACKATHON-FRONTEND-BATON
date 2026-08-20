@@ -76,7 +76,6 @@ export function Home() {
   const [batons, setBatons] = useState<Baton[]>([])
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [classifications, setClassifications] = useState<Record<string, Classification | null>>({})
-  const [kpi, setKpi] = useState<{ activeBatons: number; needsAttention: number } | null>(null)
   const [filter, setFilter] = useState<FilterLabel | null>(null)
 
   useEffect(() => {
@@ -89,14 +88,15 @@ export function Home() {
       setClassifications(Object.fromEntries(entries))
     })
     api.getConversations().then(setConversations)
-    api.getDashboardMetrics().then(setKpi).catch(() => {})
   }, [])
 
+  // KPI 숫자는 항상 실제로 화면에 그리는 batons 배열에서 직접 세운다 — 백엔드 집계
+  // API(/dashboard/metrics)를 따로 신뢰하면 리스트와 숫자가 어긋날 수 있다.
   const counts = {
     전체: batons.length,
     '발송 완료': batons.filter((b) => b.status === 'COMPLETED' || b.status === 'EXECUTED').length,
-    대기중: kpi?.activeBatons ?? batons.filter((b) => b.status === 'WAITING').length,
-    '검토 필요': kpi?.needsAttention ?? batons.filter((b) => b.status === 'PENDING_REVIEW').length,
+    대기중: batons.filter((b) => b.status === 'WAITING').length,
+    '검토 필요': batons.filter((b) => b.status === 'PENDING_REVIEW').length,
   }
 
   return (
