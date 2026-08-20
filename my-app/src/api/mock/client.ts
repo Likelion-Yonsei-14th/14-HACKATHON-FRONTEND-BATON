@@ -47,6 +47,10 @@ export const mockApiClient: BatonApiClient = {
     return delay({ ...currentUser })
   },
 
+  async deleteAccount() {
+    return delay(undefined)
+  },
+
   async syncConversations(_connectionId) {
     return delay(undefined)
   },
@@ -180,6 +184,29 @@ export const mockApiClient: BatonApiClient = {
     if (!baton) throw new Error(`baton not found: ${batonId}`)
     baton.status = 'CANCELLED'
     return delay(baton)
+  },
+
+  async createBranch(batonId, draft) {
+    const branches = branchesByBaton[batonId]
+    if (!branches) throw new Error(`baton not found: ${batonId}`)
+    const branch: Branch = {
+      id: `branch-${batonId}-${nextDraftSeq++}`,
+      batonId,
+      name: draft.name,
+      description: null,
+      responseText: '',
+      executionMode: 'AUTO',
+      sortOrder: draft.sortOrder,
+    }
+    branches.push(branch)
+    return delay({ ...branch })
+  },
+
+  async deleteBranch(batonId, branchId) {
+    const branches = branchesByBaton[batonId]
+    if (!branches) throw new Error(`baton not found: ${batonId}`)
+    branchesByBaton[batonId] = branches.filter((b) => b.id !== branchId)
+    return delay(undefined)
   },
 
   async getBranches(batonId) {

@@ -16,6 +16,9 @@ export function BranchPrep() {
   const triggerMessage = state?.triggerMessage
 
   const [branches, setBranches] = useState<Branch[]>(state?.branches ?? [])
+  const [adding, setAdding] = useState(false)
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
+  const [actionError, setActionError] = useState<string | null>(null)
 
   useEffect(() => {
     if (!batonId) navigate(`/conversations/${conversationId}/compose`, { replace: true })
@@ -29,6 +32,31 @@ export function BranchPrep() {
 
   function persistDraft(id: string, responseText: string) {
     api.updateBranch(batonId!, id, { responseText })
+  }
+
+  async function handleAddBranch() {
+    setAdding(true)
+    setActionError(null)
+    try {
+      const branch = await api.createBranch(batonId!, { name: '새 분기', sortOrder: branches.length })
+      setBranches((prev) => [...prev, branch])
+    } catch {
+      setActionError('분기를 추가하지 못했습니다. 다시 시도해주세요.')
+    } finally {
+      setAdding(false)
+    }
+  }
+
+  async function handleDeleteBranch(id: string) {
+    setActionError(null)
+    try {
+      await api.deleteBranch(batonId!, id)
+      setBranches((prev) => prev.filter((b) => b.id !== id))
+    } catch {
+      setActionError('분기를 삭제하지 못했습니다. 다시 시도해주세요.')
+    } finally {
+      setPendingDeleteId(null)
+    }
   }
 
   return (
@@ -57,10 +85,39 @@ export function BranchPrep() {
       <div className="mt-4 flex max-w-3xl flex-col gap-4">
         {branches.map((branch) => (
           <Panel key={branch.id}>
-            <p className="text-sm">
-              <span className="font-semibold text-ink">{branch.name}</span>
-              {branch.description && <span className="ml-3 text-muted">{branch.description}</span>}
-            </p>
+            <div className="flex items-start justify-between gap-3">
+              <p className="text-sm">
+                <span className="font-semibold text-ink">{branch.name}</span>
+                {branch.description && <span className="ml-3 text-muted">{branch.description}</span>}
+              </p>
+              {pendingDeleteId === branch.id ? (
+                <div className="flex shrink-0 items-center gap-2 font-suit text-[13px]">
+                  <span className="text-muted">삭제할까요?</span>
+                  <button
+                    className="font-semibold text-red-500 hover:text-red-600"
+                    onClick={() => handleDeleteBranch(branch.id)}
+                    type="button"
+                  >
+                    삭제
+                  </button>
+                  <button
+                    className="text-muted-2 hover:text-ink"
+                    onClick={() => setPendingDeleteId(null)}
+                    type="button"
+                  >
+                    취소
+                  </button>
+                </div>
+              ) : (
+                <button
+                  className="font-suit shrink-0 text-[13px] text-muted-2 hover:text-red-500"
+                  onClick={() => setPendingDeleteId(branch.id)}
+                  type="button"
+                >
+                  삭제
+                </button>
+              )}
+            </div>
             <label className="mt-3 block text-sm text-ink">후속 응답 초안</label>
             <textarea
               className="font-suit mt-2 w-full rounded-[6px] border border-border p-3 text-sm outline-none focus:border-primary"
@@ -71,6 +128,15 @@ export function BranchPrep() {
             />
           </Panel>
         ))}
+        <button
+          className="font-suit w-fit rounded-[6px] border border-dashed border-border px-4 py-2 text-sm font-semibold text-muted-2 transition hover:border-primary hover:text-primary disabled:opacity-40"
+          disabled={adding}
+          onClick={handleAddBranch}
+          type="button"
+        >
+          {adding ? '추가 중...' : '+ 분기 추가'}
+        </button>
+        {actionError && <p className="font-suit text-sm text-red-500">{actionError}</p>}
       </div>
 
       <div className="mt-6 flex max-w-3xl items-center justify-between">

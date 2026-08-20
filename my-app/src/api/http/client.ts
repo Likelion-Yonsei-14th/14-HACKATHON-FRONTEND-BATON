@@ -64,6 +64,10 @@ export const httpApiClient: BatonApiClient = {
     return mapUser(raw)
   },
 
+  async deleteAccount() {
+    await request('/users/me', { method: 'DELETE' })
+  },
+
   async getPlatformConnection() {
     const { connections } = await request<{ connections: RawPlatformConnection[] }>('/platform-connections')
     return connections[0] ? mapPlatformConnection(connections[0]) : null
@@ -209,6 +213,28 @@ export const httpApiClient: BatonApiClient = {
     })
     const raw = await request<RawBaton>(`/batons/${batonId}`)
     return mapBaton(raw)
+  },
+
+  async createBranch(batonId, draft) {
+    const created = await request<{ id: number }>(`/batons/${batonId}/branches`, {
+      method: 'POST',
+      body: JSON.stringify({
+        name: draft.name,
+        description: null,
+        condition_text: draft.name,
+        decision_text: draft.name,
+        response_text: '',
+        action_type: 'SEND_REPLY',
+        execution_mode: 'AUTO',
+        sort_order: draft.sortOrder,
+      }),
+    })
+    const raw = await request<RawBranch>(`/branches/${created.id}`)
+    return mapBranch(raw, { batonId, sortOrder: draft.sortOrder })
+  },
+
+  async deleteBranch(batonId, branchId) {
+    await request(`/batons/${batonId}/branches/${branchId}`, { method: 'DELETE' })
   },
 
   async getBranches(batonId) {
