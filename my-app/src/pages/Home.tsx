@@ -80,7 +80,11 @@ export function Home() {
   const [filter, setFilter] = useState<FilterLabel | null>(null)
 
   useEffect(() => {
-    api.getBatons().then(async (list) => {
+    api.getBatons().then(async (rawList) => {
+      // DRAFT(발송 확인 단계를 안 끝내고 이탈한 미완성 바통)는 사용자가 실제로 "보낸" 게
+      // 아니라서 홈에 노출 안 함 — statusMeta의 기본 분기가 DRAFT도 "답장 기다리는 중"으로
+      // 표시해버려서 대기중 카운트(백엔드 집계, WAITING만 셈)와 화면에 보이는 행 수가 어긋났었다.
+      const list = rawList.filter((b) => b.status !== 'DRAFT' && b.status !== 'ARMED')
       setBatons(list)
       const pendingReview = list.filter((b) => b.status === 'PENDING_REVIEW')
       const entries = await Promise.all(
