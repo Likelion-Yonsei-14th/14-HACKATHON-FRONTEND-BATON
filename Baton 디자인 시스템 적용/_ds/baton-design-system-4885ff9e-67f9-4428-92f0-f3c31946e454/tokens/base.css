@@ -1,0 +1,8 @@
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{margin:0;font:var(--type-body);color:var(--text-body);background:var(--surface-canvas)}
+*{box-sizing:border-box}
+a{color:var(--text-link);text-decoration:none;border-bottom:1px solid var(--line-soft);transition:var(--t-hover)}
+a:hover{color:var(--ink-900);border-bottom-color:var(--lime-700)}
+::selection{background:var(--lime-300)}
+:focus-visible{outline:none;box-shadow:var(--shadow-focus)}
+.baton-canvas{background:var(--canvas-wash)}

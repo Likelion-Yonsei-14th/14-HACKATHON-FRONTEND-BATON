@@ -12,18 +12,18 @@ export function AppShell({ children }: { children: ReactNode }) {
   const location = useLocation()
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <Header />
 
       <div className="flex">
-        <aside className="flex h-[calc(100vh-76px)] w-[260px] flex-col justify-between border-r border-border-strong">
-          <nav className="flex flex-col gap-2 p-4">
+        <aside className="flex h-[calc(100vh-76px)] w-[260px] flex-col px-4">
+          <nav className="flex flex-col gap-2 pt-2">
             {navItems.map((item) => {
               const isActive = location.pathname.startsWith(item.to)
               return (
                 <Link
-                  className={`font-suit rounded-[6px] px-4 py-2 text-sm tracking-[0.3px] ${
-                    isActive ? 'bg-primary-soft font-semibold text-ink' : 'text-muted-2 hover:bg-primary-soft/50'
+                  className={`font-suit rounded-full px-4 py-2.5 text-sm font-medium transition ${
+                    isActive ? 'bg-inverse text-ondark' : 'text-muted hover:bg-chip hover:text-body'
                   }`}
                   key={item.to}
                   to={item.to}
@@ -33,9 +33,6 @@ export function AppShell({ children }: { children: ReactNode }) {
               )
             })}
           </nav>
-          <div className="border-t border-border-strong p-4">
-            <span className="font-suit block px-4 py-2 text-sm text-muted-2">사용 방법</span>
-          </div>
         </aside>
 
         <main className="flex-1 p-10">{children}</main>

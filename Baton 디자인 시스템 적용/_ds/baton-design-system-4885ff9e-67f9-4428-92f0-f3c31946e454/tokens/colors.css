@@ -1,0 +1,53 @@
+:root{
+/* --- base: lime (brand accent) --- */
+--lime-100:#effedc;--lime-200:#e3fdc6;--lime-300:#dafcae;--lime-400:#cbfc8d;
+--lime-500:#befb71;--lime-600:#a7e55c;--lime-700:#8ccc42;--lime-800:#6aa32c;
+
+/* --- base: ink (near-black neutrals) --- */
+--ink-900:#0b0b0b;--ink-800:#1a1a1a;--ink-700:#323232;--ink-600:#4e4e4e;
+--ink-500:#6e6e6e;--ink-400:#9a9a9a;--ink-300:#c7c7c7;--ink-200:#dedede;
+
+/* --- base: paper (surfaces) --- */
+--paper-0:#ffffff;--paper-50:#fafafa;--paper-100:#f3f3f3;--paper-200:#ebebeb;--paper-300:#e1e1e1;
+
+/* --- base: signal --- */
+--flame-500:#ff6b2c;--flame-100:#ffe9dd;
+--red-500:#ff3b30;--red-100:#ffe1df;
+--amber-500:#ffc44d;
+--sky-500:#4a90ff;
+
+/* --- interest ramp (5-step lead temperature scale) --- */
+--ramp-1:#ff6b2c;--ramp-2:#ff9d4d;--ramp-3:#ffc44d;--ramp-4:#dbe96a;--ramp-5:#befb71;
+
+/* --- semantic: text --- */
+--text-strong:var(--ink-900);
+--text-body:var(--ink-800);
+--text-muted:var(--ink-500);
+--text-faint:var(--ink-400);
+--text-on-dark:#ffffff;
+--text-on-accent:var(--ink-900);
+--text-link:var(--ink-900);
+
+/* --- semantic: surfaces --- */
+--surface-canvas:var(--paper-300);
+--surface-card:var(--paper-100);
+--surface-card-raised:var(--paper-0);
+--surface-accent:var(--lime-500);
+--surface-inverse:var(--ink-900);
+--surface-subtle:var(--paper-200);
+--surface-chip:var(--paper-50);
+--surface-glass:rgba(255,255,255,.62);
+
+/* --- semantic: lines --- */
+--line-hairline:rgba(11,11,11,.06);
+--line-soft:rgba(11,11,11,.10);
+--line-strong:rgba(11,11,11,.18);
+--line-on-dark:rgba(255,255,255,.14);
+
+/* --- semantic: state --- */
+--state-hot:var(--flame-500);
+--state-hot-bg:var(--flame-100);
+--state-positive:var(--lime-600);
+--state-negative:var(--red-500);
+--state-focus-ring:rgba(140,204,66,.55);
+}

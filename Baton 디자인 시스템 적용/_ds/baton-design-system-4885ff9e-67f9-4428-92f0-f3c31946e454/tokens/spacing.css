@@ -1,0 +1,14 @@
+:root{
+--sp-0:0px;--sp-1:2px;--sp-2:4px;--sp-3:6px;--sp-4:8px;--sp-5:12px;--sp-6:16px;
+--sp-7:20px;--sp-8:24px;--sp-9:32px;--sp-10:40px;--sp-11:56px;--sp-12:72px;
+
+--gap-inline:var(--sp-4);      /* icon-to-label inside controls */
+--gap-stack:var(--sp-5);       /* rows inside a card */
+--gap-card:var(--sp-6);        /* between cards in a rail */
+--gap-section:var(--sp-9);     /* between page sections */
+--pad-card:var(--sp-7);        /* card interior */
+--pad-control-x:var(--sp-6);
+--pad-control-y:var(--sp-4);
+--rail-width:56px;             /* left icon rail */
+--card-min-width:236px; /* @kind spacing */
+}

@@ -9,7 +9,7 @@ import { Button } from '../components/ui/Button'
 function ChevronDown() {
   return (
     <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-      <path d="M2 4.5L6 8.5L10 4.5" stroke="#94a3b8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M2 4.5L6 8.5L10 4.5" stroke="#6e6e6e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }
@@ -24,12 +24,12 @@ interface SelectFieldProps {
 function SelectField({ label, value, onChange, options }: SelectFieldProps) {
   return (
     <div className="flex w-full flex-col gap-1.5">
-      <label className="font-suit text-sm font-semibold leading-[1.5] text-ink">{label}</label>
+      <label className="font-suit text-sm font-medium leading-[1.5] text-body">{label}</label>
       <div className="relative w-full">
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full appearance-none rounded-[6px] border border-border bg-white px-3 py-2.5 font-suit text-sm font-semibold text-ink outline-none focus:border-primary cursor-pointer"
+          className="w-full cursor-pointer appearance-none rounded-full bg-chip px-4 py-2.5 font-suit text-sm font-medium text-body shadow-hairline outline-none"
         >
           {options.map((opt) => (
             <option key={opt.value} value={opt.value}>
@@ -61,7 +61,7 @@ function Toggle({ checked, onChange }: ToggleProps) {
         width: 36,
         height: 20,
         borderRadius: 10,
-        backgroundColor: checked ? '#477ad0' : '#a1a1a1',
+        backgroundColor: checked ? '#0b0b0b' : '#c7c7c7',
         position: 'relative',
         transition: 'background-color 0.2s',
         border: 'none',
@@ -130,7 +130,7 @@ const INITIAL = {
   llmProvider: 'LOCAL' as LlmProvider,
 }
 
-const panel = 'rounded-[8px] border border-border bg-white'
+const panel = 'rounded-card bg-card-raised shadow-card'
 
 export function Settings() {
   const navigate = useNavigate()
@@ -218,11 +218,11 @@ export function Settings() {
   return (
     <AppShell>
       <div className="flex flex-col gap-6">
-        <h1 className="font-suit text-2xl font-semibold leading-[1.5] text-ink">개인 설정</h1>
+        <h1 className="font-suit text-2xl font-medium leading-[1.5] text-strong">개인 설정</h1>
 
         {/* 작업 환경 */}
         <section className="flex flex-col gap-3">
-          <h2 className="font-suit text-base font-semibold leading-[1.5] text-ink">작업 환경</h2>
+          <h2 className="font-suit text-base font-medium leading-[1.5] text-strong">작업 환경</h2>
           <div className={`${panel} flex flex-col gap-4 p-5`}>
             <SelectField
               label="작업 언어"
@@ -241,7 +241,7 @@ export function Settings() {
 
         {/* AI 모델 */}
         <section className="flex flex-col gap-3">
-          <h2 className="font-suit text-base font-semibold leading-[1.5] text-ink">AI 모델</h2>
+          <h2 className="font-suit text-base font-medium leading-[1.5] text-strong">AI 모델</h2>
           <div className={`${panel} flex flex-col gap-4 p-5`}>
             <SelectField
               label="답장 분류 · 분기 생성에 사용할 모델"
@@ -249,7 +249,7 @@ export function Settings() {
               onChange={(v) => set('llmProvider', v as LlmProvider)}
               options={LLM_PROVIDER_OPTIONS}
             />
-            <p className="font-suit text-[13px] font-semibold leading-[1.5] text-muted">
+            <p className="font-suit text-[13px] font-medium leading-[1.5] text-muted">
               기본은 서버에 올라간 로컬 모델(Qwen3 0.6B)을 씁니다. OpenAI로 바꾸면 더 정확하지만 API 토큰을 소모합니다.
             </p>
           </div>
@@ -257,7 +257,7 @@ export function Settings() {
 
         {/* 대기 시간 설정 */}
         <section className="flex flex-col gap-3">
-          <h2 className="font-suit text-base font-semibold leading-[1.5] text-ink">대기 시간 설정</h2>
+          <h2 className="font-suit text-base font-medium leading-[1.5] text-strong">대기 시간 설정</h2>
           <div className={`${panel} flex flex-col gap-4 p-5`}>
             <SelectField
               label="최대 대기 시간"
@@ -265,7 +265,7 @@ export function Settings() {
               onChange={(v) => set('maxWaitTime', v)}
               options={WAIT_TIME_OPTIONS}
             />
-            <p className="font-suit text-[13px] font-semibold leading-[1.5] text-muted">
+            <p className="font-suit text-[13px] font-medium leading-[1.5] text-muted">
               설정한 시간 안에 상대 답장이 없으면 바통이 만료됩니다. 만료 후 자동 응답은 실행되지 않습니다.
             </p>
           </div>
@@ -273,45 +273,45 @@ export function Settings() {
 
         {/* 연결된 플랫폼 */}
         <section className="flex flex-col gap-3">
-          <h2 className="font-suit text-base font-semibold leading-[1.5] text-ink">연결된 플랫폼</h2>
+          <h2 className="font-suit text-base font-medium leading-[1.5] text-strong">연결된 플랫폼</h2>
           <div className={`${panel} px-5 py-1`}>
             <div className="flex items-center gap-4 py-4">
               <div className="flex flex-col gap-1">
-                <span className="font-suit text-sm font-semibold leading-[1.5] text-ink">Slack 워크스페이스</span>
-                <span className="font-suit text-[13px] font-semibold leading-[1.5] text-muted">
+                <span className="font-suit text-sm font-medium leading-[1.5] text-strong">Slack 워크스페이스</span>
+                <span className="font-suit text-[13px] font-medium leading-[1.5] text-muted">
                   {platform?.workspaceName ?? platform?.workspaceId ?? '—'}
                 </span>
               </div>
               <div className="flex-1" />
-              <span className="font-suit text-sm font-semibold leading-[1.5] text-ink">
+              <span className="font-suit text-sm font-medium leading-[1.5] text-body">
                 {platform?.connectionStatus === 'CONNECTED' ? '연결됨' : '연결 안 됨'}
               </span>
               <button
                 type="button"
                 onClick={handleReconnect}
                 disabled={!platform}
-                className="cursor-pointer rounded-[6px] border border-border bg-white px-3.5 py-2 font-suit text-[13px] font-semibold text-ink transition hover:bg-primary-soft disabled:opacity-40"
+                className="cursor-pointer rounded-full bg-chip px-3.5 py-2 font-suit text-[13px] font-medium text-body shadow-hairline transition hover:bg-subtle disabled:opacity-40"
               >
                 재연결
               </button>
             </div>
-            <div className="h-px bg-border" />
+            <div className="h-px bg-ink-200" />
             <div className="flex items-center gap-4 py-4">
               <div className="flex flex-col gap-1">
-                <span className="font-suit text-sm font-semibold leading-[1.5] text-ink">Microsoft Teams</span>
-                <span className="font-suit text-[13px] font-semibold leading-[1.5] text-muted">지원 예정</span>
+                <span className="font-suit text-sm font-medium leading-[1.5] text-strong">Microsoft Teams</span>
+                <span className="font-suit text-[13px] font-medium leading-[1.5] text-muted">지원 예정</span>
               </div>
               <div className="flex-1" />
-              <span className="font-suit text-sm font-semibold leading-[1.5] text-muted-2">준비 중</span>
+              <span className="font-suit text-sm font-medium leading-[1.5] text-muted">준비 중</span>
             </div>
-            <div className="h-px bg-border" />
+            <div className="h-px bg-ink-200" />
             <div className="flex items-center gap-4 py-4">
               <div className="flex flex-col gap-1">
-                <span className="font-suit text-sm font-semibold leading-[1.5] text-ink">Google Chat</span>
-                <span className="font-suit text-[13px] font-semibold leading-[1.5] text-muted">지원 예정</span>
+                <span className="font-suit text-sm font-medium leading-[1.5] text-strong">Google Chat</span>
+                <span className="font-suit text-[13px] font-medium leading-[1.5] text-muted">지원 예정</span>
               </div>
               <div className="flex-1" />
-              <span className="font-suit text-sm font-semibold leading-[1.5] text-muted-2">준비 중</span>
+              <span className="font-suit text-sm font-medium leading-[1.5] text-muted">준비 중</span>
             </div>
           </div>
         </section>
@@ -325,7 +325,7 @@ export function Settings() {
             type="button"
             onClick={handleCancel}
             disabled={saving}
-            className="cursor-pointer font-suit text-sm font-semibold leading-[1.5] text-muted transition hover:text-ink disabled:opacity-40"
+            className="cursor-pointer font-suit text-sm font-medium leading-[1.5] text-muted transition hover:text-body disabled:opacity-40"
           >
             변경사항 취소
           </button>
@@ -334,17 +334,17 @@ export function Settings() {
           </Button>
         </div>
 
-        <div className="h-px bg-border" />
+        <div className="h-px bg-ink-200" />
 
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-0.5">
-            <span className="font-suit text-sm font-semibold text-ink">로그아웃</span>
+            <span className="font-suit text-sm font-medium text-strong">로그아웃</span>
             <span className="font-suit text-[13px] text-muted">현재 기기에서 로그아웃합니다.</span>
           </div>
           <button
             type="button"
             onClick={handleLogout}
-            className="cursor-pointer rounded-[6px] border border-red-200 bg-white px-3.5 py-2 font-suit text-[13px] font-semibold text-red-500 transition hover:bg-red-50"
+            className="cursor-pointer rounded-full bg-danger-soft px-3.5 py-2 font-suit text-[13px] font-medium text-status-error transition hover:opacity-80"
           >
             로그아웃
           </button>

@@ -30,13 +30,13 @@ export function SlackConnect() {
   }
 
   return (
-    <div className="min-h-screen bg-landing">
+    <div className="min-h-screen">
       <Header />
       <div className="flex justify-center px-8 py-24">
-        <div className="w-full max-w-3xl rounded-[10px] bg-white p-16 text-center shadow-[0px_4px_4px_0px_rgba(0,0,0,0.15)]">
+        <div className="w-full max-w-3xl rounded-card bg-card-raised p-16 text-center shadow-card">
           <img alt="Slack" className="mx-auto h-24 w-24 object-contain" src={slackLogo} />
-          <h1 className="font-suit mt-8 text-4xl font-semibold tracking-[0.3px] text-ink">
-            <span className="text-primary">SLACK</span>을 연결하고
+          <h1 className="font-suit mt-8 text-4xl font-medium tracking-tight text-strong">
+            SLACK을 연결하고
             <br />
             대화를 자동으로 이어가세요
           </h1>
@@ -46,7 +46,7 @@ export function SlackConnect() {
             AI가 대신 답변해드립니다.
           </p>
           <button
-            className="font-suit mt-10 inline-flex items-center gap-3 rounded-[10px] bg-primary px-8 py-4 text-xl font-semibold text-white hover:opacity-90 disabled:opacity-60"
+            className="font-suit baton-lift mt-10 inline-flex items-center gap-3 rounded-full bg-inverse px-8 py-4 text-xl font-medium text-ondark hover:opacity-90 disabled:opacity-60"
             disabled={connecting}
             onClick={handleConnect}
             type="button"

@@ -35,7 +35,7 @@ export function BranchPrep() {
     <AppShell>
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="font-suit text-2xl font-semibold text-ink">답장 준비하기</h1>
+          <h1 className="font-suit text-2xl font-medium text-strong">답장 준비하기</h1>
           <div className="mt-4">
             <StepTabs current={2} />
           </div>
@@ -44,13 +44,13 @@ export function BranchPrep() {
 
       {triggerMessage && (
         <Panel className="mt-6 max-w-3xl">
-          <p className="text-sm text-muted-2">내가 보낼 메시지</p>
-          <p className="font-suit mt-2 whitespace-pre-wrap text-sm text-ink">{triggerMessage}</p>
+          <p className="text-sm text-muted">내가 보낼 메시지</p>
+          <p className="font-suit mt-2 whitespace-pre-wrap text-sm text-body">{triggerMessage}</p>
         </Panel>
       )}
 
       <Panel className="mt-4 max-w-3xl">
-        <p className="font-semibold text-ink">AI가 예상한 3가지 답변을 확인하세요</p>
+        <p className="font-medium text-strong">AI가 예상한 3가지 답변을 확인하세요</p>
         <p className="mt-2 text-sm text-muted">각 분기를 검토하고 필요한 경우 직접 수정하세요. 수정하지 않아도 됩니다.</p>
       </Panel>
 
@@ -58,12 +58,12 @@ export function BranchPrep() {
         {branches.map((branch) => (
           <Panel key={branch.id}>
             <p className="text-sm">
-              <span className="font-semibold text-ink">{branch.name}</span>
+              <span className="font-medium text-strong">{branch.name}</span>
               {branch.description && <span className="ml-3 text-muted">{branch.description}</span>}
             </p>
-            <label className="mt-3 block text-sm text-ink">후속 응답 초안</label>
+            <label className="mt-3 block text-sm text-body">후속 응답 초안</label>
             <textarea
-              className="font-suit mt-2 w-full rounded-[6px] border border-border p-3 text-sm outline-none focus:border-primary"
+              className="font-suit mt-2 w-full rounded-field bg-chip p-3 text-sm text-body shadow-hairline outline-none"
               onBlur={(e) => persistDraft(branch.id, e.target.value)}
               onChange={(e) => updateDraft(branch.id, e.target.value)}
               rows={3}
@@ -75,7 +75,7 @@ export function BranchPrep() {
 
       <div className="mt-6 flex max-w-3xl items-center justify-between">
         <button
-          className="font-suit text-sm text-muted-2 hover:text-ink"
+          className="font-suit text-sm text-muted hover:text-body"
           onClick={() => navigate(`/conversations/${conversationId}/compose`)}
           type="button"
         >

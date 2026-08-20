@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { api } from '../api'
 import type { Baton, Classification, Conversation } from '../types'
 import { AppShell } from '../components/layout/AppShell'
+import { Badge, type BadgeTone } from '../components/ui/Badge'
 import { buttonClasses } from '../lib/buttonClasses'
 
 function initials(name: string) {
@@ -33,27 +34,42 @@ function formatLocalTime(timezone: string | null) {
   }
 }
 
-function statusMeta(baton: Baton, classification: Classification | null) {
+function statusMeta(baton: Baton, classification: Classification | null): { tone: BadgeTone; label: string; action: string; to: string } {
   if (baton.status === 'COMPLETED' || baton.status === 'EXECUTED') {
-    return { border: 'border-l-emerald-600', label: '발송 완료 — Slack에서 확인하세요', action: '결과 확인', to: `/batons/${baton.id}/result` }
+    return { tone: 'done', label: '발송 완료 — Slack에서 확인하세요', action: '결과 확인', to: `/batons/${baton.id}/result` }
   }
   if (baton.status === 'PENDING_REVIEW') {
     const label = classification?.containsNewQuestion
       ? '검토 필요 — 직접 확인이 필요해요'
       : '검토 필요 — AI가 판단하지 못했어요'
-    return { border: 'border-l-amber-500', label, action: '응답 처리', to: `/batons/${baton.id}/pending` }
+    return { tone: 'review', label, action: '응답 처리', to: `/batons/${baton.id}/pending` }
   }
   if (baton.status === 'EXPIRED') {
-    return { border: 'border-l-border-strong', label: '만료됨 — 답장이 오지 않았어요', action: '상세 보기', to: `/batons/${baton.id}` }
+    return { tone: 'idle', label: '만료됨 — 답장이 오지 않았어요', action: '상세 보기', to: `/batons/${baton.id}` }
   }
   if (baton.status === 'CANCELLED') {
-    return { border: 'border-l-border-strong', label: '취소됨', action: '상세 보기', to: `/batons/${baton.id}` }
+    return { tone: 'off', label: '취소됨', action: '상세 보기', to: `/batons/${baton.id}` }
   }
   if (baton.status === 'ERROR') {
-    return { border: 'border-l-red-500', label: '오류 발생', action: '상세 보기', to: `/batons/${baton.id}` }
+    return { tone: 'error', label: '오류 발생', action: '상세 보기', to: `/batons/${baton.id}` }
   }
   // WAITING (및 DRAFT/ARMED — 정상 흐름에선 activateBaton이 끝나야 홈에 표시되므로 실질적으로 안 나타남)
-  return { border: 'border-l-border-strong', label: '답장 기다리는 중', action: '상세 보기', to: `/batons/${baton.id}` }
+  return { tone: 'waiting', label: '답장 기다리는 중', action: '상세 보기', to: `/batons/${baton.id}` }
+}
+
+/** 취소된 행은 흐리게 처리한다. */
+function rowAccentClass(tone: BadgeTone) {
+  if (tone === 'off') return 'opacity-50'
+  return ''
+}
+
+type FilterLabel = '발송 완료' | '대기중' | '검토 필요'
+
+function matchesFilter(baton: Baton, filter: FilterLabel | null) {
+  if (!filter) return true
+  if (filter === '발송 완료') return baton.status === 'COMPLETED' || baton.status === 'EXECUTED'
+  if (filter === '대기중') return baton.status === 'WAITING'
+  return baton.status === 'PENDING_REVIEW'
 }
 
 export function Home() {
@@ -61,6 +77,7 @@ export function Home() {
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [classifications, setClassifications] = useState<Record<string, Classification | null>>({})
   const [kpi, setKpi] = useState<{ activeBatons: number; needsAttention: number } | null>(null)
+  const [filter, setFilter] = useState<FilterLabel | null>(null)
 
   useEffect(() => {
     api.getBatons().then(async (list) => {
@@ -86,44 +103,55 @@ export function Home() {
     <AppShell>
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="font-suit text-2xl font-semibold text-ink">바통 홈</h1>
-          <p className="font-suit mt-1 text-sm text-muted-2">마지막 동기화: 2분 전 (14:32 KST)</p>
+          <h1 className="font-suit text-2xl font-medium text-strong">바통 홈</h1>
+          <p className="font-suit mt-1 text-sm text-muted">마지막 동기화: 2분 전 (14:32 KST)</p>
         </div>
-        <Link className={buttonClasses('primary', 'rounded-[5px] px-6 py-3 text-base')} to="/conversations">
+        <Link className={buttonClasses('primary', 'px-6 py-3 text-base')} to="/conversations">
           새 바통 만들기
         </Link>
       </div>
 
       <div className="mt-8 grid grid-cols-4 gap-6">
-        {Object.entries(counts).map(([label, value], i) => (
-          <div
-            className={`rounded-[10px] border p-6 ${i === 0 ? 'border-primary bg-primary-soft' : 'border-border-strong bg-white'}`}
-            key={label}
-          >
-            <p className="font-suit text-sm text-ink">{label}</p>
-            <p className="font-suit mt-6 text-3xl text-ink">{value}</p>
-          </div>
-        ))}
+        {Object.entries(counts).map(([label, value]) => {
+          const isSelected = filter ? filter === label : label === '전체'
+          return (
+            <button
+              className={`rounded-card p-6 text-left transition ${
+                isSelected ? 'bg-card-raised shadow-card ring-2 ring-lime-500' : 'bg-card hover:shadow-card'
+              }`}
+              key={label}
+              onClick={() => setFilter(label === '전체' ? null : (label as FilterLabel))}
+              type="button"
+            >
+              <p className="font-suit text-metric font-normal leading-tight text-strong">
+                {value} <span className="text-base font-normal text-muted">{label}</span>
+              </p>
+            </button>
+          )
+        })}
       </div>
 
       <div className="mt-6 flex flex-col gap-2">
-        {batons.map((baton) => {
+        {batons.filter((b) => matchesFilter(b, filter)).length === 0 && (
+          <p className="font-suit text-sm text-muted">해당 상태의 바통이 없어요.</p>
+        )}
+        {batons.filter((b) => matchesFilter(b, filter)).map((baton) => {
           const conversation = conversations.find((c) => c.id === baton.conversationId)
           const name = conversation?.counterpartName ?? conversation?.title ?? baton.conversationId
           const meta = statusMeta(baton, classifications[baton.id] ?? null)
           return (
             <Link
-              className={`flex items-center justify-between rounded-[6px] border border-y border-r border-border border-l-[3px] bg-white p-4 hover:bg-primary-soft/30 ${meta.border}`}
+              className={`baton-lift flex items-center justify-between rounded-card bg-card-raised p-4 shadow-card hover:bg-chip ${rowAccentClass(meta.tone)}`}
               key={baton.id}
               to={meta.to}
             >
               <div className="flex items-center gap-3">
-                <span className="flex size-[30px] items-center justify-center rounded-full bg-border-strong text-[10px] font-medium text-white">
+                <span className="flex size-[30px] items-center justify-center rounded-full bg-ink-600 text-[10px] font-medium text-ondark">
                   {initials(name)}
                 </span>
                 <div>
-                  <p className="text-[13px] font-bold text-ink">{name}</p>
-                  <p className="text-[13px] text-ink">
+                  <p className="text-[13px] font-medium text-strong">{name}</p>
+                  <p className="text-[13px] text-muted">
                     {conversation?.conversationType === 'CHANNEL'
                       ? `# ${conversation.title ?? ''}`
                       : conversation?.title
@@ -133,10 +161,10 @@ export function Home() {
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-[13px] text-ink">{meta.label}</span>
+                <Badge tone={meta.tone}>{meta.label}</Badge>
                 <span className="text-[13px] text-muted">{meta.action}</span>
               </div>
-              <div className="flex gap-4 text-[11px] text-[#94a3b8]">
+              <div className="flex gap-4 text-[11px] text-muted">
                 <span>{formatLocalTime(conversation?.counterpartTimezone ?? null)}</span>
                 <span>{formatElapsed(baton.activatedAt)}</span>
               </div>

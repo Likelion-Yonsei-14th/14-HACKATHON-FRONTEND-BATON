@@ -1,0 +1,10 @@
+:root{
+--r-2:4px;--r-3:8px;--r-4:12px;--r-5:16px;--r-6:20px;--r-7:28px;--r-8:36px;--r-full:999px;
+--radius-card:var(--r-7);
+--radius-card-inner:var(--r-5);
+--radius-control:var(--r-full);
+--radius-chip:var(--r-full);
+--radius-avatar:var(--r-full);
+--radius-thumb:var(--r-4);
+--radius-notch:22px;           /* concave cut on notched cards */
+}

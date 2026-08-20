@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/colors.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/typography.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/radii.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/shadows.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/motion.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/base.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/styles.css">
+<script src="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/_ds_bundle.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/variable/woff2/SUIT-Variable.css">
+<style>
+body{margin:0;background:var(--canvas-wash);background-attachment:fixed;}
+a{color:var(--text-link);text-decoration:underline;text-underline-offset:3px;}
+a:hover{color:var(--ink-600);}
+</style>
+</helmet>
+<div style="min-height:100vh;padding:56px 48px 96px;font:var(--type-body);font-family:'SUIT Variable',var(--font-sans);color:var(--text-body);">
+<div style="max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:32px;">
+
+  <header style="display:flex;flex-direction:column;gap:12px;">
+    <span style="font:var(--fw-medium) 11px/1 var(--font-display);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-500);">Step 2 / 4 · Mapping</span>
+    <h1 style="margin:0;font:var(--fw-medium) 44px/1.05 var(--font-display);letter-spacing:-.01em;color:var(--text-strong);">기존 요소 → Baton 토큰 · 컴포넌트 매핑</h1>
+    <p style="margin:0;max-width:700px;color:var(--text-muted);text-wrap:pretty;">기능·라우팅·카피는 그대로. 아래 표를 승인하시면 3단계(토큰 정의 파일)로 넘어갑니다. 1:1 대응이 없는 항목은 <a href="#derived">파생 컴포넌트</a>와 <a href="#newtokens">신설 토큰</a>으로 분리했습니다.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;">
+      <span style="font:var(--type-micro);color:var(--text-body);background:var(--surface-chip);box-shadow:var(--shadow-hairline);border-radius:var(--r-full);padding:7px 14px;">React + Tailwind</span>
+      <span style="font:var(--type-micro);color:var(--text-body);background:var(--surface-chip);box-shadow:var(--shadow-hairline);border-radius:var(--r-full);padding:7px 14px;">한글 SUIT · 라틴 Outfit</span>
+      <span style="font:var(--type-micro);color:var(--text-body);background:var(--surface-chip);box-shadow:var(--shadow-hairline);border-radius:var(--r-full);padding:7px 14px;">시그널 3색 (flame · red · lime)</span>
+      <span style="font:var(--type-micro);color:var(--text-body);background:var(--surface-chip);box-shadow:var(--shadow-hairline);border-radius:var(--r-full);padding:7px 14px;">텍스트 사이드바 유지 + 리스타일</span>
+      <span style="font:var(--type-micro);color:var(--text-body);background:var(--surface-chip);box-shadow:var(--shadow-hairline);border-radius:var(--r-full);padding:7px 14px;">데스크탑만 · 다크모드 없음</span>
+      <span style="font:var(--type-micro);color:var(--text-body);background:var(--surface-chip);box-shadow:var(--shadow-hairline);border-radius:var(--r-full);padding:7px 14px;">text-faint → muted 대체</span>
+    </div>
+  </header>
+
+  <section style="background:var(--surface-card-raised);border-radius:var(--radius-card);padding:28px;box-shadow:var(--shadow-card);display:flex;flex-direction:column;gap:16px;">
+    <h2 style="margin:0;font:var(--type-section);font-family:var(--font-display);color:var(--text-strong);">A. 토큰 매핑 — 1:1 교체</h2>
+    <div style="display:grid;grid-template-columns:1.1fr 1fr 1.5fr;gap:0;font:var(--type-label);">
+      <div style="padding:10px 12px;color:var(--text-muted);background:var(--surface-card);border-radius:var(--r-3) 0 0 var(--r-3);">기존 (src/index.css)</div>
+      <div style="padding:10px 12px;color:var(--text-muted);background:var(--surface-card);">Baton 토큰</div>
+      <div style="padding:10px 12px;color:var(--text-muted);background:var(--surface-card);border-radius:0 var(--r-3) var(--r-3) 0;">비고</div>
+
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);"><span style="display:inline-flex;align-items:center;gap:8px;"><span style="width:14px;height:14px;border-radius:4px;background:#477ad0;"></span>--color-primary #477ad0</span></div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);"><span style="display:inline-flex;align-items:center;gap:8px;"><span style="width:14px;height:14px;border-radius:4px;background:var(--ink-900);"></span>--surface-inverse (ink-900)</span></div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);color:var(--text-muted);">파란 브랜드색은 완전 제거. 주요 버튼은 검정 알약. 라임은 “완료” 시그널 전용.</div>
+
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);"><span style="display:inline-flex;align-items:center;gap:8px;"><span style="width:14px;height:14px;border-radius:4px;background:#e7edf9;"></span>--color-primary-soft</span></div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);"><span style="display:inline-flex;align-items:center;gap:8px;"><span style="width:14px;height:14px;border-radius:4px;background:var(--paper-0);box-shadow:var(--shadow-card);"></span>--paper-0 + --shadow-card</span></div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);color:var(--text-muted);">선택 상태는 색이 아니라 <strong>흰 배경 + 그림자로 떠오르는 방식</strong>(FilterChip 규칙).</div>
+
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">--color-ink #1a1a1a</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">--text-body (동일 #1a1a1a)</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);color:var(--text-muted);">값 일치. 제목은 --text-strong(#0b0b0b)으로 한 단계 진하게.</div>
+
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">--color-muted #64748b</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">--text-muted #6e6e6e</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);color:var(--text-muted);">푸른 기 제거된 중성 회색.</div>
+
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">--color-muted-2 #a1a1a1</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">--text-muted (동일 대체)</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);color:var(--text-muted);">AA 확보를 위해 faint 계열은 쓰지 않음 — 결정사항 반영.</div>
+
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">--color-border / border-strong</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">--shadow-hairline / --shadow-card</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);color:var(--text-muted);"><strong>테두리 전면 삭제.</strong> 시스템에 border가 없습니다 — 1px 링(inset)과 그림자로 분리.</div>
+
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">--color-landing #f6f9ff</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">--canvas-wash (회색 라디얼)</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);color:var(--text-muted);">앱 화면도 흰 배경 대신 같은 회색 캔버스. 흰색은 카드에만.</div>
+
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">--font-suit (제목/버튼)</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">SUIT 유지 + 숫자는 --font-mono</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);color:var(--text-muted);">가중치 300–500만. 600+ 사용 안 함 → 기존 bold 제목은 medium으로.</div>
+
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">--font-sans Inter (본문)</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">SUIT(한글) · Outfit(라틴)</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);color:var(--text-muted);">Inter 제거(시스템 금지 폰트). CDN 2개 유지 — 새 의존성 없음.</div>
+
+      <div style="padding:12px;">rounded-[6px] / [10px]</div>
+      <div style="padding:12px;">--radius-control full / --radius-card 28</div>
+      <div style="padding:12px;color:var(--text-muted);">버튼·입력은 완전 알약, 카드·모달 28px, 카드 속 블록 16px, 썸네일 12px.</div>
+    </div>
+  </section>
+
+  <section style="background:var(--surface-card-raised);border-radius:var(--radius-card);padding:28px;box-shadow:var(--shadow-card);display:flex;flex-direction:column;gap:16px;">
+    <h2 style="margin:0;font:var(--type-section);font-family:var(--font-display);color:var(--text-strong);">B. 컴포넌트 매핑</h2>
+    <div style="display:grid;grid-template-columns:0.9fr 1.1fr 1.6fr;gap:0;font:var(--type-label);">
+      <div style="padding:10px 12px;color:var(--text-muted);background:var(--surface-card);border-radius:var(--r-3) 0 0 var(--r-3);">기존 컴포넌트</div>
+      <div style="padding:10px 12px;color:var(--text-muted);background:var(--surface-card);">Baton 대응</div>
+      <div style="padding:10px 12px;color:var(--text-muted);background:var(--surface-card);border-radius:0 var(--r-3) var(--r-3) 0;">처리</div>
+
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">Button primary</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">Button variant="primary" (ink)</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);color:var(--text-muted);">그대로 사용. 높이 44 기본, 34/54 옵션.</div>
+
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">Button secondary</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">Button variant="quiet"</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);color:var(--text-muted);">파란 테두리 → 종이 배경 + 1px 링.</div>
+
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">Button ghost</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">Button variant="ghost"</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);color:var(--text-muted);">그대로. 리스트 안 인라인 액션(“결과 확인” 등)은 size="sm".</div>
+
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">Panel</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">Card tone="raised"</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);color:var(--text-muted);">테두리 없는 흰 카드 + shadow-card, 라운드 28, 패딩 20.</div>
+
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">KPI 카드 4개 (홈)</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">Card + MetricStat</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);color:var(--text-muted);">숫자 44px, 라벨은 숫자 <em>옆</em> 회색 16px. 선택된 카드는 raised(흰)+shadow-card, 나머지 paper.</div>
+
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">홈 리스트 행 (좌측 컬러 보더)</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">TaskCard 파생 + 상태 도트</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);color:var(--state-hot);"><strong>1:1 아님</strong> — 시스템에 보더가 없음. 좌측 4px 바 → <strong>8px 상태 도트 + 배지</strong>로 대체, 행은 라운드 28 카드로 분리.</div>
+
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">Badge (상태)</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">SourceTag 파생 → <a href="#derived">StatusBadge</a></div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);color:var(--state-hot);"><strong>신규 파생</strong></div>
+
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">Dialog</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">Card raised + shadow-float + 스크림</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);color:var(--state-hot);"><strong>신규 파생</strong> — 스크림 토큰 신설 필요.</div>
+
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">StepTabs (1›2›3)</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">FilterChip 파생</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);color:var(--state-hot);"><strong>신규 파생</strong> — 현재 단계=흰 칩, 완료=라임 체크 디스크.</div>
+
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">입력 · textarea (작성/보류)</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">SearchInput 파생</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);color:var(--state-hot);"><strong>신규 파생</strong> — 단일행 알약 44px / textarea 라운드 16px.</div>
+
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">라디오 (분기 선택)</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">선택 카드 + 20px 라디오</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);color:var(--state-hot);"><strong>신규 파생</strong> — 선택 시 카드가 흰색으로 떠오름.</div>
+
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">셀렉트 (설정 화면)</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">SelectPill</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);color:var(--text-muted);">기존 풀폭 사각 셀렉트 → 알약형. 라벨은 위 12px 회색.</div>
+
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">AppShell 헤더</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">Wordmark + Avatar (보더 없는 캔버스 위)</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);color:var(--text-muted);">헤더 하단 회색 보더 삭제 — 헤더는 캔버스에 그냥 떠 있음.</div>
+
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">사이드바 (텍스트 메뉴)</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);">아이콘 디스크 + 텍스트 라벨 행</div>
+      <div style="padding:12px;box-shadow:inset 0 -1px 0 var(--line-hairline);color:var(--text-muted);">패널·구분선 제거. 활성 항목은 IconRail 규칙대로 <strong>ink 반전 디스크</strong> + 검정 라벨.</div>
+
+      <div style="padding:12px;">에러 안내 (연결/동기화 실패)</div>
+      <div style="padding:12px;">Alert 파생 (red-100 / flame-100)</div>
+      <div style="padding:12px;color:var(--state-hot);"><strong>신규 파생</strong></div>
+    </div>
+  </section>
+
+  <section style="background:var(--surface-card-raised);border-radius:var(--radius-card);padding:28px;box-shadow:var(--shadow-card);display:flex;flex-direction:column;gap:18px;">
+    <h2 style="margin:0;font:var(--type-section);font-family:var(--font-display);color:var(--text-strong);">C. 바통 상태 9종 → 시그널 3색</h2>
+    <span style="font:var(--type-micro);color:var(--text-muted);">라임은 “완료” 하나에만, 화면 전체에 라임 면(카드 배경)은 쓰지 않고 <strong>도트·배지 크기의 마크로만</strong> 사용합니다 (시스템 배급 규칙 준수).</span>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;">
+      <span style="display:inline-flex;align-items:center;gap:8px;font:var(--type-label);color:var(--text-body);background:var(--surface-chip);box-shadow:var(--shadow-hairline);border-radius:var(--r-full);padding:8px 14px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--lime-600);"></span>EXECUTED · COMPLETED — 발송 완료</span>
+      <span style="display:inline-flex;align-items:center;gap:8px;font:var(--type-label);color:var(--text-body);background:var(--surface-chip);box-shadow:var(--shadow-hairline);border-radius:var(--r-full);padding:8px 14px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--flame-500);"></span>PENDING_REVIEW — 검토 필요</span>
+      <span style="display:inline-flex;align-items:center;gap:8px;font:var(--type-label);color:var(--text-body);background:var(--surface-chip);box-shadow:var(--shadow-hairline);border-radius:var(--r-full);padding:8px 14px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--red-500);"></span>ERROR — 오류 발생</span>
+      <span style="display:inline-flex;align-items:center;gap:8px;font:var(--type-label);color:var(--text-body);background:var(--surface-chip);box-shadow:var(--shadow-hairline);border-radius:var(--r-full);padding:8px 14px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--ink-800);"></span>WAITING · ARMED — 답장 기다리는 중</span>
+      <span style="display:inline-flex;align-items:center;gap:8px;font:var(--type-label);color:var(--text-body);background:var(--surface-chip);box-shadow:var(--shadow-hairline);border-radius:var(--r-full);padding:8px 14px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--ink-400);"></span>DRAFT — 작성 중</span>
+      <span style="display:inline-flex;align-items:center;gap:8px;font:var(--type-label);color:var(--text-body);background:var(--surface-chip);box-shadow:var(--shadow-hairline);border-radius:var(--r-full);padding:8px 14px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--ink-400);"></span>EXPIRED — 만료됨</span>
+      <span style="display:inline-flex;align-items:center;gap:8px;font:var(--type-label);color:var(--text-muted);background:var(--surface-chip);box-shadow:var(--shadow-hairline);border-radius:var(--r-full);padding:8px 14px;opacity:.75;"><span style="width:8px;height:8px;border-radius:50%;background:var(--ink-300);"></span>CANCELLED — 취소됨</span>
+    </div>
+    <span style="font:var(--type-micro);color:var(--text-muted);">WAITING(ink-800)과 EXPIRED/DRAFT(ink-400)는 도트 명도로 구분하고, 배지 텍스트가 상태명을 그대로 말합니다 — 색만으로 정보를 전달하지 않음(AA 1.4.1).</span>
+  </section>
+
+  <section id="derived" style="background:var(--surface-card-raised);border-radius:var(--radius-card);padding:28px;box-shadow:var(--shadow-card);display:flex;flex-direction:column;gap:22px;">
+    <div style="display:flex;align-items:baseline;gap:12px;">
+      <h2 style="margin:0;font:var(--type-section);font-family:var(--font-display);color:var(--text-strong);">D. 파생 컴포넌트 6종 — 실제 스펙 시안</h2>
+      <span style="font:var(--type-label);color:var(--text-muted);">모두 기존 컴포넌트 규칙에서 파생, 새 색·새 폰트 없음</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div style="background:var(--surface-card);border-radius:var(--radius-card-inner);padding:20px;display:flex;flex-direction:column;gap:14px;">
+        <span style="font:var(--type-name);color:var(--text-strong);">1. StatusBadge</span>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span style="display:inline-flex;align-items:center;gap:7px;height:26px;padding:0 12px;border-radius:var(--r-full);background:var(--paper-0);box-shadow:var(--shadow-hairline);font:var(--type-micro);color:var(--text-body);"><span style="width:7px;height:7px;border-radius:50%;background:var(--lime-600);"></span>발송 완료</span>
+          <span style="display:inline-flex;align-items:center;gap:7px;height:26px;padding:0 12px;border-radius:var(--r-full);background:var(--paper-0);box-shadow:var(--shadow-hairline);font:var(--type-micro);color:var(--text-body);"><span style="width:7px;height:7px;border-radius:50%;background:var(--flame-500);"></span>검토 필요</span>
+          <span style="display:inline-flex;align-items:center;gap:7px;height:26px;padding:0 12px;border-radius:var(--r-full);background:var(--paper-0);box-shadow:var(--shadow-hairline);font:var(--type-micro);color:var(--text-body);"><span style="width:7px;height:7px;border-radius:50%;background:var(--ink-800);"></span>대기중</span>
+        </div>
+        <span style="font:var(--type-micro);color:var(--text-muted);">SourceTag 파생 · 높이 26 · radius full · 11px · hairline 링 · 앞 7px 도트</span>
+      </div>
+
+      <div style="background:var(--surface-card);border-radius:var(--radius-card-inner);padding:20px;display:flex;flex-direction:column;gap:14px;">
+        <span style="font:var(--type-name);color:var(--text-strong);">2. StepTabs</span>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 14px 0 5px;border-radius:var(--r-full);background:var(--surface-chip);box-shadow:var(--shadow-hairline);font:var(--type-label);color:var(--text-muted);"><span style="width:28px;height:28px;border-radius:50%;background:var(--lime-500);color:var(--ink-900);display:grid;place-items:center;font:var(--type-micro);">✓</span>메시지 작성</span>
+          <span style="color:var(--ink-300);">›</span>
+          <span style="display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 14px 0 5px;border-radius:var(--r-full);background:var(--paper-0);box-shadow:var(--shadow-card);font:var(--type-label);color:var(--text-strong);"><span style="width:28px;height:28px;border-radius:50%;background:var(--ink-900);color:#fff;display:grid;place-items:center;font:var(--type-micro);">2</span>분기 검토</span>
+          <span style="color:var(--ink-300);">›</span>
+          <span style="display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 14px 0 5px;border-radius:var(--r-full);font:var(--type-label);color:var(--text-muted);"><span style="width:28px;height:28px;border-radius:50%;background:var(--surface-chip);box-shadow:var(--shadow-hairline);display:grid;place-items:center;font:var(--type-micro);">3</span>발송 확인</span>
+        </div>
+        <span style="font:var(--type-micro);color:var(--text-muted);">FilterChip 파생 · 현재=흰 칩+shadow-card · 완료=라임 체크 디스크 · 미도달=플랫</span>
+      </div>
+
+      <div style="background:var(--surface-card);border-radius:var(--radius-card-inner);padding:20px;display:flex;flex-direction:column;gap:14px;">
+        <span style="font:var(--type-name);color:var(--text-strong);">3. Field · Textarea</span>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-label);color:var(--text-muted);">이메일</span><div style="height:44px;padding:0 18px;display:flex;align-items:center;border-radius:var(--r-full);background:var(--paper-0);box-shadow:var(--shadow-hairline);font:var(--type-body);color:var(--text-muted);">you@company.com</div></div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-label);color:var(--text-muted);">응답 초안 (포커스)</span><div style="min-height:88px;padding:14px 18px;border-radius:var(--radius-card-inner);background:var(--paper-0);box-shadow:var(--shadow-focus),var(--shadow-hairline);font:var(--type-body);color:var(--text-body);">좋습니다. 말씀해주신 대로 진행하겠습니다.</div></div>
+        </div>
+        <span style="font:var(--type-micro);color:var(--text-muted);">SearchInput 파생 · 단일행 알약 44 / 여러 줄 라운드 16 · 포커스는 라임 링(3px)</span>
+      </div>
+
+      <div style="background:var(--surface-card);border-radius:var(--radius-card-inner);padding:20px;display:flex;flex-direction:column;gap:14px;">
+        <span style="font:var(--type-name);color:var(--text-strong);">4. RadioCard (분기 선택)</span>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:var(--radius-card-inner);background:var(--paper-0);box-shadow:var(--shadow-card);"><span style="width:20px;height:20px;border-radius:50%;background:var(--ink-900);display:grid;place-items:center;flex:0 0 auto;"><span style="width:7px;height:7px;border-radius:50%;background:#fff;"></span></span><span style="display:flex;flex-direction:column;gap:2px;"><span style="font:var(--type-label);color:var(--text-strong);">분기 A — 긍정적 수락</span><span style="font:var(--type-micro);color:var(--text-muted);">상대방이 제안을 수락하는 경우</span></span></div>
+          <div style="display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:var(--radius-card-inner);background:var(--surface-chip);box-shadow:var(--shadow-hairline);"><span style="width:20px;height:20px;border-radius:50%;box-shadow:inset 0 0 0 1px var(--line-strong);background:var(--paper-0);flex:0 0 auto;"></span><span style="display:flex;flex-direction:column;gap:2px;"><span style="font:var(--type-label);color:var(--text-body);">분기 B — 조건부 또는 추가 질문</span><span style="font:var(--type-micro);color:var(--text-muted);">조건을 달거나 정보를 요청하는 경우</span></span></div>
+        </div>
+        <span style="font:var(--type-micro);color:var(--text-muted);">선택 = 흰 카드로 떠오름(FilterChip active 규칙). 색으로 표시하지 않음.</span>
+      </div>
+
+      <div style="background:var(--surface-card);border-radius:var(--radius-card-inner);padding:20px;display:flex;flex-direction:column;gap:14px;">
+        <span style="font:var(--type-name);color:var(--text-strong);">5. Dialog</span>
+        <div style="position:relative;border-radius:var(--radius-card-inner);overflow:hidden;background:var(--ink-800);padding:22px;display:grid;place-items:center;">
+          <div style="width:100%;max-width:300px;background:var(--paper-0);border-radius:var(--radius-card);box-shadow:var(--shadow-float);padding:20px;display:flex;flex-direction:column;gap:14px;">
+            <span style="font:var(--type-card-title);font-family:'SUIT Variable';color:var(--text-strong);">바통을 취소할까요?</span>
+            <span style="font:var(--type-micro);color:var(--text-muted);">취소하면 자동 응답이 실행되지 않습니다.</span>
+            <div style="display:flex;gap:8px;justify-content:flex-end;">
+              <span style="height:34px;padding:0 16px;display:grid;place-items:center;border-radius:var(--r-full);background:var(--surface-chip);box-shadow:var(--shadow-hairline);font:var(--type-label);color:var(--text-body);">돌아가기</span>
+              <span style="height:34px;padding:0 16px;display:grid;place-items:center;border-radius:var(--r-full);background:var(--ink-900);color:#fff;font:var(--type-label);">바통 취소</span>
+            </div>
+          </div>
+        </div>
+        <span style="font:var(--type-micro);color:var(--text-muted);">Card raised + shadow-float · 스크림 rgba(11,11,11,.28)+blur 3px · 260ms fade+4px 상승</span>
+      </div>
+
+      <div style="background:var(--surface-card);border-radius:var(--radius-card-inner);padding:20px;display:flex;flex-direction:column;gap:14px;">
+        <span style="font:var(--type-name);color:var(--text-strong);">6. Alert (인라인 에러)</span>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:14px 16px;border-radius:var(--radius-card-inner);background:var(--red-100);"><span style="width:8px;height:8px;border-radius:50%;background:var(--red-500);margin-top:5px;flex:0 0 auto;"></span><span style="font:var(--type-label);color:var(--ink-800);">Slack 연결에 실패했어요. 다시 시도해 주세요.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:14px 16px;border-radius:var(--radius-card-inner);background:var(--flame-100);"><span style="width:8px;height:8px;border-radius:50%;background:var(--flame-500);margin-top:5px;flex:0 0 auto;"></span><span style="font:var(--type-label);color:var(--ink-800);">데이터 동기화가 지연되고 있어요.</span></div>
+        </div>
+        <span style="font:var(--type-micro);color:var(--text-muted);">기존 red-100 / flame-100 사용 · 텍스트는 ink-800 (대비 12:1 이상)</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="newtokens" style="background:var(--surface-inverse);color:var(--text-on-dark);border-radius:var(--radius-card);padding:28px;box-shadow:var(--shadow-float);display:flex;flex-direction:column;gap:16px;">
+    <div style="display:flex;align-items:baseline;gap:12px;">
+      <h2 style="margin:0;font:var(--type-section);font-family:var(--font-display);color:var(--text-on-dark);">E. 신설 토큰 — 승인 필요</h2>
+      <span style="font:var(--type-label);color:var(--ink-300);">전부 기존 값의 별칭. 새 색은 없습니다.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font:var(--type-micro);">
+      <div style="background:var(--ink-800);border-radius:var(--radius-card-inner);padding:14px 16px;color:var(--ink-300);"><strong style="color:var(--lime-500);">--scrim</strong> : rgba(11,11,11,.28) + --blur-scrim: blur(3px) <span style="color:var(--ink-400);">— 가이드 문장에만 있던 값을 토큰화</span></div>
+      <div style="background:var(--ink-800);border-radius:var(--radius-card-inner);padding:14px 16px;color:var(--ink-300);"><strong style="color:var(--lime-500);">--radius-field</strong> : var(--radius-card-inner) <span style="color:var(--ink-400);">— textarea 전용 별칭</span></div>
+      <div style="background:var(--ink-800);border-radius:var(--radius-card-inner);padding:14px 16px;color:var(--ink-300);"><strong style="color:var(--lime-500);">--surface-danger-soft</strong> : var(--red-100) · <strong style="color:var(--lime-500);">--surface-warn-soft</strong> : var(--flame-100)</div>
+      <div style="background:var(--ink-800);border-radius:var(--radius-card-inner);padding:14px 16px;color:var(--ink-300);"><strong style="color:var(--lime-500);">--status-done / review / error / waiting / idle</strong> : lime-600 · flame-500 · red-500 · ink-800 · ink-400</div>
+    </div>
+  </section>
+
+  <section style="background:var(--surface-card-raised);border-radius:var(--radius-card);padding:28px;box-shadow:var(--shadow-card);display:flex;flex-direction:column;gap:14px;">
+    <h2 style="margin:0;font:var(--type-section);font-family:var(--font-display);color:var(--text-strong);">F. 승인 후 진행 순서</h2>
+    <div style="display:flex;flex-direction:column;gap:10px;font:var(--type-label);color:var(--text-body);">
+      <div style="display:flex;gap:12px;align-items:center;"><span style="width:26px;height:26px;border-radius:50%;background:var(--surface-chip);box-shadow:var(--shadow-hairline);display:grid;place-items:center;font:var(--type-micro);">3</span>토큰 정의 파일 — <code style="font:var(--type-figure);">src/index.css</code>(CSS 변수 + 폰트) + <code style="font:var(--type-figure);">tailwind.config.js</code>(var() 참조 테마). 새 의존성 없음.</div>
+      <div style="display:flex;gap:12px;align-items:center;"><span style="width:26px;height:26px;border-radius:50%;background:var(--surface-chip);box-shadow:var(--shadow-hairline);display:grid;place-items:center;font:var(--type-micro);">4</span>랜딩 → 헤더/사이드바(AppShell) → 공통 컴포넌트(Button·Panel·Badge·Dialog·StepTabs·Field) → 홈 → 위저드 3화면 → 상세/보류/결과 → 인증·연결·에러 → 설정. 화면 단위로 끊어서.</div>
+    </div>
+    <span style="font:var(--type-micro);color:var(--text-muted);">구조 변경은 없습니다. 유일한 시각 예외: 홈 리스트의 좌측 컬러 보더 삭제(도트+배지로 대체)와 헤더 하단 보더 삭제 — 둘 다 로직·카피에 영향 없음.</span>
+  </section>
+
+</div>
+</div>
+</x-dc>
+</body>
+</html>

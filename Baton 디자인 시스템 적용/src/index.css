@@ -1,0 +1,326 @@
+/* ============================================================
+   Baton — 토큰 정의 파일 (Step 3)
+   기존 src/index.css를 이 파일로 전면 교체합니다.
+   원칙: 값은 전부 Baton Design System(tokens/*.css)에서 옴.
+        새 색·새 폰트·새 사이즈를 만들지 않음.
+   지원 범위: 데스크탑, 다크모드 없음.
+   ============================================================ */
+
+/* --- 폰트: 한글 SUIT(기존 유지) + 라틴 Outfit + 숫자 DM Mono --- */
+@import url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/variable/woff2/SUIT-Variable.css");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* ==========================================================
+     1. BASE PALETTE — 디자인 시스템 원본 값 (수정 금지)
+     ========================================================== */
+
+  /* lime — 브랜드 액센트. "지금 일어나는 일" 하나만 표시 */
+  --lime-100: #effedc;
+  --lime-200: #e3fdc6;
+  --lime-300: #dafcae;
+  --lime-400: #cbfc8d;
+  --lime-500: #befb71;
+  --lime-600: #a7e55c;
+  --lime-700: #8ccc42;
+  --lime-800: #6aa32c;
+
+  /* ink — 텍스트 · 검정 알약 */
+  --ink-900: #0b0b0b;
+  --ink-800: #1a1a1a;
+  --ink-700: #323232;
+  --ink-600: #4e4e4e;
+  --ink-500: #6e6e6e;
+  --ink-400: #9a9a9a;
+  --ink-300: #c7c7c7;
+  --ink-200: #dedede;
+
+  /* paper — 표면 */
+  --paper-0: #ffffff;
+  --paper-50: #fafafa;
+  --paper-100: #f3f3f3;
+  --paper-200: #ebebeb;
+  --paper-300: #e1e1e1;
+
+  /* signal — 작은 마크로만 사용 */
+  --flame-500: #ff6b2c;
+  --flame-100: #ffe9dd;
+  --red-500: #ff3b30;
+  --red-100: #ffe1df;
+  --amber-500: #ffc44d; /* 예약 — 이 서비스에서는 미사용 */
+  --sky-500: #4a90ff;   /* 예약 — 이 서비스에서는 미사용 */
+
+  /* ==========================================================
+     2. SEMANTIC — 용도별 별칭. UI 코드는 이 층만 참조한다
+     ========================================================== */
+
+  /* text */
+  --text-strong: var(--ink-900);      /* 제목 */
+  --text-body: var(--ink-800);        /* 본문 */
+  --text-muted: var(--ink-500);       /* 보조 · 라벨 (AA 5.7:1) */
+  --text-on-dark: #ffffff;
+  --text-on-accent: var(--ink-900);
+  --text-link: var(--ink-900);
+  /* NOTE: --text-faint(#9a9a9a)는 AA 미달이므로 이 프로젝트에서 정의하지 않음.
+     기존 --color-muted-2 사용처는 전부 --text-muted로 대체. */
+
+  /* surface */
+  --surface-canvas: var(--paper-300);
+  --surface-card: var(--paper-100);
+  --surface-card-raised: var(--paper-0);
+  --surface-subtle: var(--paper-200);
+  --surface-chip: var(--paper-50);
+  --surface-accent: var(--lime-500);
+  --surface-inverse: var(--ink-900);
+  --canvas-wash: radial-gradient(120% 90% at 18% 0%, #f6f6f6 0%, #ececec 46%, #e2e2e2 100%);
+
+  /* line — 시스템에 border는 없다. 링(inset)으로만 쓴다 */
+  --line-hairline: rgba(11, 11, 11, 0.06);
+  --line-soft: rgba(11, 11, 11, 0.1);
+  --line-strong: rgba(11, 11, 11, 0.18);
+  --line-on-dark: rgba(255, 255, 255, 0.14);
+
+  /* state */
+  --state-hot: var(--flame-500);
+  --state-hot-bg: var(--flame-100);
+  --state-positive: var(--lime-600);
+  --state-negative: var(--red-500);
+  --state-focus-ring: rgba(140, 204, 66, 0.55);
+
+  /* ==========================================================
+     3. 신설 토큰 (Step 2 E항 승인분) — 모두 기존 값의 별칭
+     ========================================================== */
+  --scrim: rgba(11, 11, 11, 0.28);
+  --blur-scrim: blur(3px);
+  --surface-danger-soft: var(--red-100);
+  --surface-warn-soft: var(--flame-100);
+
+  /* 바통 상태 9종 → 시그널 3색 + 명도 2단 */
+  --status-done: var(--lime-600);     /* EXECUTED, COMPLETED */
+  --status-review: var(--flame-500);  /* PENDING_REVIEW */
+  --status-error: var(--red-500);     /* ERROR */
+  --status-waiting: var(--ink-800);   /* WAITING, ARMED */
+  --status-idle: var(--ink-400);      /* DRAFT, EXPIRED */
+  --status-off: var(--ink-300);       /* CANCELLED */
+
+  /* ==========================================================
+     4. TYPE
+     ========================================================== */
+  --font-display: "SUIT Variable", "Outfit", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "SUIT Variable", "Outfit", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500; /* 최대 가중치 — 600+ 사용 금지 */
+
+  --fs-11: 11px;
+  --fs-12: 12px;
+  --fs-13: 13px;
+  --fs-14: 14px;
+  --fs-16: 16px;
+  --fs-18: 18px;
+  --fs-20: 20px;
+  --fs-22: 22px;
+  --fs-26: 26px;
+  --fs-34: 34px;
+  --fs-44: 44px;
+  --fs-64: 64px;
+
+  --lh-tight: 1.05;
+  --lh-snug: 1.2;
+  --lh-normal: 1.45;
+  --lh-loose: 1.6;
+  --tr-wide: 0.08em;
+  --tr-mid: 0.04em;
+  --tr-normal: 0;
+  --tr-tight: -0.01em;
+
+  --type-wordmark: var(--fw-medium) var(--fs-34) / var(--lh-tight) var(--font-display);
+  --type-metric: var(--fw-regular) var(--fs-44) / var(--lh-tight) var(--font-display);
+  --type-section: var(--fw-medium) var(--fs-22) / var(--lh-snug) var(--font-display);
+  --type-card-title: var(--fw-medium) var(--fs-20) / var(--lh-snug) var(--font-display);
+  --type-name: var(--fw-medium) var(--fs-16) / var(--lh-snug) var(--font-sans);
+  --type-body: var(--fw-regular) var(--fs-14) / var(--lh-normal) var(--font-sans);
+  --type-label: var(--fw-regular) var(--fs-12) / var(--lh-normal) var(--font-sans);
+  --type-micro: var(--fw-regular) var(--fs-11) / var(--lh-normal) var(--font-sans);
+  --type-figure: var(--fw-medium) var(--fs-13) / var(--lh-normal) var(--font-mono);
+
+  /* ==========================================================
+     5. SPACE
+     ========================================================== */
+  --sp-0: 0px;
+  --sp-1: 2px;
+  --sp-2: 4px;
+  --sp-3: 6px;
+  --sp-4: 8px;
+  --sp-5: 12px;
+  --sp-6: 16px;
+  --sp-7: 20px;
+  --sp-8: 24px;
+  --sp-9: 32px;
+  --sp-10: 40px;
+  --sp-11: 56px;
+  --sp-12: 72px;
+
+  --gap-inline: var(--sp-4);
+  --gap-stack: var(--sp-5);
+  --gap-card: var(--sp-6);
+  --gap-section: var(--sp-9);
+  --pad-card: var(--sp-7);
+  --pad-control-x: var(--sp-6);
+  --pad-control-y: var(--sp-4);
+  --card-min-width: 236px;
+
+  /* ==========================================================
+     6. RADIUS — 직각 없음
+     ========================================================== */
+  --r-2: 4px;
+  --r-3: 8px;
+  --r-4: 12px;
+  --r-5: 16px;
+  --r-6: 20px;
+  --r-7: 28px;
+  --r-8: 36px;
+  --r-full: 999px;
+
+  --radius-card: var(--r-7);
+  --radius-card-inner: var(--r-5);
+  --radius-field: var(--r-5); /* 신설 별칭 — textarea */
+  --radius-control: var(--r-full);
+  --radius-chip: var(--r-full);
+  --radius-avatar: var(--r-full);
+  --radius-thumb: var(--r-4);
+  --radius-notch: 22px;
+
+  /* ==========================================================
+     7. SHADOW — 테두리 대신 빛과 그림자
+     ========================================================== */
+  --shadow-hairline: inset 0 0 0 1px var(--line-hairline);
+  --shadow-chip: 0 1px 2px rgba(11, 11, 11, 0.04);
+  --shadow-card: 0 1px 2px rgba(11, 11, 11, 0.03), 0 14px 30px -16px rgba(11, 11, 11, 0.14);
+  --shadow-card-hover: 0 2px 4px rgba(11, 11, 11, 0.05), 0 22px 44px -18px rgba(11, 11, 11, 0.2);
+  --shadow-float: 0 24px 60px -20px rgba(11, 11, 11, 0.34);
+  --shadow-focus: 0 0 0 3px var(--state-focus-ring);
+
+  /* ==========================================================
+     8. MOTION
+     ========================================================== */
+  --ease-out: cubic-bezier(0.22, 0.8, 0.28, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-1: 120ms;
+  --dur-2: 180ms;
+  --dur-3: 260ms;
+  --dur-4: 420ms;
+  --t-hover: all var(--dur-2) var(--ease-out);
+  --t-press: transform var(--dur-1) var(--ease-out);
+  --lift-hover: translateY(-1px);
+  --press-scale: 0.97;
+}
+
+/* ============================================================
+   BASE — 시스템의 tokens/base.css를 그대로 따름
+   ============================================================ */
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    margin: 0;
+    font: var(--type-body);
+    color: var(--text-body);
+    background: var(--canvas-wash);
+    background-attachment: fixed;
+    background-color: var(--surface-canvas);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  a {
+    color: var(--text-link);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line-soft);
+    transition: var(--t-hover);
+  }
+
+  a:hover {
+    color: var(--ink-900);
+    border-bottom-color: var(--lime-700);
+  }
+
+  ::selection {
+    background: var(--lime-300);
+  }
+
+  :focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-focus);
+  }
+
+  /* 숫자·금액·시간은 mono + tabular */
+  .tabular,
+  time,
+  [data-figure] {
+    font: var(--type-figure);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ============================================================
+   MOTION 유틸 — 시스템의 hover/press 규칙 (바운스·스프링 없음)
+   ============================================================ */
+@layer utilities {
+  .baton-canvas {
+    background: var(--canvas-wash);
+  }
+
+  .baton-lift {
+    transition: var(--t-hover);
+  }
+
+  .baton-lift:hover {
+    transform: var(--lift-hover);
+    filter: brightness(1.06);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .baton-press:active {
+    transform: scale(var(--press-scale));
+    transition: var(--t-press);
+  }
+
+  /* 노치: 카드 우상단 오목 컷 — 캔버스 위에서만 성립(중첩 금지) */
+  .baton-notch::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: var(--radius-notch);
+    height: var(--radius-notch);
+    background: var(--surface-canvas);
+    border-bottom-left-radius: var(--radius-notch);
+  }
+
+  /* 모달 스크림 */
+  .baton-scrim {
+    background: var(--scrim);
+    backdrop-filter: var(--blur-scrim);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

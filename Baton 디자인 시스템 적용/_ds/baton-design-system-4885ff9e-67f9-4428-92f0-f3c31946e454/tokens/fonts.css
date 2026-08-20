@@ -1,0 +1,6 @@
+/* Baton type: geometric grotesque + mono for figures.
+   SUBSTITUTION: no font binaries were supplied with the source material.
+   Outfit is the closest Google Fonts match to the reference UI's geometric sans;
+   DM Mono stands in for tabular/metric figures. Swap the @font-face srcs when
+   the real licensed families arrive. */
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap");

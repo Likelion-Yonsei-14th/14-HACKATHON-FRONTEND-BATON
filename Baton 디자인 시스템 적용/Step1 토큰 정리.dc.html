@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/colors.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/typography.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/radii.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/shadows.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/motion.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/base.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/styles.css">
+<script src="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/_ds_bundle.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.css">
+<style>
+body{margin:0;background:var(--canvas-wash);background-attachment:fixed;}
+a{color:var(--text-link);text-decoration:underline;text-underline-offset:3px;}
+a:hover{color:var(--ink-600);}
+</style>
+</helmet>
+<div style="min-height:100vh;padding:56px 48px 96px;font:var(--type-body);font-family:Pretendard,var(--font-sans);color:var(--text-body);">
+<div style="max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:32px;">
+
+  <header style="display:flex;flex-direction:column;gap:12px;">
+    <span style="font:var(--fw-medium) 11px/1 var(--font-display);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-500);">Step 1 / 4 · Token audit</span>
+    <h1 style="margin:0;font:var(--fw-medium) 44px/1.05 var(--font-display);letter-spacing:-.01em;color:var(--text-strong);">Baton Design System 토큰 정리</h1>
+    <p style="margin:0;max-width:640px;color:var(--text-muted);text-wrap:pretty;">디자인 시스템 파일(<code style="font:var(--type-figure);">tokens/*.css</code>, <code style="font:var(--type-figure);">components/*</code>)에 실제로 정의된 값만 옮겼습니다. 정의가 없거나 이 서비스에 그대로 쓸 수 없는 항목은 값을 만들지 않고 아래 <a href="#undecided">미정 12건</a>으로 분리했습니다.</p>
+  </header>
+
+  <section style="background:var(--surface-card-raised);border-radius:var(--radius-card);padding:28px;box-shadow:var(--shadow-card);display:flex;flex-direction:column;gap:20px;">
+    <div style="display:flex;align-items:baseline;gap:12px;">
+      <h2 style="margin:0;font:var(--type-section);font-family:var(--font-display);color:var(--text-strong);">1. 색상</h2>
+      <span style="font:var(--type-label);color:var(--text-faint);">tokens/colors.css — 베이스 3계열 + 시그널, 시맨틱은 모두 별칭</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;">
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <span style="font:var(--type-label);color:var(--text-muted);">Surface</span>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;gap:10px;"><span style="width:34px;height:34px;border-radius:var(--r-3);background:var(--surface-canvas);box-shadow:var(--shadow-hairline);"></span><span style="font:var(--type-micro);color:var(--text-muted);">--surface-canvas · #e1e1e1</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><span style="width:34px;height:34px;border-radius:var(--r-3);background:var(--surface-card);box-shadow:var(--shadow-hairline);"></span><span style="font:var(--type-micro);color:var(--text-muted);">--surface-card · #f3f3f3</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><span style="width:34px;height:34px;border-radius:var(--r-3);background:var(--surface-card-raised);box-shadow:var(--shadow-hairline);"></span><span style="font:var(--type-micro);color:var(--text-muted);">--surface-card-raised · #fff</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><span style="width:34px;height:34px;border-radius:var(--r-3);background:var(--surface-chip);box-shadow:var(--shadow-hairline);"></span><span style="font:var(--type-micro);color:var(--text-muted);">--surface-chip · #fafafa</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><span style="width:34px;height:34px;border-radius:var(--r-3);background:var(--surface-inverse);"></span><span style="font:var(--type-micro);color:var(--text-muted);">--surface-inverse · #0b0b0b</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><span style="width:34px;height:34px;border-radius:var(--r-3);background:var(--surface-accent);"></span><span style="font:var(--type-micro);color:var(--text-muted);">--surface-accent · #befb71</span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <span style="font:var(--type-label);color:var(--text-muted);">Text</span>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;gap:10px;"><span style="width:34px;height:34px;border-radius:var(--r-3);background:var(--text-strong);"></span><span style="font:var(--type-micro);color:var(--text-muted);">--text-strong · #0b0b0b</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><span style="width:34px;height:34px;border-radius:var(--r-3);background:var(--text-body);"></span><span style="font:var(--type-micro);color:var(--text-muted);">--text-body · #1a1a1a</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><span style="width:34px;height:34px;border-radius:var(--r-3);background:var(--text-muted);"></span><span style="font:var(--type-micro);color:var(--text-muted);">--text-muted · #6e6e6e</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><span style="width:34px;height:34px;border-radius:var(--r-3);background:var(--text-faint);"></span><span style="font:var(--type-micro);color:var(--text-muted);">--text-faint · #9a9a9a ⚠︎ AA 미달</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><span style="width:34px;height:34px;border-radius:var(--r-3);background:var(--text-on-accent);"></span><span style="font:var(--type-micro);color:var(--text-muted);">--text-on-accent · #0b0b0b</span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <span style="font:var(--type-label);color:var(--text-muted);">Line (테두리 대체)</span>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;gap:10px;"><span style="width:34px;height:34px;border-radius:var(--r-3);background:var(--paper-0);box-shadow:inset 0 0 0 1px var(--line-hairline);"></span><span style="font:var(--type-micro);color:var(--text-muted);">--line-hairline · 6%</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><span style="width:34px;height:34px;border-radius:var(--r-3);background:var(--paper-0);box-shadow:inset 0 0 0 1px var(--line-soft);"></span><span style="font:var(--type-micro);color:var(--text-muted);">--line-soft · 10%</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><span style="width:34px;height:34px;border-radius:var(--r-3);background:var(--paper-0);box-shadow:inset 0 0 0 1px var(--line-strong);"></span><span style="font:var(--type-micro);color:var(--text-muted);">--line-strong · 18%</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><span style="width:34px;height:34px;border-radius:var(--r-3);background:var(--ink-900);box-shadow:inset 0 0 0 1px var(--line-on-dark);"></span><span style="font:var(--type-micro);color:var(--text-muted);">--line-on-dark · 14% 白</span></div>
+        </div>
+        <span style="font:var(--type-micro);color:var(--text-faint);">시스템에 border는 없음 — 분리는 빛과 그림자로.</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <span style="font:var(--type-label);color:var(--text-muted);">State / Signal</span>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;gap:10px;"><span style="width:34px;height:34px;border-radius:var(--r-3);background:var(--state-hot);"></span><span style="font:var(--type-micro);color:var(--text-muted);">--state-hot · #ff6b2c</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><span style="width:34px;height:34px;border-radius:var(--r-3);background:var(--state-positive);"></span><span style="font:var(--type-micro);color:var(--text-muted);">--state-positive · #a7e55c</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><span style="width:34px;height:34px;border-radius:var(--r-3);background:var(--state-negative);"></span><span style="font:var(--type-micro);color:var(--text-muted);">--state-negative · #ff3b30</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><span style="width:34px;height:34px;border-radius:var(--r-3);background:var(--amber-500);"></span><span style="font:var(--type-micro);color:var(--text-muted);">--amber-500 · #ffc44d (예약)</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><span style="width:34px;height:34px;border-radius:var(--r-3);background:var(--sky-500);"></span><span style="font:var(--type-micro);color:var(--text-muted);">--sky-500 · #4a90ff (예약)</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><span style="width:34px;height:34px;border-radius:var(--r-3);box-shadow:var(--shadow-focus);background:var(--paper-0);"></span><span style="font:var(--type-micro);color:var(--text-muted);">--shadow-focus · lime 55%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:8px;padding:16px 18px;border-radius:var(--radius-card-inner);background:var(--surface-card);">
+      <span style="font:var(--type-label);color:var(--text-strong);">배급 규칙 (가이드에 명시)</span>
+      <span style="font:var(--type-micro);color:var(--text-muted);line-height:1.7;">라임은 “지금 일어나는 일” 하나만 표시한다 — <strong>한 화면에 라임 카드 1개 이하</strong>. 화면 전체 배경에 라임 금지. 시그널 색은 작은 마크(점·칩·아이콘)로만. 컬러 그림자 금지.</span>
+    </div>
+  </section>
+
+  <section style="background:var(--surface-card-raised);border-radius:var(--radius-card);padding:28px;box-shadow:var(--shadow-card);display:flex;flex-direction:column;gap:20px;">
+    <div style="display:flex;align-items:baseline;gap:12px;">
+      <h2 style="margin:0;font:var(--type-section);font-family:var(--font-display);color:var(--text-strong);">2. 타이포</h2>
+      <span style="font:var(--type-label);color:var(--text-faint);">Outfit (라틴, 대체 폰트) + DM Mono (숫자) · 가중치 300–500만 사용</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:baseline;gap:14px;"><span style="font:var(--type-metric);font-family:var(--font-display);color:var(--text-strong);">44</span><span style="font:var(--type-micro);color:var(--text-muted);">--type-metric · 400/44 · KPI 숫자</span></div>
+        <div style="display:flex;align-items:baseline;gap:14px;"><span style="font:var(--type-section);font-family:var(--font-display);color:var(--text-strong);">섹션 제목 22</span><span style="font:var(--type-micro);color:var(--text-muted);">--type-section · 500/22</span></div>
+        <div style="display:flex;align-items:baseline;gap:14px;"><span style="font:var(--type-card-title);font-family:var(--font-display);color:var(--text-strong);">카드 제목 20</span><span style="font:var(--type-micro);color:var(--text-muted);">--type-card-title · 500/20</span></div>
+        <div style="display:flex;align-items:baseline;gap:14px;"><span style="font:var(--type-name);color:var(--text-strong);">이름 · 라벨 16</span><span style="font:var(--type-micro);color:var(--text-muted);">--type-name · 500/16</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:baseline;gap:14px;"><span style="font:var(--type-body);">본문 14 / 1.45</span><span style="font:var(--type-micro);color:var(--text-muted);">--type-body</span></div>
+        <div style="display:flex;align-items:baseline;gap:14px;"><span style="font:var(--type-label);color:var(--text-muted);">보조 12</span><span style="font:var(--type-micro);color:var(--text-muted);">--type-label</span></div>
+        <div style="display:flex;align-items:baseline;gap:14px;"><span style="font:var(--type-micro);color:var(--text-muted);">캡션 11</span><span style="font:var(--type-micro);color:var(--text-muted);">--type-micro</span></div>
+        <div style="display:flex;align-items:baseline;gap:14px;"><span style="font:var(--type-figure);">$ 20.000 · 36 min</span><span style="font:var(--type-micro);color:var(--text-muted);">--type-figure · DM Mono 13</span></div>
+        <span style="font:var(--type-micro);color:var(--text-faint);">사이즈 토큰: 11·12·13·14·16·18·20·22·26·34·44·64 / 트래킹: .08em(워드마크 대문자) · .04em(컨트롤) · -.01em(큰 숫자)</span>
+      </div>
+    </div>
+    <div style="padding:16px 18px;border-radius:var(--radius-card-inner);background:var(--state-hot-bg);display:flex;flex-direction:column;gap:6px;">
+      <span style="font:var(--type-label);color:var(--text-strong);">⚠︎ 한글 문제 — 미정 #1</span>
+      <span style="font:var(--type-micro);color:var(--text-body);line-height:1.7;">Outfit에는 한글 글리프가 없습니다. 이 화면은 임시로 Pretendard를 얹어 렌더링했지만, 시스템에 정의된 값이 아닙니다. 한글 본문 폰트를 정해야 3단계 진행이 가능합니다.</span>
+    </div>
+  </section>
+
+  <section style="background:var(--surface-card-raised);border-radius:var(--radius-card);padding:28px;box-shadow:var(--shadow-card);display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px;">
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <h2 style="margin:0;font:var(--type-section);font-family:var(--font-display);color:var(--text-strong);">3. 간격</h2>
+      <span style="font:var(--type-micro);color:var(--text-faint);">4px 스케일 + 6px 하프스텝</span>
+      <div style="display:flex;flex-direction:column;gap:8px;font:var(--type-micro);color:var(--text-muted);">
+        <div style="display:flex;align-items:center;gap:10px;"><span style="height:8px;width:8px;background:var(--ink-800);border-radius:2px;"></span>0·2·4·6·8·12·16·20·24·32·40·56·72</div>
+        <div>--gap-inline 8 · 컨트롤 안 아이콘↔라벨</div>
+        <div>--gap-stack 12 · 카드 안 행</div>
+        <div>--gap-card 16 · 카드 사이</div>
+        <div>--gap-section 32 · 섹션 사이</div>
+        <div>--pad-card 20 · 카드 내부</div>
+        <div>--pad-control 16 / 8</div>
+        <div>--rail-width 56 · 좌측 아이콘 레일</div>
+        <div>--card-min-width 236</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <h2 style="margin:0;font:var(--type-section);font-family:var(--font-display);color:var(--text-strong);">4. 라운드</h2>
+      <span style="font:var(--type-micro);color:var(--text-faint);">직각 없음</span>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;">
+        <span style="width:64px;height:44px;background:var(--surface-card);border-radius:var(--r-7);box-shadow:var(--shadow-hairline);display:grid;place-items:center;font:var(--type-micro);color:var(--text-muted);">28</span>
+        <span style="width:64px;height:44px;background:var(--surface-card);border-radius:var(--r-5);box-shadow:var(--shadow-hairline);display:grid;place-items:center;font:var(--type-micro);color:var(--text-muted);">16</span>
+        <span style="width:64px;height:44px;background:var(--surface-card);border-radius:var(--r-4);box-shadow:var(--shadow-hairline);display:grid;place-items:center;font:var(--type-micro);color:var(--text-muted);">12</span>
+        <span style="width:64px;height:44px;background:var(--surface-card);border-radius:var(--r-full);box-shadow:var(--shadow-hairline);display:grid;place-items:center;font:var(--type-micro);color:var(--text-muted);">full</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;font:var(--type-micro);color:var(--text-muted);">
+        <div>--radius-card 28 · 카드/모달</div>
+        <div>--radius-card-inner 16 · 카드 속 블록</div>
+        <div>--radius-thumb 12 · 문서/썸네일</div>
+        <div>--radius-control full · 버튼·입력·칩·아바타</div>
+        <div>--radius-notch 22 · 노치(오목 컷)</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <h2 style="margin:0;font:var(--type-section);font-family:var(--font-display);color:var(--text-strong);">5. 그림자 · 모션</h2>
+      <div style="display:flex;gap:10px;">
+        <span style="width:56px;height:40px;background:var(--paper-0);border-radius:var(--r-4);box-shadow:var(--shadow-chip);"></span>
+        <span style="width:56px;height:40px;background:var(--paper-0);border-radius:var(--r-4);box-shadow:var(--shadow-card);"></span>
+        <span style="width:56px;height:40px;background:var(--paper-0);border-radius:var(--r-4);box-shadow:var(--shadow-float);"></span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;font:var(--type-micro);color:var(--text-muted);">
+        <div>hairline(1px 링) · chip · card · card-hover · float(오버레이)</div>
+        <div>모션: 상태변화 180ms, 오버레이 260ms, ease(.22,.8,.28,1)</div>
+        <div>hover = 1px 상승 + brightness 1.06 / press = scale .97</div>
+        <div>바운스·스프링·스켈레톤 반짝임 금지</div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--surface-card-raised);border-radius:var(--radius-card);padding:28px;box-shadow:var(--shadow-card);display:flex;flex-direction:column;gap:22px;">
+    <div style="display:flex;align-items:baseline;gap:12px;">
+      <h2 style="margin:0;font:var(--type-section);font-family:var(--font-display);color:var(--text-strong);">6. 컴포넌트 스타일 (시스템에 실제 존재하는 것)</h2>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <span style="font:var(--type-label);color:var(--text-muted);">Button — 높이 34 / 44 / 54, 라운드 full, 트래킹 .04em, 4가지 변형</span>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
+        <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="primary" hint-size="120px,44px">Primary · ink</x-import>
+        <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="accent" hint-size="120px,44px">Accent · lime</x-import>
+        <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="quiet" hint-size="120px,44px">Quiet · paper</x-import>
+        <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="ghost" hint-size="120px,44px">Ghost · 1px 링</x-import>
+      </div>
+      <span style="font:var(--type-micro);color:var(--text-faint);">현재 사이트의 primary(파란 배경) → <strong>primary(ink)</strong>, secondary(파란 테두리) → <strong>quiet</strong> 또는 <strong>ghost</strong>, ghost → <strong>ghost</strong>. accent(라임)는 화면당 1개 주요 행동에만.</span>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <span style="font:var(--type-label);color:var(--text-muted);">Card — 라운드 28, 패딩 20, 테두리 없음 / tone: paper · raised · accent · inverse · glass / notch 옵션</span>
+      <div style="display:flex;flex-wrap:wrap;gap:16px;">
+        <x-import component-from-global-scope="BatonDesignSystem_4885ff.Card" tone="raised" style="width:220px" hint-size="220px,110px"><span style="font:var(--type-label);color:var(--text-muted);">Status</span><div style="font:var(--type-card-title);font-family:var(--font-display);color:var(--text-strong);margin-top:8px;">raised · #fff</div></x-import>
+        <x-import component-from-global-scope="BatonDesignSystem_4885ff.Card" tone="paper" style="width:220px" hint-size="220px,110px"><span style="font:var(--type-label);color:var(--text-muted);">Status</span><div style="font:var(--type-card-title);font-family:var(--font-display);color:var(--text-strong);margin-top:8px;">paper · #f3f3f3</div></x-import>
+        <x-import component-from-global-scope="BatonDesignSystem_4885ff.Card" tone="accent" style="width:220px" hint-size="220px,110px"><span style="font:var(--type-label);">지금 진행</span><div style="font:var(--type-card-title);font-family:var(--font-display);margin-top:8px;">accent · 화면당 1개</div></x-import>
+        <x-import component-from-global-scope="BatonDesignSystem_4885ff.Card" tone="inverse" style="width:220px" hint-size="220px,110px"><span style="font:var(--type-label);color:var(--ink-300);">AI 요약</span><div style="font:var(--type-card-title);font-family:var(--font-display);margin-top:8px;">inverse · 다크 패널</div></x-import>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <span style="font:var(--type-label);color:var(--text-muted);">Chip · Input · Rail — 입력은 SearchInput 하나만 존재 (높이 44, chip 배경, 포커스는 라임 링)</span>
+      <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;">
+        <x-import component-from-global-scope="BatonDesignSystem_4885ff.FilterChip" active="{{ true }}" hint-size="90px,38px">선택됨</x-import>
+        <x-import component-from-global-scope="BatonDesignSystem_4885ff.FilterChip" hint-size="90px,38px">기본</x-import>
+        <x-import component-from-global-scope="BatonDesignSystem_4885ff.SearchInput" placeholder="검색" width="240" hint-size="240px,44px"></x-import>
+        <x-import component-from-global-scope="BatonDesignSystem_4885ff.IconRail" items="{{ railItems }}" style="flex-direction:row" hint-size="160px,44px"></x-import>
+        <x-import component-from-global-scope="BatonDesignSystem_4885ff.MetricStat" value="7" label="Leads" hint-size="110px,48px"></x-import>
+      </div>
+      <span style="font:var(--type-micro);color:var(--text-faint);">그 외 보유 컴포넌트: IconButton · Icon(Lucide) · Avatar / AvatarStack · SelectPill · FilterBar · DeltaBadge · SourceTag · InterestRamp · DocThumb · SectionHeader · ScheduleBar · LeadCard · TaskCard · CallTile · SummaryPanel · TimelineRail · Wordmark</span>
+    </div>
+  </section>
+
+  <section id="undecided" style="background:var(--surface-inverse);color:var(--text-on-dark);border-radius:var(--radius-card);padding:28px;box-shadow:var(--shadow-float);display:flex;flex-direction:column;gap:18px;">
+    <div style="display:flex;align-items:baseline;gap:12px;">
+      <h2 style="margin:0;font:var(--type-section);font-family:var(--font-display);color:var(--text-on-dark);">미정 — 확인 필요 12건</h2>
+      <span style="font:var(--type-label);color:var(--ink-400);">값을 임의로 만들지 않았습니다</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div style="background:var(--ink-800);border-radius:var(--radius-card-inner);padding:16px 18px;display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-name);color:var(--lime-500);">1. 한글 폰트</span><span style="font:var(--type-micro);color:var(--ink-300);line-height:1.7;">Outfit에 한글 없음. 기존 SUIT 유지 / Pretendard / 다른 것?</span></div>
+      <div style="background:var(--ink-800);border-radius:var(--radius-card-inner);padding:16px 18px;display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-name);color:var(--lime-500);">2. 바통 상태 9종 색</span><span style="font:var(--type-micro);color:var(--ink-300);line-height:1.7;">시스템 시그널은 flame·red·lime·amber(예약)·sky(예약)뿐. DRAFT/ARMED/WAITING/PENDING_REVIEW/EXECUTED/COMPLETED/EXPIRED/CANCELLED/ERROR 9종 매핑 필요.</span></div>
+      <div style="background:var(--ink-800);border-radius:var(--radius-card-inner);padding:16px 18px;display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-name);color:var(--lime-500);">3. Badge 컴포넌트</span><span style="font:var(--type-micro);color:var(--ink-300);line-height:1.7;">시스템엔 SourceTag/DeltaBadge만 있음. 상태 배지를 SourceTag 스타일로 파생할지 결정 필요.</span></div>
+      <div style="background:var(--ink-800);border-radius:var(--radius-card-inner);padding:16px 18px;display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-name);color:var(--lime-500);">4. 텍스트 입력 / textarea</span><span style="font:var(--type-micro);color:var(--ink-300);line-height:1.7;">SearchInput(알약형 44px)만 정의됨. 라벨 있는 폼 필드·여러 줄 textarea 스펙 없음.</span></div>
+      <div style="background:var(--ink-800);border-radius:var(--radius-card-inner);padding:16px 18px;display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-name);color:var(--lime-500);">5. Dialog / 모달</span><span style="font:var(--type-micro);color:var(--ink-300);line-height:1.7;">컴포넌트 없음. 스크림 rgba(11,11,11,.28)+blur 3px은 가이드 문장에만 있고 토큰 파일엔 없음.</span></div>
+      <div style="background:var(--ink-800);border-radius:var(--radius-card-inner);padding:16px 18px;display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-name);color:var(--lime-500);">6. StepTabs (3단계 위저드)</span><span style="font:var(--type-micro);color:var(--ink-300);line-height:1.7;">스테퍼/탭 컴포넌트 없음. FilterChip 파생 또는 ScheduleBar(라임=현재 단계) 파생 중 선택.</span></div>
+      <div style="background:var(--ink-800);border-radius:var(--radius-card-inner);padding:16px 18px;display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-name);color:var(--lime-500);">7. 라디오 · 토글 · 셀렉트</span><span style="font:var(--type-micro);color:var(--ink-300);line-height:1.7;">보류 처리 화면의 분기 라디오, 설정 화면의 셀렉트/토글 스펙 없음(SelectPill만 존재).</span></div>
+      <div style="background:var(--ink-800);border-radius:var(--radius-card-inner);padding:16px 18px;display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-name);color:var(--lime-500);">8. 헤더 + 텍스트 사이드바</span><span style="font:var(--type-micro);color:var(--ink-300);line-height:1.7;">시스템은 “페이지 크롬 없음 + 라벨 없는 56px 아이콘 레일”. 기존 AppShell(헤더+텍스트 메뉴)과 1:1 아님 → 2단계에서 결정.</span></div>
+      <div style="background:var(--ink-800);border-radius:var(--radius-card-inner);padding:16px 18px;display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-name);color:var(--lime-500);">9. 인라인 알림 / 에러 면</span><span style="font:var(--type-micro);color:var(--ink-300);line-height:1.7;">연결 실패·동기화 실패 안내면. red-100·flame-100은 있으나 시맨틱 정의 없음.</span></div>
+      <div style="background:var(--ink-800);border-radius:var(--radius-card-inner);padding:16px 18px;display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-name);color:var(--lime-500);">10. AA 대비 예외</span><span style="font:var(--type-micro);color:var(--ink-300);line-height:1.7;">--text-faint(#9a9a9a)는 흰 배경 2.6:1로 AA 미달. 본문/라벨 금지·장식 전용으로 제한할지 확인.</span></div>
+      <div style="background:var(--ink-800);border-radius:var(--radius-card-inner);padding:16px 18px;display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-name);color:var(--lime-500);">11. 기술 스택</span><span style="font:var(--type-micro);color:var(--ink-300);line-height:1.7;">브리핑의 스택 항목이 예시 그대로 비어 있음. Tailwind 유무에 따라 3단계 산출물 형식이 달라집니다.</span></div>
+      <div style="background:var(--ink-800);border-radius:var(--radius-card-inner);padding:16px 18px;display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-name);color:var(--lime-500);">12. 반응형 · 다크모드</span><span style="font:var(--type-micro);color:var(--ink-300);line-height:1.7;">시스템에 브레이크포인트도 다크 테마도 정의 없음(캔버스는 항상 밝은 회색). 모바일 지원 범위 확인 필요.</span></div>
+    </div>
+  </section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals(){
+    return { railItems:[
+      {id:'home',label:'홈',icon:'layout-grid'},
+      {id:'new',label:'새 바통',icon:'plus'},
+      {id:'set',label:'설정',icon:'settings'}
+    ]};
+  }
+}
+</script>
+</body>
+</html>

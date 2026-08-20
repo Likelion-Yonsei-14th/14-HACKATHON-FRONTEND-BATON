@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/colors.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/typography.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/radii.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/shadows.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/motion.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/base.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/styles.css">
+<script src="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/_ds_bundle.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/variable/woff2/SUIT-Variable.css">
+<style>
+body{margin:0;background:var(--canvas-wash);background-attachment:fixed;background-color:var(--surface-canvas);}
+a{color:var(--text-link);text-decoration:none;border-bottom:1px solid var(--line-soft);transition:var(--t-hover);}
+a:hover{color:var(--ink-900);border-bottom-color:var(--lime-700);}
+</style>
+</helmet>
+<div style="min-height:100vh;font:var(--type-body);font-family:'SUIT Variable',var(--font-sans);color:var(--text-body);display:flex;flex-direction:column;">
+
+  <header style="display:flex;align-items:center;justify-content:space-between;padding:20px 40px;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span style="width:36px;height:36px;border-radius:var(--radius-avatar);background:var(--surface-inverse);display:grid;place-items:center;position:relative;">
+        <span style="width:11px;height:11px;border-radius:50%;background:var(--lime-500);"></span>
+      </span>
+      <span style="font:var(--fw-medium) 18px/1.2 var(--font-display);font-family:'SUIT Variable';letter-spacing:var(--tr-mid);color:var(--text-strong);">Baton 바통</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="ghost" hint-size="76px,44px">로그인</x-import>
+      <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="primary" hint-size="140px,44px">무료로 시작하기</x-import>
+    </div>
+  </header>
+
+  <main style="flex:1;display:grid;grid-template-columns:minmax(0,0.85fr) minmax(0,1.15fr);gap:56px;align-items:center;padding:40px 40px 72px;max-width:1440px;margin:0 auto;width:100%;">
+
+    <section style="min-width:0;max-width:520px;display:flex;flex-direction:column;gap:32px;">
+      <div style="display:flex;flex-direction:column;gap:20px;">
+        <h1 style="margin:0;font:var(--fw-medium) 64px/1.05 var(--font-display);font-family:'SUIT Variable';letter-spacing:var(--tr-tight);color:var(--text-strong);">기다림 없이,<br>다음으로</h1>
+        <p style="margin:0;max-width:420px;font:var(--fw-regular) 18px/1.6 var(--font-sans);font-family:'SUIT Variable';color:var(--text-muted);text-wrap:pretty;">Baton은 답장을 기다리는 시간을 없애고<br>대화를 다음 단계로 넘겨줍니다.</p>
+      </div>
+      <div style="display:flex;gap:12px;">
+        <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="primary" size="lg" hint-size="160px,54px">무료로 시작하기</x-import>
+        <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="quiet" size="lg" hint-size="100px,54px">로그인</x-import>
+      </div>
+    </section>
+
+    <section style="min-width:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start;">
+
+      <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:12px;min-height:300px;margin-top:56px;">
+        <span style="font:var(--type-label);color:var(--text-muted);">메시지 작성</span>
+        <div style="flex:1;padding:14px 16px;border-radius:var(--radius-card-inner);background:var(--surface-card);font:var(--type-body);font-family:'SUIT Variable';color:var(--text-body);line-height:1.55;">결제 API를 3월 20일까지<br>받을 수 있을까요?</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="display:flex;gap:6px;">
+            <span style="width:28px;height:28px;border-radius:50%;background:var(--surface-chip);box-shadow:var(--shadow-hairline);"></span>
+            <span style="width:28px;height:28px;border-radius:50%;background:var(--surface-chip);box-shadow:var(--shadow-hairline);"></span>
+          </div>
+          <span style="width:34px;height:34px;border-radius:50%;background:var(--surface-inverse);display:grid;place-items:center;">
+            <x-import component-from-global-scope="BatonDesignSystem_4885ff.Icon" name="send" size="{{ 16 }}" tone="light" hint-size="16px,16px"></x-import>
+          </span>
+        </div>
+      </div>
+
+      <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:10px;min-height:300px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span style="font:var(--type-label);color:var(--text-muted);">분기 설정</span>
+          <span style="font:var(--type-micro);color:var(--text-muted);background:var(--surface-chip);box-shadow:var(--shadow-hairline);border-radius:var(--radius-control);padding:4px 10px;">AI 초안</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:var(--radius-card-inner);background:var(--surface-chip);box-shadow:var(--shadow-hairline);">
+            <span style="flex:1;display:flex;flex-direction:column;gap:3px;"><span style="font:var(--type-label);color:var(--text-body);">가능하다</span><span style="font:var(--type-micro);color:var(--text-muted);">감사합니다. 일정 그대로 확정하고, 3월 20일부터 시작하겠습니다.</span></span>
+            <span style="width:18px;height:18px;border-radius:50%;background:var(--paper-0);box-shadow:inset 0 0 0 1px var(--line-strong);flex:0 0 auto;margin-top:2px;"></span>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:var(--radius-card-inner);background:var(--paper-0);box-shadow:var(--shadow-card);">
+            <span style="flex:1;display:flex;flex-direction:column;gap:3px;"><span style="font:var(--type-label);color:var(--text-strong);">늦어진다 (날짜 언급)</span><span style="font:var(--type-micro);color:var(--text-muted);">알겠습니다. 그 날짜 기준으로 QA를 재배치하겠습니다.</span></span>
+            <span style="width:18px;height:18px;border-radius:50%;background:var(--ink-900);display:grid;place-items:center;flex:0 0 auto;margin-top:2px;"><span style="width:6px;height:6px;border-radius:50%;background:#fff;"></span></span>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:var(--radius-card-inner);background:var(--surface-chip);box-shadow:var(--shadow-hairline);">
+            <span style="flex:1;display:flex;flex-direction:column;gap:3px;"><span style="font:var(--type-label);color:var(--text-body);">불가능하다</span><span style="font:var(--type-micro);color:var(--text-muted);">확인했습니다. 대안으로 전환해서 일정 업데이트 후 공유드리겠습니다.</span></span>
+            <span style="width:18px;height:18px;border-radius:50%;background:var(--paper-0);box-shadow:inset 0 0 0 1px var(--line-strong);flex:0 0 auto;margin-top:2px;"></span>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;padding:12px 14px;border-radius:var(--radius-card-inner);background:var(--surface-chip);box-shadow:var(--shadow-hairline);">
+            <span style="flex:1;font:var(--type-label);color:var(--text-body);">어디에도 안 맞음</span>
+            <span style="width:18px;height:18px;border-radius:50%;background:var(--paper-0);box-shadow:inset 0 0 0 1px var(--line-strong);flex:0 0 auto;"></span>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:12px;min-height:300px;margin-top:24px;">
+        <span style="font:var(--type-label);color:var(--text-muted);">대화 진행 중</span>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;gap:10px;">
+            <span style="width:26px;height:26px;border-radius:50%;background:var(--ink-800);color:#fff;display:grid;place-items:center;font:var(--type-micro);flex:0 0 auto;">나</span>
+            <span style="display:flex;flex-direction:column;gap:3px;"><span style="font:var(--type-micro);color:var(--text-muted);">3.10 23:00</span><span style="font:var(--type-micro);color:var(--text-body);line-height:1.6;">결제 API를 3월 20일까지 받을 수 있을까요?</span></span>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <span style="width:26px;height:26px;border-radius:50%;background:var(--flame-100);color:var(--flame-500);display:grid;place-items:center;font:var(--type-micro);flex:0 0 auto;">상</span>
+            <span style="display:flex;flex-direction:column;gap:3px;"><span style="font:var(--type-micro);color:var(--text-muted);">3.11 08:15</span><span style="font:var(--type-micro);color:var(--text-body);line-height:1.6;">4월 초쯤 될 것 같아요.</span></span>
+          </div>
+          <div style="padding:14px;border-radius:var(--radius-card-inner);background:var(--surface-inverse);display:flex;flex-direction:column;gap:6px;">
+            <span style="font:var(--type-micro);color:var(--lime-500);letter-spacing:var(--tr-mid);">BATON AI · 08:15</span>
+            <span style="font:var(--type-micro);color:var(--ink-300);">분기 일치</span>
+            <span style="font:var(--type-label);color:#fff;">늦어진다 (날짜 언급)</span>
+            <span style="font:var(--type-figure);color:var(--ink-300);">신뢰도 94%</span>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <span style="width:26px;height:26px;border-radius:50%;background:var(--lime-500);display:grid;place-items:center;flex:0 0 auto;">
+              <x-import component-from-global-scope="BatonDesignSystem_4885ff.Icon" name="check" size="{{ 14 }}" hint-size="14px,14px"></x-import>
+            </span>
+            <span style="display:flex;flex-direction:column;gap:3px;"><span style="font:var(--type-micro);color:var(--text-muted);">BATON · 08:15</span><span style="font:var(--type-micro);color:var(--text-body);line-height:1.6;">알겠습니다. 그 날짜 기준으로 QA를 재배치하겠습니다. 3월 말은 넘기면 B0와 조율해 다시 이야기하죠.</span></span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+</div>
+</x-dc>
+</body>
+</html>

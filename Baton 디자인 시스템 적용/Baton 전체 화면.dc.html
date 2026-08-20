@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/colors.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/typography.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/radii.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/shadows.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/motion.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/tokens/base.css">
+<link rel="stylesheet" href="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/styles.css">
+<script src="_ds/baton-design-system-4885ff9e-67f9-4428-92f0-f3c31946e454/_ds_bundle.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/variable/woff2/SUIT-Variable.css">
+<style>
+body{margin:0;background:var(--canvas-wash);background-attachment:fixed;background-color:var(--surface-canvas);font-family:'SUIT Variable',sans-serif;}
+a{color:var(--text-link);text-decoration:none;border-bottom:1px solid var(--line-soft);transition:var(--t-hover);}
+a:hover{color:var(--ink-900);border-bottom-color:var(--lime-700);}
+.bt-lift{transition:var(--t-hover);}
+.bt-lift:hover{transform:translateY(-1px);box-shadow:var(--shadow-card-hover);}
+</style>
+</helmet>
+<div style="min-height:100vh;font:var(--type-body);font-family:'SUIT Variable',var(--font-sans);color:var(--text-body);padding-bottom:96px;">
+
+<sc-if value="{{ isAuth }}" hint-placeholder-val="{{ false }}">
+  <div style="min-height:100vh;display:grid;place-items:center;padding:56px 24px;">
+    <div style="width:100%;max-width:420px;display:flex;flex-direction:column;gap:24px;">
+      <div style="display:flex;align-items:center;gap:12px;justify-content:center;">
+        <span style="width:36px;height:36px;border-radius:var(--radius-avatar);background:var(--surface-inverse);display:grid;place-items:center;"><span style="width:11px;height:11px;border-radius:50%;background:var(--lime-500);"></span></span>
+        <span style="font:var(--fw-medium) 18px/1.2 var(--font-sans);letter-spacing:var(--tr-mid);color:var(--text-strong);white-space:nowrap;">Baton 바통</span>
+      </div>
+
+      <sc-if value="{{ isSignup }}" hint-placeholder-val="{{ false }}">
+        <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:28px;display:flex;flex-direction:column;gap:20px;">
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <h1 style="margin:0;font:var(--fw-medium) 26px/1.2 var(--font-sans);letter-spacing:var(--tr-tight);color:var(--text-strong);">계정 만들기</h1>
+            <span style="font:var(--type-label);color:var(--text-muted);">이미 계정이 있나요? <a href="#" onClick="{{ goLogin }}">로그인</a></span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <label style="display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-label);color:var(--text-muted);">이름</span><input placeholder="홍길동" style="height:44px;padding:0 18px;border:none;border-radius:var(--radius-control);background:var(--surface-chip);box-shadow:var(--shadow-hairline);font:var(--type-body);font-family:'SUIT Variable';color:var(--text-body);outline:none;"></label>
+            <label style="display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-label);color:var(--text-muted);">이메일</span><input placeholder="you@company.com" style="height:44px;padding:0 18px;border:none;border-radius:var(--radius-control);background:var(--surface-chip);box-shadow:var(--shadow-hairline);font:var(--type-body);font-family:'SUIT Variable';color:var(--text-body);outline:none;"></label>
+            <label style="display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-label);color:var(--text-muted);">비밀번호</span><input type="password" placeholder="8자 이상" style="height:44px;padding:0 18px;border:none;border-radius:var(--radius-control);background:var(--surface-chip);box-shadow:var(--shadow-hairline);font:var(--type-body);font-family:'SUIT Variable';color:var(--text-body);outline:none;"></label>
+          </div>
+          <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="primary" full="{{ true }}" onClick="{{ goConnect }}" hint-size="100%,44px">무료로 시작하기</x-import>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ false }}">
+        <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:28px;display:flex;flex-direction:column;gap:20px;">
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <h1 style="margin:0;font:var(--fw-medium) 26px/1.2 var(--font-sans);letter-spacing:var(--tr-tight);color:var(--text-strong);">로그인</h1>
+            <span style="font:var(--type-label);color:var(--text-muted);">계정이 없나요? <a href="#" onClick="{{ goSignup }}">무료로 시작하기</a></span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <label style="display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-label);color:var(--text-muted);">이메일</span><input placeholder="you@company.com" style="height:44px;padding:0 18px;border:none;border-radius:var(--radius-control);background:var(--surface-chip);box-shadow:var(--shadow-hairline);font:var(--type-body);font-family:'SUIT Variable';color:var(--text-body);outline:none;"></label>
+            <label style="display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-label);color:var(--text-muted);">비밀번호</span><input type="password" style="height:44px;padding:0 18px;border:none;border-radius:var(--radius-control);background:var(--surface-chip);box-shadow:var(--shadow-hairline);font:var(--type-body);font-family:'SUIT Variable';color:var(--text-body);outline:none;"></label>
+          </div>
+          <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="primary" full="{{ true }}" onClick="{{ goHome }}" hint-size="100%,44px">로그인</x-import>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isConnect }}" hint-placeholder-val="{{ false }}">
+        <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:28px;display:flex;flex-direction:column;gap:20px;text-align:center;align-items:center;">
+          <span style="width:56px;height:56px;border-radius:50%;background:var(--surface-chip);box-shadow:var(--shadow-hairline);display:grid;place-items:center;">
+            <x-import component-from-global-scope="BatonDesignSystem_4885ff.Icon" name="message-square" size="{{ 24 }}" hint-size="24px,24px"></x-import>
+          </span>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <h1 style="margin:0;font:var(--fw-medium) 22px/1.2 var(--font-sans);color:var(--text-strong);">Slack 워크스페이스를 연결하세요</h1>
+            <span style="font:var(--type-body);color:var(--text-muted);line-height:1.6;">Baton이 대화를 읽고 답장을 이어가려면 Slack 연결이 필요합니다.</span>
+          </div>
+          <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="primary" full="{{ true }}" onClick="{{ goHome }}" hint-size="100%,44px">Slack 연결하기</x-import>
+          <a href="#" style="font:var(--type-label);color:var(--text-muted);border:none;" onClick="{{ goConnectError }}">나중에 하기</a>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isConnectError }}" hint-placeholder-val="{{ false }}">
+        <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:28px;display:flex;flex-direction:column;gap:20px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:14px 16px;border-radius:var(--radius-card-inner);background:var(--red-100);">
+            <span style="width:8px;height:8px;border-radius:50%;background:var(--red-500);margin-top:6px;flex:0 0 auto;"></span>
+            <span style="font:var(--type-label);color:var(--ink-800);line-height:1.6;">Slack 연결에 실패했어요. 권한 승인이 취소되었거나 세션이 만료되었습니다.</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <h1 style="margin:0;font:var(--fw-medium) 22px/1.2 var(--font-sans);color:var(--text-strong);">연결에 실패했습니다</h1>
+            <span style="font:var(--type-body);color:var(--text-muted);line-height:1.6;">다시 시도하거나, 워크스페이스 관리자에게 앱 설치 권한을 확인해 주세요.</span>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="primary" onClick="{{ goConnect }}" hint-size="110px,44px">다시 시도</x-import>
+            <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="quiet" onClick="{{ goHome }}" hint-size="110px,44px">건너뛰기</x-import>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isApp }}" hint-placeholder-val="{{ true }}">
+  <div style="display:grid;grid-template-columns:232px minmax(0,1fr);min-height:100vh;">
+
+    <aside style="padding:24px 16px 24px 24px;display:flex;flex-direction:column;gap:32px;">
+      <div style="display:flex;align-items:center;gap:12px;padding:0 8px;">
+        <span style="width:36px;height:36px;border-radius:var(--radius-avatar);background:var(--surface-inverse);display:grid;place-items:center;flex:0 0 auto;"><span style="width:11px;height:11px;border-radius:50%;background:var(--lime-500);"></span></span>
+        <span style="font:var(--fw-medium) 16px/1.2 var(--font-sans);letter-spacing:var(--tr-mid);color:var(--text-strong);">Baton 바통</span>
+      </div>
+      <nav style="display:flex;flex-direction:column;gap:4px;">
+        <a href="#" onClick="{{ goHome }}" style="border:none;display:flex;align-items:center;gap:12px;padding:8px;border-radius:var(--radius-control);background:{{ navHomeBg }};box-shadow:{{ navHomeShadow }};">
+          <span style="width:36px;height:36px;border-radius:50%;background:{{ navHomeDisc }};display:grid;place-items:center;flex:0 0 auto;"><x-import component-from-global-scope="BatonDesignSystem_4885ff.Icon" name="layout-grid" size="{{ 17 }}" tone="{{ navHomeTone }}" hint-size="17px,17px"></x-import></span>
+          <span style="font:var(--type-name);color:{{ navHomeText }};">바통 홈</span>
+        </a>
+        <a href="#" onClick="{{ goConversations }}" style="border:none;display:flex;align-items:center;gap:12px;padding:8px;border-radius:var(--radius-control);background:{{ navNewBg }};box-shadow:{{ navNewShadow }};">
+          <span style="width:36px;height:36px;border-radius:50%;background:{{ navNewDisc }};display:grid;place-items:center;flex:0 0 auto;"><x-import component-from-global-scope="BatonDesignSystem_4885ff.Icon" name="plus" size="{{ 17 }}" tone="{{ navNewTone }}" hint-size="17px,17px"></x-import></span>
+          <span style="font:var(--type-name);color:{{ navNewText }};">새 바통</span>
+        </a>
+        <a href="#" onClick="{{ goSettings }}" style="border:none;display:flex;align-items:center;gap:12px;padding:8px;border-radius:var(--radius-control);background:{{ navSetBg }};box-shadow:{{ navSetShadow }};">
+          <span style="width:36px;height:36px;border-radius:50%;background:{{ navSetDisc }};display:grid;place-items:center;flex:0 0 auto;"><x-import component-from-global-scope="BatonDesignSystem_4885ff.Icon" name="settings" size="{{ 17 }}" tone="{{ navSetTone }}" hint-size="17px,17px"></x-import></span>
+          <span style="font:var(--type-name);color:{{ navSetText }};">개인 설정</span>
+        </a>
+      </nav>
+      <a href="#" style="border:none;margin-top:auto;display:flex;align-items:center;gap:12px;padding:8px;">
+        <span style="width:36px;height:36px;border-radius:50%;background:var(--surface-chip);box-shadow:var(--shadow-hairline);display:grid;place-items:center;flex:0 0 auto;"><x-import component-from-global-scope="BatonDesignSystem_4885ff.Icon" name="help-circle" size="{{ 17 }}" tone="muted" hint-size="17px,17px"></x-import></span>
+        <span style="font:var(--type-label);color:var(--text-muted);">사용 방법</span>
+      </a>
+    </aside>
+
+    <div style="min-width:0;display:flex;flex-direction:column;">
+      <header style="display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:24px 40px 8px;">
+        <span style="font:var(--type-label);color:var(--text-muted);">김서연</span>
+        <a href="#" onClick="{{ goSettings }}" style="border:none;width:36px;height:36px;border-radius:50%;background:var(--surface-card-raised);box-shadow:var(--shadow-card);display:grid;place-items:center;font:var(--type-label);color:var(--text-strong);">김</a>
+      </header>
+
+      <main style="flex:1;padding:16px 40px 48px;min-width:0;">
+
+        <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:var(--gap-section);max-width:1080px;">
+            <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;">
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <h1 style="margin:0;font:var(--type-section);font-family:var(--font-sans);color:var(--text-strong);">바통 홈</h1>
+                <span style="font:var(--type-label);color:var(--text-muted);">진행 중인 바통을 상태별로 확인하세요.</span>
+              </div>
+              <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="primary" icon="plus" onClick="{{ goConversations }}" hint-size="120px,44px">새 바통</x-import>
+            </div>
+
+            <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap-card);">
+              <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:8px;">
+                <span style="font:var(--type-label);color:var(--text-muted);">전체</span>
+                <div style="display:flex;align-items:baseline;gap:8px;"><span style="font:var(--type-metric);font-family:var(--font-mono);letter-spacing:var(--tr-tight);color:var(--text-strong);">4</span><span style="font:var(--type-label);color:var(--text-muted);">바통</span></div>
+              </div>
+              <div style="background:var(--surface-card);border-radius:var(--radius-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:8px;">
+                <span style="display:inline-flex;align-items:center;gap:7px;font:var(--type-label);color:var(--text-muted);"><span style="width:7px;height:7px;border-radius:50%;background:var(--lime-600);"></span>발송 완료</span>
+                <div style="display:flex;align-items:baseline;gap:8px;"><span style="font:var(--type-metric);font-family:var(--font-mono);letter-spacing:var(--tr-tight);color:var(--text-strong);">1</span></div>
+              </div>
+              <div style="background:var(--surface-card);border-radius:var(--radius-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:8px;">
+                <span style="display:inline-flex;align-items:center;gap:7px;font:var(--type-label);color:var(--text-muted);"><span style="width:7px;height:7px;border-radius:50%;background:var(--ink-800);"></span>대기중</span>
+                <div style="display:flex;align-items:baseline;gap:8px;"><span style="font:var(--type-metric);font-family:var(--font-mono);letter-spacing:var(--tr-tight);color:var(--text-strong);">1</span></div>
+              </div>
+              <div style="background:var(--surface-card);border-radius:var(--radius-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:8px;">
+                <span style="display:inline-flex;align-items:center;gap:7px;font:var(--type-label);color:var(--text-muted);"><span style="width:7px;height:7px;border-radius:50%;background:var(--flame-500);"></span>검토 필요</span>
+                <div style="display:flex;align-items:baseline;gap:8px;"><span style="font:var(--type-metric);font-family:var(--font-mono);letter-spacing:var(--tr-tight);color:var(--text-strong);">2</span></div>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:var(--gap-card);">
+              <div class="bt-lift" style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;align-items:center;gap:16px;">
+                <span style="width:10px;height:10px;border-radius:50%;background:var(--flame-500);flex:0 0 auto;"></span>
+                <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;">
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <span style="font:var(--type-name);color:var(--text-strong);">#product-api</span>
+                    <span style="display:inline-flex;align-items:center;gap:7px;height:26px;padding:0 12px;border-radius:var(--radius-control);background:var(--paper-0);box-shadow:var(--shadow-hairline);font:var(--type-micro);color:var(--text-body);"><span style="width:7px;height:7px;border-radius:50%;background:var(--flame-500);"></span>검토 필요</span>
+                  </div>
+                  <span style="font:var(--type-label);color:var(--text-muted);">검토 필요 — 직접 확인이 필요해요</span>
+                </div>
+                <span style="font:var(--type-figure);color:var(--text-muted);">3.11 08:15</span>
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="quiet" size="sm" onClick="{{ goPendingNew }}" hint-size="96px,34px">응답 처리</x-import>
+              </div>
+
+              <div class="bt-lift" style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;align-items:center;gap:16px;">
+                <span style="width:10px;height:10px;border-radius:50%;background:var(--flame-500);flex:0 0 auto;"></span>
+                <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;">
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <span style="font:var(--type-name);color:var(--text-strong);">이준호 (DM)</span>
+                    <span style="display:inline-flex;align-items:center;gap:7px;height:26px;padding:0 12px;border-radius:var(--radius-control);background:var(--paper-0);box-shadow:var(--shadow-hairline);font:var(--type-micro);color:var(--text-body);"><span style="width:7px;height:7px;border-radius:50%;background:var(--flame-500);"></span>검토 필요</span>
+                  </div>
+                  <span style="font:var(--type-label);color:var(--text-muted);">검토 필요 — AI가 판단하지 못했어요</span>
+                </div>
+                <span style="font:var(--type-figure);color:var(--text-muted);">3.11 07:40</span>
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="quiet" size="sm" onClick="{{ goPendingAmb }}" hint-size="96px,34px">응답 처리</x-import>
+              </div>
+
+              <div class="bt-lift" style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;align-items:center;gap:16px;">
+                <span style="width:10px;height:10px;border-radius:50%;background:var(--ink-800);flex:0 0 auto;"></span>
+                <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;">
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <span style="font:var(--type-name);color:var(--text-strong);">#design-review</span>
+                    <span style="display:inline-flex;align-items:center;gap:7px;height:26px;padding:0 12px;border-radius:var(--radius-control);background:var(--paper-0);box-shadow:var(--shadow-hairline);font:var(--type-micro);color:var(--text-body);"><span style="width:7px;height:7px;border-radius:50%;background:var(--ink-800);"></span>대기중</span>
+                  </div>
+                  <span style="font:var(--type-label);color:var(--text-muted);">답장 기다리는 중</span>
+                </div>
+                <span style="font:var(--type-figure);color:var(--text-muted);">3.10 23:00</span>
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="ghost" size="sm" onClick="{{ goDetail }}" hint-size="96px,34px">상세 보기</x-import>
+              </div>
+
+              <div class="bt-lift" style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;align-items:center;gap:16px;">
+                <span style="width:10px;height:10px;border-radius:50%;background:var(--lime-600);flex:0 0 auto;"></span>
+                <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;">
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <span style="font:var(--type-name);color:var(--text-strong);">#growth</span>
+                    <span style="display:inline-flex;align-items:center;gap:7px;height:26px;padding:0 12px;border-radius:var(--radius-control);background:var(--paper-0);box-shadow:var(--shadow-hairline);font:var(--type-micro);color:var(--text-body);"><span style="width:7px;height:7px;border-radius:50%;background:var(--lime-600);"></span>발송 완료</span>
+                  </div>
+                  <span style="font:var(--type-label);color:var(--text-muted);">발송 완료 — Slack에서 확인하세요</span>
+                </div>
+                <span style="font:var(--type-figure);color:var(--text-muted);">3.09 18:20</span>
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="ghost" size="sm" onClick="{{ goResult }}" hint-size="96px,34px">결과 확인</x-import>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <span style="font:var(--type-label);color:var(--text-muted);">빈 상태 (바통 0건)</span>
+              <div style="background:var(--surface-card);border-radius:var(--radius-card);padding:40px;display:flex;flex-direction:column;align-items:center;gap:12px;">
+                <span style="font:var(--type-name);color:var(--text-strong);">아직 바통이 없어요</span>
+                <span style="font:var(--type-label);color:var(--text-muted);">대화를 고르고 첫 바통을 만들어 보세요.</span>
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="primary" onClick="{{ goConversations }}" hint-size="120px,44px">새 바통</x-import>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isSyncError }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:var(--gap-card);max-width:720px;">
+            <h1 style="margin:0;font:var(--type-section);font-family:var(--font-sans);color:var(--text-strong);">데이터 동기화 실패</h1>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:14px 16px;border-radius:var(--radius-card-inner);background:var(--flame-100);">
+              <span style="width:8px;height:8px;border-radius:50%;background:var(--flame-500);margin-top:6px;flex:0 0 auto;"></span>
+              <span style="font:var(--type-label);color:var(--ink-800);line-height:1.6;">Slack 데이터를 불러오지 못했어요. 잠시 후 다시 시도해 주세요.</span>
+            </div>
+            <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:16px;">
+              <span style="font:var(--type-body);color:var(--text-muted);line-height:1.7;">동기화가 완료되기 전까지 새 바통을 만들 수 없습니다. 기존 바통은 그대로 유지됩니다.</span>
+              <div style="display:flex;gap:8px;">
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="primary" onClick="{{ goHome }}" hint-size="110px,44px">다시 시도</x-import>
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="ghost" onClick="{{ goSettings }}" hint-size="130px,44px">연결 설정 열기</x-import>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isConversations }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:var(--gap-section);max-width:840px;">
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <h1 style="margin:0;font:var(--type-section);font-family:var(--font-sans);color:var(--text-strong);">대화 선택</h1>
+              <span style="font:var(--type-label);color:var(--text-muted);">바통을 만들 Slack 채널이나 DM을 고르세요.</span>
+            </div>
+            <x-import component-from-global-scope="BatonDesignSystem_4885ff.SearchInput" placeholder="채널 · 사람 검색" width="{{ 320 }}" hint-size="320px,44px"></x-import>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <a href="#" onClick="{{ goCompose }}" class="bt-lift" style="border:none;background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:16px var(--pad-card);display:flex;align-items:center;gap:14px;">
+                <span style="width:36px;height:36px;border-radius:50%;background:var(--surface-chip);box-shadow:var(--shadow-hairline);display:grid;place-items:center;font:var(--type-label);color:var(--text-muted);flex:0 0 auto;">#</span>
+                <span style="flex:1;display:flex;flex-direction:column;gap:2px;"><span style="font:var(--type-name);color:var(--text-strong);">#product-api</span><span style="font:var(--type-micro);color:var(--text-muted);">멤버 12명</span></span>
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.Icon" name="arrow-up-right" size="{{ 17 }}" tone="muted" hint-size="17px,17px"></x-import>
+              </a>
+              <a href="#" onClick="{{ goCompose }}" class="bt-lift" style="border:none;background:var(--surface-card);border-radius:var(--radius-card);padding:16px var(--pad-card);display:flex;align-items:center;gap:14px;">
+                <span style="width:36px;height:36px;border-radius:50%;background:var(--paper-0);box-shadow:var(--shadow-hairline);display:grid;place-items:center;font:var(--type-label);color:var(--text-muted);flex:0 0 auto;">#</span>
+                <span style="flex:1;display:flex;flex-direction:column;gap:2px;"><span style="font:var(--type-name);color:var(--text-strong);">#design-review</span><span style="font:var(--type-micro);color:var(--text-muted);">멤버 8명</span></span>
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.Icon" name="arrow-up-right" size="{{ 17 }}" tone="muted" hint-size="17px,17px"></x-import>
+              </a>
+              <a href="#" onClick="{{ goCompose }}" class="bt-lift" style="border:none;background:var(--surface-card);border-radius:var(--radius-card);padding:16px var(--pad-card);display:flex;align-items:center;gap:14px;">
+                <span style="width:36px;height:36px;border-radius:50%;background:var(--ink-800);color:#fff;display:grid;place-items:center;font:var(--type-label);flex:0 0 auto;">이</span>
+                <span style="flex:1;display:flex;flex-direction:column;gap:2px;"><span style="font:var(--type-name);color:var(--text-strong);">이준호</span><span style="font:var(--type-micro);color:var(--text-muted);">DM</span></span>
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.Icon" name="arrow-up-right" size="{{ 17 }}" tone="muted" hint-size="17px,17px"></x-import>
+              </a>
+              <a href="#" onClick="{{ goCompose }}" class="bt-lift" style="border:none;background:var(--surface-card);border-radius:var(--radius-card);padding:16px var(--pad-card);display:flex;align-items:center;gap:14px;">
+                <span style="width:36px;height:36px;border-radius:50%;background:var(--ink-800);color:#fff;display:grid;place-items:center;font:var(--type-label);flex:0 0 auto;">박</span>
+                <span style="flex:1;display:flex;flex-direction:column;gap:2px;"><span style="font:var(--type-name);color:var(--text-strong);">박민아</span><span style="font:var(--type-micro);color:var(--text-muted);">DM</span></span>
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.Icon" name="arrow-up-right" size="{{ 17 }}" tone="muted" hint-size="17px,17px"></x-import>
+              </a>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isWizard }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:var(--gap-section);max-width:900px;">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <span style="display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 14px 0 5px;border-radius:var(--radius-control);background:{{ step1Bg }};box-shadow:{{ step1Shadow }};font:var(--type-label);color:{{ step1Text }};white-space:nowrap;flex:0 0 auto;">
+                <span style="width:28px;height:28px;border-radius:50%;background:{{ step1Disc }};color:{{ step1DiscText }};display:grid;place-items:center;font:var(--type-micro);">{{ step1Mark }}</span>메시지 작성
+              </span>
+              <span style="color:var(--ink-300);">›</span>
+              <span style="display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 14px 0 5px;border-radius:var(--radius-control);background:{{ step2Bg }};box-shadow:{{ step2Shadow }};font:var(--type-label);color:{{ step2Text }};white-space:nowrap;flex:0 0 auto;">
+                <span style="width:28px;height:28px;border-radius:50%;background:{{ step2Disc }};color:{{ step2DiscText }};display:grid;place-items:center;font:var(--type-micro);">{{ step2Mark }}</span>분기 검토
+              </span>
+              <span style="color:var(--ink-300);">›</span>
+              <span style="display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 14px 0 5px;border-radius:var(--radius-control);background:{{ step3Bg }};box-shadow:{{ step3Shadow }};font:var(--type-label);color:{{ step3Text }};white-space:nowrap;flex:0 0 auto;">
+                <span style="width:28px;height:28px;border-radius:50%;background:{{ step3Disc }};color:{{ step3DiscText }};display:grid;place-items:center;font:var(--type-micro);">3</span>발송 확인
+              </span>
+            </div>
+
+            <sc-if value="{{ isCompose }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:var(--gap-card);">
+                <div style="display:flex;flex-direction:column;gap:6px;">
+                  <h1 style="margin:0;font:var(--type-section);font-family:var(--font-sans);color:var(--text-strong);">메시지 작성</h1>
+                  <span style="font:var(--type-label);color:var(--text-muted);">#product-api · 이 메시지를 보내고 답장을 기다립니다.</span>
+                </div>
+                <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:16px;">
+                  <textarea rows="6" style="border:none;resize:vertical;padding:16px 18px;border-radius:var(--radius-card-inner);background:var(--surface-chip);box-shadow:var(--shadow-hairline);font:var(--type-body);font-family:'SUIT Variable';color:var(--text-body);outline:none;line-height:1.6;">결제 API를 3월 20일까지 받을 수 있을까요?</textarea>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+                    <span style="font:var(--type-micro);color:var(--text-muted);">답장이 오면 AI가 분기를 판정합니다.</span>
+                    <div style="display:flex;gap:8px;">
+                      <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="ghost" onClick="{{ goConversations }}" hint-size="80px,44px">뒤로</x-import>
+                      <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="primary" onClick="{{ goBranches }}" hint-size="120px,44px">분기 만들기</x-import>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ isBranches }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:var(--gap-card);">
+                <div style="display:flex;flex-direction:column;gap:6px;">
+                  <h1 style="margin:0;font:var(--type-section);font-family:var(--font-sans);color:var(--text-strong);">분기 검토</h1>
+                  <span style="font:var(--type-label);color:var(--text-muted);">AI가 만든 답변 분기를 확인하고 필요하면 고치세요.</span>
+                </div>
+
+                <div style="background:var(--surface-inverse);border-radius:var(--radius-card);box-shadow:var(--shadow-float);padding:var(--pad-card);display:flex;flex-direction:column;gap:8px;">
+                  <span style="font:var(--type-micro);color:var(--lime-500);letter-spacing:var(--tr-mid);">내가 보낼 메시지</span>
+                  <span style="font:var(--type-body);color:#fff;line-height:1.7;">결제 API를 3월 20일까지 받을 수 있을까요?</span>
+                </div>
+
+                <div style="display:flex;flex-direction:column;gap:12px;">
+                  <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:12px;">
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <span style="width:26px;height:26px;border-radius:50%;background:var(--ink-900);color:#fff;display:grid;place-items:center;font:var(--type-micro);">A</span>
+                      <span style="font:var(--type-name);color:var(--text-strong);">가능하다</span>
+                    </div>
+                    <div style="padding:14px 16px;border-radius:var(--radius-card-inner);background:var(--surface-chip);box-shadow:var(--shadow-hairline);font:var(--type-body);color:var(--text-body);line-height:1.6;">감사합니다. 일정 그대로 확정하고, 3월 20일부터 QA를 시작하겠습니다.</div>
+                  </div>
+                  <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:12px;">
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <span style="width:26px;height:26px;border-radius:50%;background:var(--ink-900);color:#fff;display:grid;place-items:center;font:var(--type-micro);">B</span>
+                      <span style="font:var(--type-name);color:var(--text-strong);">늦어진다 (날짜 언급)</span>
+                    </div>
+                    <div style="padding:14px 16px;border-radius:var(--radius-card-inner);background:var(--surface-chip);box-shadow:var(--shadow-hairline);font:var(--type-body);color:var(--text-body);line-height:1.6;">알겠습니다. 그 날짜 기준으로 QA를 재배치하겠습니다. 3월 말을 넘기면 B0와 조율해 다시 이야기하죠.</div>
+                  </div>
+                  <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:12px;">
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <span style="width:26px;height:26px;border-radius:50%;background:var(--ink-900);color:#fff;display:grid;place-items:center;font:var(--type-micro);">C</span>
+                      <span style="font:var(--type-name);color:var(--text-strong);">불가능하다</span>
+                    </div>
+                    <div style="padding:14px 16px;border-radius:var(--radius-card-inner);background:var(--surface-chip);box-shadow:var(--shadow-hairline);font:var(--type-body);color:var(--text-body);line-height:1.6;">확인했습니다. 대안으로 전환해서 일정 업데이트 후 공유드리겠습니다.</div>
+                  </div>
+                  <div style="background:var(--surface-card);border-radius:var(--radius-card);padding:var(--pad-card);display:flex;align-items:center;justify-content:space-between;gap:12px;">
+                    <span style="display:flex;flex-direction:column;gap:2px;"><span style="font:var(--type-name);color:var(--text-strong);">어디에도 안 맞음</span><span style="font:var(--type-micro);color:var(--text-muted);">발송하지 않고 보류함 — 검토 필요로 넘어갑니다.</span></span>
+                    <span style="display:inline-flex;align-items:center;gap:7px;height:26px;padding:0 12px;border-radius:var(--radius-control);background:var(--paper-0);box-shadow:var(--shadow-hairline);font:var(--type-micro);color:var(--text-body);"><span style="width:7px;height:7px;border-radius:50%;background:var(--flame-500);"></span>보류</span>
+                  </div>
+                </div>
+
+                <div style="display:flex;justify-content:flex-end;gap:8px;">
+                  <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="ghost" onClick="{{ goCompose }}" hint-size="80px,44px">뒤로</x-import>
+                  <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="primary" onClick="{{ goConfirm }}" hint-size="120px,44px">다음 단계</x-import>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ isConfirm }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:var(--gap-card);">
+                <div style="display:flex;flex-direction:column;gap:6px;">
+                  <h1 style="margin:0;font:var(--type-section);font-family:var(--font-sans);color:var(--text-strong);">발송 확인</h1>
+                  <span style="font:var(--type-label);color:var(--text-muted);">최대 대기 시간이 지나면 바통은 만료됩니다.</span>
+                </div>
+                <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:20px;">
+                  <div style="display:flex;flex-direction:column;gap:10px;">
+                    <span style="font:var(--type-label);color:var(--text-muted);">최대 대기 시간</span>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                      <x-import component-from-global-scope="BatonDesignSystem_4885ff.FilterChip" hint-size="70px,38px">6시간</x-import>
+                      <x-import component-from-global-scope="BatonDesignSystem_4885ff.FilterChip" active="{{ true }}" hint-size="70px,38px">24시간</x-import>
+                      <x-import component-from-global-scope="BatonDesignSystem_4885ff.FilterChip" hint-size="70px,38px">3일</x-import>
+                      <x-import component-from-global-scope="BatonDesignSystem_4885ff.FilterChip" hint-size="70px,38px">7일</x-import>
+                    </div>
+                  </div>
+                  <div style="padding:16px 18px;border-radius:var(--radius-card-inner);background:var(--surface-card);display:flex;flex-direction:column;gap:8px;">
+                    <span style="font:var(--type-label);color:var(--text-muted);">요약</span>
+                    <span style="font:var(--type-body);color:var(--text-body);line-height:1.7;">#product-api에 메시지를 보내고, 답장을 분기 3개로 판정합니다. 판정이 애매하면 검토 요청으로 넘어갑니다.</span>
+                  </div>
+                  <div style="display:flex;justify-content:flex-end;gap:8px;">
+                    <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="ghost" onClick="{{ goBranches }}" hint-size="80px,44px">뒤로</x-import>
+                    <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="accent" onClick="{{ goDetail }}" hint-size="140px,44px">바통 시작하기</x-import>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:var(--gap-card);max-width:840px;">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;">
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <h1 style="margin:0;font:var(--type-section);font-family:var(--font-sans);color:var(--text-strong);">#design-review</h1>
+                <span style="display:inline-flex;align-items:center;gap:7px;height:26px;padding:0 12px;border-radius:var(--radius-control);background:var(--paper-0);box-shadow:var(--shadow-hairline);font:var(--type-micro);color:var(--text-body);align-self:flex-start;"><span style="width:7px;height:7px;border-radius:50%;background:var(--ink-800);"></span>답장 기다리는 중</span>
+              </div>
+              <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="quiet" onClick="{{ openCancel }}" hint-size="110px,44px">바통 취소</x-import>
+            </div>
+
+            <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:16px;">
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <span style="font:var(--type-label);color:var(--text-muted);">보낸 메시지</span>
+                <span style="font:var(--type-body);color:var(--text-body);line-height:1.7;">디자인 리뷰 시간을 3월 15일 오후로 옮겨도 될까요?</span>
+              </div>
+              <div style="height:1px;background:var(--line-hairline);"></div>
+              <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+                <div style="display:flex;flex-direction:column;gap:4px;"><span style="font:var(--type-label);color:var(--text-muted);">발송</span><span style="font:var(--type-figure);color:var(--text-body);">3.10 23:00</span></div>
+                <div style="display:flex;flex-direction:column;gap:4px;"><span style="font:var(--type-label);color:var(--text-muted);">만료</span><span style="font:var(--type-figure);color:var(--text-body);">3.11 23:00</span></div>
+                <div style="display:flex;flex-direction:column;gap:4px;"><span style="font:var(--type-label);color:var(--text-muted);">분기</span><span style="font:var(--type-figure);color:var(--text-body);">3개</span></div>
+              </div>
+            </div>
+
+            <div style="background:var(--surface-card);border-radius:var(--radius-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:12px;">
+              <span style="font:var(--type-label);color:var(--text-muted);">준비된 분기</span>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="padding:12px 16px;border-radius:var(--radius-card-inner);background:var(--paper-0);box-shadow:var(--shadow-hairline);display:flex;gap:10px;"><span style="font:var(--type-label);color:var(--text-muted);">A</span><span style="font:var(--type-label);color:var(--text-body);">가능하다 — 좋습니다. 15일 오후로 옮기겠습니다.</span></div>
+                <div style="padding:12px 16px;border-radius:var(--radius-card-inner);background:var(--paper-0);box-shadow:var(--shadow-hairline);display:flex;gap:10px;"><span style="font:var(--type-label);color:var(--text-muted);">B</span><span style="font:var(--type-label);color:var(--text-body);">다른 날짜 제안 — 제안 주신 날짜로 다시 잡겠습니다.</span></div>
+                <div style="padding:12px 16px;border-radius:var(--radius-card-inner);background:var(--paper-0);box-shadow:var(--shadow-hairline);display:flex;gap:10px;"><span style="font:var(--type-label);color:var(--text-muted);">C</span><span style="font:var(--type-label);color:var(--text-body);">불가능하다 — 기존 시간 그대로 유지하겠습니다.</span></div>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isPendingAmb }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:var(--gap-card);max-width:840px;">
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <h1 style="margin:0;font:var(--type-section);font-family:var(--font-sans);color:var(--text-strong);">보류 처리</h1>
+              <span style="font:var(--type-label);color:var(--text-muted);">이준호 (DM) · 검토 필요 — AI가 판단하지 못했어요</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:14px 16px;border-radius:var(--radius-card-inner);background:var(--flame-100);">
+              <span style="width:8px;height:8px;border-radius:50%;background:var(--flame-500);margin-top:6px;flex:0 0 auto;"></span>
+              <span style="font:var(--type-label);color:var(--ink-800);line-height:1.6;">답장이 어느 분기에도 확실히 맞지 않았어요. 보낼 응답을 직접 골라주세요.</span>
+            </div>
+            <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:12px;">
+              <span style="font:var(--type-label);color:var(--text-muted);">받은 답장</span>
+              <div style="padding:14px 16px;border-radius:var(--radius-card-inner);background:var(--surface-chip);box-shadow:var(--shadow-hairline);font:var(--type-body);color:var(--text-body);line-height:1.6;">음… 아마 될 것 같긴 한데 확실하진 않아요.</div>
+            </div>
+            <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:14px;">
+              <span style="font:var(--type-label);color:var(--text-muted);">보낼 분기 선택</span>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:var(--radius-card-inner);background:var(--paper-0);box-shadow:var(--shadow-card);">
+                  <span style="width:20px;height:20px;border-radius:50%;background:var(--ink-900);display:grid;place-items:center;flex:0 0 auto;margin-top:2px;"><span style="width:7px;height:7px;border-radius:50%;background:#fff;"></span></span>
+                  <span style="display:flex;flex-direction:column;gap:3px;"><span style="font:var(--type-label);color:var(--text-strong);">분기 A — 가능하다</span><span style="font:var(--type-micro);color:var(--text-muted);">감사합니다. 일정 그대로 확정하겠습니다.</span></span>
+                </div>
+                <div style="display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:var(--radius-card-inner);background:var(--surface-chip);box-shadow:var(--shadow-hairline);">
+                  <span style="width:20px;height:20px;border-radius:50%;background:var(--paper-0);box-shadow:inset 0 0 0 1px var(--line-strong);flex:0 0 auto;margin-top:2px;"></span>
+                  <span style="display:flex;flex-direction:column;gap:3px;"><span style="font:var(--type-label);color:var(--text-body);">분기 B — 늦어진다 (날짜 언급)</span><span style="font:var(--type-micro);color:var(--text-muted);">그 날짜 기준으로 QA를 재배치하겠습니다.</span></span>
+                </div>
+                <div style="display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:var(--radius-card-inner);background:var(--surface-chip);box-shadow:var(--shadow-hairline);">
+                  <span style="width:20px;height:20px;border-radius:50%;background:var(--paper-0);box-shadow:inset 0 0 0 1px var(--line-strong);flex:0 0 auto;margin-top:2px;"></span>
+                  <span style="display:flex;flex-direction:column;gap:3px;"><span style="font:var(--type-label);color:var(--text-body);">분기 C — 불가능하다</span><span style="font:var(--type-micro);color:var(--text-muted);">대안으로 전환해서 일정 업데이트 후 공유드리겠습니다.</span></span>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:flex-end;gap:8px;">
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="ghost" onClick="{{ goHome }}" hint-size="80px,44px">나가기</x-import>
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="primary" onClick="{{ openSend }}" hint-size="110px,44px">응답 발송</x-import>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isPendingNew }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:var(--gap-card);max-width:840px;">
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <h1 style="margin:0;font:var(--type-section);font-family:var(--font-sans);color:var(--text-strong);">보류 처리</h1>
+              <span style="font:var(--type-label);color:var(--text-muted);">#product-api · 검토 필요 — 직접 확인이 필요해요</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:14px 16px;border-radius:var(--radius-card-inner);background:var(--flame-100);">
+              <span style="width:8px;height:8px;border-radius:50%;background:var(--flame-500);margin-top:6px;flex:0 0 auto;"></span>
+              <span style="font:var(--type-label);color:var(--ink-800);line-height:1.6;">답장에 새 질문이 포함되어 있어요. 준비된 분기로는 답할 수 없습니다.</span>
+            </div>
+            <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:12px;">
+              <span style="font:var(--type-label);color:var(--text-muted);">받은 답장</span>
+              <div style="padding:14px 16px;border-radius:var(--radius-card-inner);background:var(--surface-chip);box-shadow:var(--shadow-hairline);font:var(--type-body);color:var(--text-body);line-height:1.6;">가능한데, 결제 수단 스펙은 어디서 확인하면 되나요?</div>
+            </div>
+            <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:14px;">
+              <span style="font:var(--type-label);color:var(--text-muted);">응답 직접 작성</span>
+              <textarea rows="5" style="border:none;resize:vertical;padding:16px 18px;border-radius:var(--radius-card-inner);background:var(--surface-chip);box-shadow:var(--shadow-hairline);font:var(--type-body);font-family:'SUIT Variable';color:var(--text-body);outline:none;line-height:1.6;">스펙 문서 링크를 정리해서 오늘 안에 공유드리겠습니다.</textarea>
+              <div style="display:flex;justify-content:flex-end;gap:8px;">
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="ghost" onClick="{{ goHome }}" hint-size="80px,44px">나가기</x-import>
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="primary" onClick="{{ openSend }}" hint-size="110px,44px">응답 발송</x-import>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:var(--gap-card);max-width:840px;">
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <h1 style="margin:0;font:var(--type-section);font-family:var(--font-sans);color:var(--text-strong);">자동 발송 결과</h1>
+              <span style="font:var(--type-label);color:var(--text-muted);">#growth · 발송 완료 — Slack에서 확인하세요</span>
+            </div>
+            <div style="background:var(--surface-accent);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;align-items:center;gap:14px;">
+              <span style="width:34px;height:34px;border-radius:50%;background:var(--ink-900);display:grid;place-items:center;flex:0 0 auto;">
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.Icon" name="check" size="{{ 17 }}" tone="light" hint-size="17px,17px"></x-import>
+              </span>
+              <span style="display:flex;flex-direction:column;gap:2px;"><span style="font:var(--type-name);color:var(--text-on-accent);">분기 B로 자동 발송되었습니다</span><span style="font:var(--type-micro);color:var(--ink-800);">3.09 18:20 · 신뢰도 94%</span></span>
+            </div>
+            <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:16px;">
+              <div style="display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-label);color:var(--text-muted);">받은 답장</span><span style="font:var(--type-body);color:var(--text-body);line-height:1.7;">4월 초쯤 될 것 같아요.</span></div>
+              <div style="height:1px;background:var(--line-hairline);"></div>
+              <div style="display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-label);color:var(--text-muted);">발송된 응답</span><span style="font:var(--type-body);color:var(--text-body);line-height:1.7;">알겠습니다. 그 날짜 기준으로 QA를 재배치하겠습니다. 3월 말을 넘기면 B0와 조율해 다시 이야기하죠.</span></div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="quiet" hint-size="130px,44px">Slack에서 열기</x-import>
+              <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="ghost" onClick="{{ goHome }}" hint-size="110px,44px">홈으로</x-import>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:var(--gap-card);max-width:760px;">
+            <h1 style="margin:0;font:var(--type-section);font-family:var(--font-sans);color:var(--text-strong);">개인 설정</h1>
+
+            <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:16px;">
+              <span style="font:var(--type-card-title);font-family:var(--font-sans);color:var(--text-strong);">작업 환경</span>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;"><span style="font:var(--type-label);color:var(--text-muted);white-space:nowrap;flex:0 0 auto;">언어</span><x-import component-from-global-scope="BatonDesignSystem_4885ff.SelectPill" options="{{ langOptions }}" hint-size="140px,38px"></x-import></div>
+              <div style="height:1px;background:var(--line-hairline);"></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;"><span style="font:var(--type-label);color:var(--text-muted);white-space:nowrap;flex:0 0 auto;">타임존</span><x-import component-from-global-scope="BatonDesignSystem_4885ff.SelectPill" options="{{ tzOptions }}" hint-size="180px,38px"></x-import></div>
+            </div>
+
+            <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:14px;">
+              <span style="font:var(--type-card-title);font-family:var(--font-sans);color:var(--text-strong);">AI 모델</span>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.FilterChip" active="{{ true }}" hint-size="90px,38px">균형</x-import>
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.FilterChip" hint-size="90px,38px">빠름</x-import>
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.FilterChip" hint-size="90px,38px">정확</x-import>
+              </div>
+              <span style="font:var(--type-micro);color:var(--text-muted);">판정 신뢰도가 기준보다 낮으면 항상 검토 요청으로 넘어갑니다.</span>
+            </div>
+
+            <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:14px;">
+              <span style="font:var(--type-card-title);font-family:var(--font-sans);color:var(--text-strong);">최대 대기 시간</span>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.FilterChip" hint-size="70px,38px">6시간</x-import>
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.FilterChip" active="{{ true }}" hint-size="70px,38px">24시간</x-import>
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.FilterChip" hint-size="70px,38px">3일</x-import>
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.FilterChip" hint-size="70px,38px">7일</x-import>
+              </div>
+            </div>
+
+            <div style="background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--pad-card);display:flex;flex-direction:column;gap:14px;">
+              <span style="font:var(--type-card-title);font-family:var(--font-sans);color:var(--text-strong);">연결된 플랫폼</span>
+              <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:var(--radius-card-inner);background:var(--surface-chip);box-shadow:var(--shadow-hairline);">
+                <span style="width:36px;height:36px;border-radius:50%;background:var(--paper-0);box-shadow:var(--shadow-hairline);display:grid;place-items:center;flex:0 0 auto;"><x-import component-from-global-scope="BatonDesignSystem_4885ff.Icon" name="message-square" size="{{ 17 }}" hint-size="17px,17px"></x-import></span>
+                <span style="flex:1;display:flex;flex-direction:column;gap:2px;"><span style="font:var(--type-name);color:var(--text-strong);">Slack</span><span style="font:var(--type-micro);color:var(--text-muted);">acme-workspace · 연결됨</span></span>
+                <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="ghost" size="sm" hint-size="80px,34px">연결 해제</x-import>
+              </div>
+            </div>
+
+            <div style="display:flex;justify-content:flex-start;">
+              <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="quiet" hint-size="100px,44px">로그아웃</x-import>
+            </div>
+          </div>
+        </sc-if>
+
+      </main>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ showCancel }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:60;display:grid;place-items:center;background:rgba(11,11,11,.28);backdrop-filter:blur(3px);padding:24px;">
+    <div style="width:100%;max-width:400px;background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-float);padding:24px;display:flex;flex-direction:column;gap:14px;">
+      <span style="font:var(--type-card-title);font-family:var(--font-sans);color:var(--text-strong);">바통을 취소할까요?</span>
+      <span style="font:var(--type-body);color:var(--text-muted);line-height:1.7;">취소하면 자동 응답이 실행되지 않습니다. 이 작업은 되돌릴 수 없어요.</span>
+      <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:4px;">
+        <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="quiet" onClick="{{ closeModal }}" hint-size="100px,44px">돌아가기</x-import>
+        <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="primary" onClick="{{ closeModal }}" hint-size="100px,44px">바통 취소</x-import>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ showSend }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:60;display:grid;place-items:center;background:rgba(11,11,11,.28);backdrop-filter:blur(3px);padding:24px;">
+    <div style="width:100%;max-width:400px;background:var(--surface-card-raised);border-radius:var(--radius-card);box-shadow:var(--shadow-float);padding:24px;display:flex;flex-direction:column;gap:14px;">
+      <span style="font:var(--type-card-title);font-family:var(--font-sans);color:var(--text-strong);">응답 발송 확인</span>
+      <span style="font:var(--type-body);color:var(--text-muted);line-height:1.7;">선택한 응답을 Slack에 지금 보냅니다. 발송 후에는 수정할 수 없어요.</span>
+      <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:4px;">
+        <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="quiet" onClick="{{ closeModal }}" hint-size="100px,44px">돌아가기</x-import>
+        <x-import component-from-global-scope="BatonDesignSystem_4885ff.Button" variant="primary" onClick="{{ confirmSend }}" hint-size="100px,44px">발송하기</x-import>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<div style="position:fixed;left:50%;transform:translateX(-50%);bottom:20px;z-index:50;max-width:calc(100vw - 40px);display:flex;align-items:center;gap:6px;padding:8px 10px;border-radius:var(--radius-control);background:var(--surface-card-raised);box-shadow:var(--shadow-float);overflow-x:auto;">
+  <span style="font:var(--type-micro);color:var(--text-muted);padding:0 6px;white-space:nowrap;">화면</span>
+  <sc-for list="{{ screens }}" as="s" hint-placeholder-count="8">
+    <button onClick="{{ s.go }}" style="border:none;cursor:pointer;white-space:nowrap;height:30px;padding:0 12px;border-radius:var(--radius-control);background:{{ s.bg }};color:{{ s.color }};box-shadow:{{ s.shadow }};font:var(--type-micro);font-family:'SUIT Variable';">{{ s.label }}</button>
+  </sc-for>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+const AUTH = ['signup', 'login', 'connect', 'connect-error'];
+const SCREENS = [
+  ['signup', '회원가입'], ['login', '로그인'], ['connect', 'Slack 연결'], ['connect-error', '연결 실패'],
+  ['home', '홈'], ['sync-error', '동기화 실패'], ['conversations', '대화 선택'], ['compose', '작성 1/3'],
+  ['branches', '분기 2/3'], ['confirm', '발송 3/3'], ['detail', '바통 상세'], ['pending-amb', '보류·애매'],
+  ['pending-new', '보류·새 질문'], ['result', '결과 확인'], ['settings', '설정']
+];
+
+class Component extends DCLogic {
+  state = { screen: 'home', modal: null };
+
+  go(screen) {
+    return (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ screen, modal: null }); window.scrollTo(0, 0); };
+  }
+
+  renderVals() {
+    const s = this.state.screen;
+    const nav = (on) => ({
+      bg: on ? 'var(--surface-card-raised)' : 'transparent',
+      shadow: on ? 'var(--shadow-card)' : 'none',
+      disc: on ? 'var(--ink-900)' : 'var(--surface-chip)',
+      tone: on ? 'light' : 'ink',
+      text: on ? 'var(--text-strong)' : 'var(--text-muted)'
+    });
+    const homeOn = ['home', 'detail', 'pending-amb', 'pending-new', 'result', 'sync-error'].includes(s);
+    const newOn = ['conversations', 'compose', 'branches', 'confirm'].includes(s);
+    const setOn = s === 'settings';
+    const h = nav(homeOn), n = nav(newOn), st = nav(setOn);
+
+    const step = (state) => state === 'current'
+      ? { bg: 'var(--paper-0)', shadow: 'var(--shadow-card)', text: 'var(--text-strong)', disc: 'var(--ink-900)', discText: '#fff' }
+      : state === 'done'
+        ? { bg: 'var(--surface-chip)', shadow: 'var(--shadow-hairline)', text: 'var(--text-muted)', disc: 'var(--lime-500)', discText: 'var(--ink-900)' }
+        : { bg: 'transparent', shadow: 'none', text: 'var(--text-muted)', disc: 'var(--surface-chip)', discText: 'var(--text-muted)' };
+
+    const s1 = step(s === 'compose' ? 'current' : 'done');
+    const s2 = step(s === 'branches' ? 'current' : (s === 'confirm' ? 'done' : 'idle'));
+    const s3 = step(s === 'confirm' ? 'current' : 'idle');
+
+    return {
+      isAuth: AUTH.includes(s),
+      isApp: !AUTH.includes(s),
+      isSignup: s === 'signup', isLogin: s === 'login', isConnect: s === 'connect', isConnectError: s === 'connect-error',
+      isHome: s === 'home', isSyncError: s === 'sync-error', isConversations: s === 'conversations',
+      isWizard: ['compose', 'branches', 'confirm'].includes(s),
+      isCompose: s === 'compose', isBranches: s === 'branches', isConfirm: s === 'confirm',
+      isDetail: s === 'detail', isPendingAmb: s === 'pending-amb', isPendingNew: s === 'pending-new',
+      isResult: s === 'result', isSettings: s === 'settings',
+
+      navHomeBg: h.bg, navHomeShadow: h.shadow, navHomeDisc: h.disc, navHomeTone: h.tone, navHomeText: h.text,
+      navNewBg: n.bg, navNewShadow: n.shadow, navNewDisc: n.disc, navNewTone: n.tone, navNewText: n.text,
+      navSetBg: st.bg, navSetShadow: st.shadow, navSetDisc: st.disc, navSetTone: st.tone, navSetText: st.text,
+
+      step1Bg: s1.bg, step1Shadow: s1.shadow, step1Text: s1.text, step1Disc: s1.disc, step1DiscText: s1.discText,
+      step1Mark: s === 'compose' ? '1' : '✓',
+      step2Bg: s2.bg, step2Shadow: s2.shadow, step2Text: s2.text, step2Disc: s2.disc, step2DiscText: s2.discText,
+      step2Mark: s === 'confirm' ? '✓' : '2',
+      step3Bg: s3.bg, step3Shadow: s3.shadow, step3Text: s3.text, step3Disc: s3.disc, step3DiscText: s3.discText,
+
+      goHome: this.go('home'), goLogin: this.go('login'), goSignup: this.go('signup'),
+      goConnect: this.go('connect'), goConnectError: this.go('connect-error'),
+      goConversations: this.go('conversations'), goCompose: this.go('compose'),
+      goBranches: this.go('branches'), goConfirm: this.go('confirm'), goDetail: this.go('detail'),
+      goPendingAmb: this.go('pending-amb'), goPendingNew: this.go('pending-new'),
+      goResult: this.go('result'), goSettings: this.go('settings'),
+
+      showCancel: this.state.modal === 'cancel',
+      showSend: this.state.modal === 'send',
+      openCancel: (e) => { e.preventDefault(); this.setState({ modal: 'cancel' }); },
+      openSend: (e) => { e.preventDefault(); this.setState({ modal: 'send' }); },
+      closeModal: () => this.setState({ modal: null }),
+      confirmSend: () => this.setState({ screen: 'result', modal: null }),
+
+      langOptions: ['한국어', 'English'],
+      tzOptions: ['Asia/Seoul (GMT+9)', 'UTC'],
+
+      screens: SCREENS.map(([id, label]) => ({
+        id, label, go: this.go(id),
+        bg: s === id ? 'var(--ink-900)' : 'var(--surface-chip)',
+        color: s === id ? '#fff' : 'var(--text-muted)',
+        shadow: s === id ? 'none' : 'var(--shadow-hairline)'
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

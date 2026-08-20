@@ -38,19 +38,19 @@ export function SendConfirm() {
 
   return (
     <AppShell>
-      <h1 className="font-suit text-2xl font-semibold text-ink">답장 준비하기</h1>
+      <h1 className="font-suit text-2xl font-medium text-strong">답장 준비하기</h1>
       <div className="mt-4">
         <StepTabs current={3} />
       </div>
 
       <Panel className="mt-6 max-w-2xl">
-        <p className="font-semibold text-ink">발송 설정</p>
+        <p className="font-medium text-strong">발송 설정</p>
 
-        <label className="mt-4 block text-sm text-ink" htmlFor="max-wait">
+        <label className="mt-4 block text-sm text-body" htmlFor="max-wait">
           최대 대기 시간
         </label>
         <select
-          className="font-suit mt-2 w-full rounded-[6px] border border-border p-3 text-sm outline-none focus:border-primary"
+          className="font-suit mt-2 w-full appearance-none rounded-full bg-chip p-3 text-sm text-body shadow-hairline outline-none"
           id="max-wait"
           onChange={(e) => setMaxWaitHours(Number(e.target.value))}
           value={maxWaitHours}
@@ -66,7 +66,7 @@ export function SendConfirm() {
 
       <div className="mt-6 flex max-w-2xl items-center justify-between">
         <button
-          className="font-suit text-sm text-muted-2 hover:text-ink"
+          className="font-suit text-sm text-muted hover:text-body"
           onClick={() => navigate(`/conversations/${conversationId}/branches`, { state: { batonId } })}
           type="button"
         >

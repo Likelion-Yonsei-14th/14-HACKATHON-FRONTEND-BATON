@@ -38,7 +38,7 @@ export function BatonDetail() {
   if (!baton) {
     return (
       <AppShell>
-        <p className="text-muted-2">불러오는 중...</p>
+        <p className="text-muted">불러오는 중...</p>
       </AppShell>
     )
   }
@@ -64,12 +64,12 @@ export function BatonDetail() {
     <AppShell>
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="font-suit text-2xl font-semibold text-ink">대기 상세</h1>
+          <h1 className="font-suit text-2xl font-medium text-strong">대기 상세</h1>
           <p className="font-suit mt-1 text-sm text-muted">마지막 동기화: 3분 전</p>
         </div>
         {baton.status === 'WAITING' && (
           <button
-            className="font-suit text-sm text-red-500 hover:text-red-600"
+            className="font-suit text-sm text-status-error hover:opacity-80"
             onClick={() => setCancelling(true)}
             type="button"
           >
@@ -79,19 +79,19 @@ export function BatonDetail() {
       </div>
 
       <Panel className="mt-6 max-w-3xl">
-        <p className="font-semibold text-ink">바통 상태 요약</p>
+        <p className="font-medium text-strong">바통 상태 요약</p>
         <div className="mt-4 grid grid-cols-3 gap-x-8 gap-y-4">
           {summary.map(([label, value]) => (
             <div key={label}>
               <p className="text-sm text-muted">{label}</p>
-              <p className="mt-1 text-sm font-bold text-ink">{value}</p>
+              <p className="mt-1 text-sm font-medium text-body">{value}</p>
             </div>
           ))}
         </div>
       </Panel>
 
       <Panel className="mt-4 max-w-3xl">
-        <p className="font-semibold text-ink">Slack에 보낸 첫 메시지</p>
+        <p className="font-medium text-strong">Slack에 보낸 첫 메시지</p>
         {triggerMessage && (
           <>
             <p className="mt-4 text-sm text-muted">{triggerMessage.content}</p>
@@ -102,12 +102,12 @@ export function BatonDetail() {
         )}
       </Panel>
 
-      <h2 className="font-suit mt-6 text-lg font-semibold text-ink">준비된 예상 답변 분기</h2>
+      <h2 className="font-suit mt-6 text-lg font-medium text-strong">준비된 예상 답변 분기</h2>
       <div className="mt-3 flex max-w-3xl flex-col gap-3">
         {branches.map((branch) => (
           <Panel className="flex items-center justify-between" key={branch.id}>
             <div>
-              <p className="font-semibold text-ink">{branch.name}</p>
+              <p className="font-medium text-strong">{branch.name}</p>
               <p className="mt-1 text-sm text-muted">{branch.executionMode === 'AUTO' ? '자동 처리 예정' : '사용자 확인 필요'}</p>
             </div>
             <p className="max-w-md text-sm text-muted">{branch.responseText}</p>

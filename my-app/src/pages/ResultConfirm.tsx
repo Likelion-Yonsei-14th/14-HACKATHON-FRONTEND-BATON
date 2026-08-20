@@ -50,36 +50,36 @@ export function ResultConfirm() {
   if (!execution) {
     return (
       <AppShell>
-        <p className="text-muted-2">불러오는 중...</p>
+        <p className="text-muted">불러오는 중...</p>
       </AppShell>
     )
   }
 
   return (
     <AppShell>
-      <Link className="font-suit text-sm text-muted-2 hover:text-ink" to="/home">
+      <Link className="font-suit text-sm text-muted hover:text-body" to="/home">
         바통 홈으로
       </Link>
-      <h1 className="font-suit mt-2 text-2xl font-semibold text-ink">판정 결과 확인</h1>
+      <h1 className="font-suit mt-2 text-2xl font-medium text-strong">판정 결과 확인</h1>
 
       <div className="mt-4 grid max-w-5xl grid-cols-[1fr_320px] gap-5">
         <div className="flex flex-col gap-3">
           <Panel>
             <div className="flex gap-4 text-sm">
-              <span className="w-32 font-bold text-ink">선택된 분기</span>
-              <span className="text-ink">{matchedBranch?.name ?? '—'}</span>
+              <span className="w-32 font-medium text-strong">선택된 분기</span>
+              <span className="text-body">{matchedBranch?.name ?? '—'}</span>
             </div>
             <div className="mt-3 flex gap-4 text-sm">
-              <span className="w-32 font-bold text-ink">자동발송 상태</span>
-              <span className="text-ink">{execution.executionStatus === 'SUCCESS' ? '✓ 자동 발송 완료' : execution.executionStatus}</span>
+              <span className="w-32 font-medium text-strong">자동발송 상태</span>
+              <span className="text-body">{execution.executionStatus === 'SUCCESS' ? '✓ 자동 발송 완료' : execution.executionStatus}</span>
             </div>
             {classification?.confidence != null && (
               <div className="mt-3 flex gap-4 text-sm">
-                <span className="w-32 font-bold text-ink">확신도</span>
-                <span className="text-ink">{Math.round(classification.confidence * 100)}%</span>
+                <span className="w-32 font-medium text-strong">확신도</span>
+                <span className="text-body">{Math.round(classification.confidence * 100)}%</span>
               </div>
             )}
-            <p className="mt-4 text-sm font-semibold text-ink">판정 근거</p>
+            <p className="mt-4 text-sm font-medium text-strong">판정 근거</p>
             <p className="mt-2 text-sm text-muted">{classification?.reasoningSummary}</p>
             {execution.executedAt && (
               <p className="mt-3 text-sm text-muted">분석 시각: {new Date(execution.executedAt).toLocaleString('ko-KR')}</p>
@@ -88,34 +88,34 @@ export function ResultConfirm() {
 
           {sentMessage && (
             <Panel>
-              <p className="font-semibold text-ink">실제 발송된 응답</p>
+              <p className="font-medium text-strong">실제 발송된 응답</p>
               <p className="mt-3 text-sm text-muted">{sentMessage.content}</p>
               <p className="mt-3 text-sm text-muted">
                 이 메시지는 Baton이 자동으로 발송했습니다. 이후 상대방의 답장은 Slack에서 직접 확인해야 합니다.
               </p>
-              <p className="mt-3 text-sm text-muted-2 underline">Slack 원본 스레드 열기</p>
+              <p className="mt-3 text-sm text-muted underline">Slack 원본 스레드 열기</p>
             </Panel>
           )}
         </div>
 
         <Panel className="h-fit">
-          <p className="font-semibold text-ink">바통 정보</p>
+          <p className="font-medium text-strong">바통 정보</p>
           <div className="mt-4 flex flex-col gap-4">
             <div>
               <p className="text-sm text-muted">상대방</p>
-              <p className="mt-1 text-sm font-bold text-ink">{conversation?.counterpartName ?? '—'}</p>
+              <p className="mt-1 text-sm font-medium text-strong">{conversation?.counterpartName ?? '—'}</p>
             </div>
             <div>
               <p className="text-sm text-muted">상대 현지 시각</p>
-              <p className="mt-1 text-sm font-bold text-ink">{conversation?.counterpartTimezone ?? '—'}</p>
+              <p className="mt-1 text-sm font-medium text-strong">{conversation?.counterpartTimezone ?? '—'}</p>
             </div>
             <div>
               <p className="text-sm text-muted">경과 시간</p>
-              <p className="mt-1 text-sm font-bold text-ink">{formatElapsed(execution.executedAt)}</p>
+              <p className="mt-1 text-sm font-medium text-strong">{formatElapsed(execution.executedAt)}</p>
             </div>
             <div>
               <p className="text-sm text-muted">대화 채널</p>
-              <p className="mt-1 text-sm font-bold text-ink">
+              <p className="mt-1 text-sm font-medium text-strong">
                 {conversation?.title ?? (conversation?.conversationType === 'DM' ? 'DM' : '—')}
               </p>
             </div>

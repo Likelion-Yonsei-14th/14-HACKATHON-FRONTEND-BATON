@@ -21,8 +21,8 @@ export function ConnectCallback() {
   }, [navigate])
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-landing px-8 text-center">
-      <p className="font-suit text-lg text-muted-2">Slack 연결 처리 중...</p>
+    <div className="flex min-h-screen flex-col items-center justify-center gap-4 px-8 text-center">
+      <p className="font-suit text-lg text-muted">Slack 연결 처리 중...</p>
     </div>
   )
 }
