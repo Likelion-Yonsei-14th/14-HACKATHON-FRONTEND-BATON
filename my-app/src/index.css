@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap');
 
 /* Baton Design System 적용 (Step 3) — 값은 전부 디자인 시스템 토큰에서 옴.
    새 색·새 폰트·새 사이즈를 임의로 만들지 않음. 지원 범위: 데스크탑, 다크모드 없음. */
