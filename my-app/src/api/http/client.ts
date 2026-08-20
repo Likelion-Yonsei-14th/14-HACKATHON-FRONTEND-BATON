@@ -215,6 +215,10 @@ export const httpApiClient: BatonApiClient = {
     return mapBaton(raw)
   },
 
+  async deleteBaton(batonId) {
+    await request(`/batons/${batonId}`, { method: 'DELETE' })
+  },
+
   async createBranch(batonId, draft) {
     const created = await request<{ id: number }>(`/batons/${batonId}/branches`, {
       method: 'POST',

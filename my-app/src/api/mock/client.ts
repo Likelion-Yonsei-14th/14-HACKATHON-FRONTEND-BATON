@@ -186,6 +186,12 @@ export const mockApiClient: BatonApiClient = {
     return delay(baton)
   },
 
+  async deleteBaton(batonId) {
+    const index = batons.findIndex((b) => b.id === batonId)
+    if (index !== -1) batons.splice(index, 1)
+    return delay(undefined)
+  },
+
   async createBranch(batonId, draft) {
     const branches = branchesByBaton[batonId]
     if (!branches) throw new Error(`baton not found: ${batonId}`)
