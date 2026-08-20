@@ -5,6 +5,7 @@ import { API_KEY_STORAGE_KEY } from '../api/http/config'
 import type { LlmProvider, PlatformConnection } from '../types'
 import { AppShell } from '../components/layout/AppShell'
 import { Button } from '../components/ui/Button'
+import { Dialog } from '../components/ui/Dialog'
 
 function ChevronDown() {
   return (
@@ -141,6 +142,9 @@ export function Settings() {
   const [saving, setSaving] = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
   const [platform, setPlatform] = useState<PlatformConnection | null>(null)
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+  const [deleteError, setDeleteError] = useState<string | null>(null)
 
   useEffect(() => {
     Promise.all([api.getCurrentUser(), api.getPlatformConnection()])
@@ -183,6 +187,20 @@ export function Settings() {
     } finally {
       localStorage.removeItem(API_KEY_STORAGE_KEY)
       navigate('/login', { replace: true })
+    }
+  }
+
+  async function handleDeleteAccount() {
+    setDeleting(true)
+    setDeleteError(null)
+    try {
+      await api.deleteAccount()
+      localStorage.removeItem(API_KEY_STORAGE_KEY)
+      navigate('/', { replace: true })
+    } catch {
+      setDeleteError('탈퇴 처리에 실패했습니다. 다시 시도해주세요.')
+      setDeleting(false)
+      setShowDeleteDialog(false)
     }
   }
 
@@ -349,7 +367,34 @@ export function Settings() {
             로그아웃
           </button>
         </div>
+
+        <div className="h-px bg-border" />
+
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-0.5">
+            <span className="font-suit text-sm font-semibold text-ink">계정 삭제</span>
+            <span className="font-suit text-[13px] text-muted">계정과 모든 데이터를 영구적으로 삭제합니다.</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowDeleteDialog(true)}
+            className="cursor-pointer rounded-[6px] border border-red-500 bg-red-500 px-3.5 py-2 font-suit text-[13px] font-semibold text-white transition hover:bg-red-600"
+          >
+            계정 삭제
+          </button>
+        </div>
+        {deleteError && <p className="text-right font-suit text-sm text-red-500">{deleteError}</p>}
       </div>
+
+      {showDeleteDialog && (
+        <Dialog
+          title="계정을 삭제하시겠습니까?"
+          description="계정, 연결된 Slack 정보, 생성한 모든 바통이 영구적으로 삭제됩니다. 삭제 후에는 되돌릴 수 없습니다."
+          confirmLabel={deleting ? '삭제 중...' : '삭제'}
+          onConfirm={handleDeleteAccount}
+          onCancel={() => setShowDeleteDialog(false)}
+        />
+      )}
     </AppShell>
   )
 }

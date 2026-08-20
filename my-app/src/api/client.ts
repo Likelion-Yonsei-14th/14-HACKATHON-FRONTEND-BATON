@@ -24,6 +24,8 @@ export interface BatonApiClient {
   logout(): Promise<void>
   getCurrentUser(): Promise<User>
   updateUser(patch: { name?: string; language?: string; timezone?: string; llmProvider?: LlmProvider }): Promise<User>
+  /** DELETE /api/users/me — 계정 탈퇴. 성공하면 로컬 apiKey도 지워야 한다(호출 측 책임). */
+  deleteAccount(): Promise<void>
   getPlatformConnection(): Promise<PlatformConnection | null>
   /** 특정 Slack 연결의 대화 목록 메타데이터를 동기화한다. */
   syncConversations(connectionId: string): Promise<void>
@@ -82,6 +84,17 @@ export interface BatonApiClient {
    * "BATON 취소" API(POST /api/batons/{id}/cancel) 대응.
    */
   cancelBaton(batonId: string): Promise<Baton>
+
+  /**
+   * 분기 준비(2단계) 화면에서 AI가 만든 분기 외에 사용자가 직접 하나 추가한다.
+   * DRAFT 상태의 BATON에서만 가능(POST /api/batons/{id}/branches).
+   */
+  createBranch(batonId: string, draft: { name: string; sortOrder: number }): Promise<Branch>
+  /**
+   * 분기 준비(2단계) 화면에서 분기 하나를 없앤다. DRAFT 상태의 BATON에서만 가능
+   * (DELETE /api/batons/{id}/branches/{branchId}).
+   */
+  deleteBranch(batonId: string, branchId: string): Promise<void>
 
   getBranches(batonId: string): Promise<Branch[]>
   /** 가장 최근 판정 1건. 아직 판정이 없으면(답장 전) null. */
