@@ -86,6 +86,13 @@ export interface BatonApiClient {
   cancelBaton(batonId: string): Promise<Baton>
 
   /**
+   * DRAFT/CANCELLED/EXPIRED 상태의 BATON을 완전히 삭제한다(목록에서 제거).
+   * WAITING/PENDING_REVIEW는 대상이 아니다 — 먼저 cancelBaton으로 취소해야 한다.
+   * "BATON 삭제" API(DELETE /api/batons/{id}) 대응.
+   */
+  deleteBaton(batonId: string): Promise<void>
+
+  /**
    * 분기 준비(2단계) 화면에서 AI가 만든 분기 외에 사용자가 직접 하나 추가한다.
    * DRAFT 상태의 BATON에서만 가능(POST /api/batons/{id}/branches).
    */

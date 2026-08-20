@@ -22,6 +22,9 @@ export function BatonDetail() {
   const [branches, setBranches] = useState<Branch[]>([])
   const [triggerMessage, setTriggerMessage] = useState<Message | null>(null)
   const [cancelling, setCancelling] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+  const [confirmingDelete, setConfirmingDelete] = useState(false)
+  const [deleteError, setDeleteError] = useState<string | null>(null)
 
   useEffect(() => {
     if (!batonId) return
@@ -51,6 +54,22 @@ export function BatonDetail() {
     navigate('/home')
   }
 
+  async function handleDelete() {
+    if (!batonId) return
+    setDeleting(true)
+    setDeleteError(null)
+    try {
+      await api.deleteBaton(batonId)
+      navigate('/home')
+    } catch {
+      setDeleteError('삭제하지 못했습니다. 다시 시도해주세요.')
+      setDeleting(false)
+      setConfirmingDelete(false)
+    }
+  }
+
+  const isDeletable = baton.status === 'DRAFT' || baton.status === 'CANCELLED' || baton.status === 'EXPIRED'
+
   const summary = [
     ['대화 상대', `${conversation?.counterpartName ?? ''} · ${conversation?.title ?? ''}`],
     ['상태', baton.status === 'WAITING' ? '대기 중 — 답장 없음' : baton.status],
@@ -76,7 +95,18 @@ export function BatonDetail() {
             바통 취소
           </button>
         )}
+        {isDeletable && (
+          <button
+            className="font-suit text-sm text-status-error hover:opacity-80 disabled:opacity-40"
+            disabled={deleting}
+            onClick={() => setConfirmingDelete(true)}
+            type="button"
+          >
+            {deleting ? '삭제 중...' : '바통 삭제'}
+          </button>
+        )}
       </div>
+      {deleteError && <p className="font-suit mt-2 text-sm text-status-error">{deleteError}</p>}
 
       <Panel className="mt-6 max-w-3xl">
         <p className="font-medium text-strong">바통 상태 요약</p>
@@ -127,6 +157,16 @@ export function BatonDetail() {
           onCancel={() => setCancelling(false)}
           onConfirm={handleCancel}
           title="바통을 취소할까요?"
+        />
+      )}
+
+      {confirmingDelete && (
+        <Dialog
+          confirmLabel={deleting ? '삭제 중...' : '바통 삭제'}
+          description={<p>이 바통과 준비된 분기가 모두 영구적으로 삭제됩니다. 삭제 후에는 되돌릴 수 없습니다.</p>}
+          onCancel={() => setConfirmingDelete(false)}
+          onConfirm={handleDelete}
+          title="바통을 삭제할까요?"
         />
       )}
     </AppShell>
