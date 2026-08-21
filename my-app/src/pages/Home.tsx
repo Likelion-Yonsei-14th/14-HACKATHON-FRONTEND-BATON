@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from '../api'
-import type { Baton, Classification, Conversation } from '../types'
+import type { Baton, Classification, Conversation, Message } from '../types'
 import { AppShell } from '../components/layout/AppShell'
 import { Badge, type BadgeTone } from '../components/ui/Badge'
 import { buttonClasses } from '../lib/buttonClasses'
@@ -76,6 +76,7 @@ export function Home() {
   const [batons, setBatons] = useState<Baton[]>([])
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [classifications, setClassifications] = useState<Record<string, Classification | null>>({})
+  const [triggerMessages, setTriggerMessages] = useState<Record<string, Message>>({})
   const [kpi, setKpi] = useState<{ activeBatons: number; needsAttention: number } | null>(null)
   const [filter, setFilter] = useState<FilterLabel | null>(null)
 
@@ -91,6 +92,20 @@ export function Home() {
         pendingReview.map(async (b) => [b.id, await api.getClassification(b.id)] as const),
       )
       setClassifications(Object.fromEntries(entries))
+
+      // 목록 행이 이름+DM만으로는 서로 구분이 안 돼서(같은 상대와 여러 번 주고받으면 전부
+      // 똑같아 보임) 실제로 내가 보낸 트리거 메시지를 대화별로 한 번씩만 불러와 미리보기로 보여준다.
+      const uniqueConversationIds = [...new Set(list.map((b) => b.conversationId))]
+      const messagesByConversation = await Promise.all(
+        uniqueConversationIds.map(async (id) => [id, await api.getMessages(id)] as const),
+      )
+      const messageMap = new Map(messagesByConversation)
+      const triggerByBaton: Record<string, Message> = {}
+      for (const b of list) {
+        const found = messageMap.get(b.conversationId)?.find((m) => m.id === b.triggerMessageId)
+        if (found) triggerByBaton[b.id] = found
+      }
+      setTriggerMessages(triggerByBaton)
     })
     api.getConversations().then(setConversations)
     api.getDashboardMetrics().then(setKpi).catch(() => {})
@@ -145,17 +160,18 @@ export function Home() {
           const conversation = conversations.find((c) => c.id === baton.conversationId)
           const name = conversation?.counterpartName ?? conversation?.title ?? baton.conversationId
           const meta = statusMeta(baton, classifications[baton.id] ?? null)
+          const preview = triggerMessages[baton.id]?.content ?? ''
           return (
             <Link
               className={`baton-lift flex items-center justify-between rounded-card bg-card-raised p-4 shadow-card hover:bg-chip ${rowAccentClass(meta.tone)}`}
               key={baton.id}
               to={meta.to}
             >
-              <div className="flex items-center gap-3">
-                <span className="flex size-[30px] items-center justify-center rounded-full bg-ink-600 text-[10px] font-medium text-ondark">
+              <div className="flex min-w-0 items-center gap-3">
+                <span className="flex size-[30px] shrink-0 items-center justify-center rounded-full bg-ink-600 text-[10px] font-medium text-ondark">
                   {initials(name)}
                 </span>
-                <div>
+                <div className="min-w-0">
                   <p className="text-[13px] font-medium text-strong">{name}</p>
                   <p className="text-[13px] text-muted">
                     {conversation?.conversationType === 'CHANNEL'
@@ -164,6 +180,7 @@ export function Home() {
                         ? `DM · # ${conversation.title}`
                         : 'DM'}
                   </p>
+                  {preview && <p className="mt-0.5 max-w-xs truncate text-[12px] text-muted">{`"${preview}"`}</p>}
                 </div>
               </div>
               <div className="flex items-center gap-3">

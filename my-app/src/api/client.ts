@@ -67,7 +67,7 @@ export interface BatonApiClient {
   updateBranch(
     batonId: string,
     branchId: string,
-    patch: Partial<Pick<Branch, 'name' | 'description' | 'responseText'>>,
+    patch: Partial<Pick<Branch, 'name' | 'description' | 'conditionText' | 'decisionText' | 'responseText'>>,
   ): Promise<void>
 
   /**

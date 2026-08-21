@@ -184,6 +184,8 @@ export const httpApiClient: BatonApiClient = {
       body: JSON.stringify({
         ...(patch.name !== undefined ? { name: patch.name } : {}),
         ...(patch.description !== undefined ? { description: patch.description } : {}),
+        ...(patch.conditionText !== undefined ? { condition_text: patch.conditionText } : {}),
+        ...(patch.decisionText !== undefined ? { decision_text: patch.decisionText } : {}),
         ...(patch.responseText !== undefined ? { response_text: patch.responseText } : {}),
       }),
     })

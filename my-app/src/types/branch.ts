@@ -15,6 +15,10 @@ export interface Branch {
   batonId: string
   name: string
   description: string | null
+  /** 실제 답장이 왔을 때 AI가 이 분기로 판정하는 기준(조건). 편집 가능. */
+  conditionText: string
+  /** condition_text 충족 시 내려지는 결정. 편집 가능. */
+  decisionText: string
   /** 사용자가 편집 가능한 응답 초안. */
   responseText: string
   executionMode: ExecutionMode
