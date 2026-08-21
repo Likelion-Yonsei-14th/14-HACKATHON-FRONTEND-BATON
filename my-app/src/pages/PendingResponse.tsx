@@ -13,6 +13,7 @@ export function PendingResponse() {
 
   const [classification, setClassification] = useState<Classification | null>(null)
   const [branches, setBranches] = useState<Branch[]>([])
+  const [triggerMessage, setTriggerMessage] = useState<Message | null>(null)
   const [replyMessage, setReplyMessage] = useState<Message | null>(null)
   const [customText, setCustomText] = useState('')
   const [selectedBranchId, setSelectedBranchId] = useState<string | null>(null)
@@ -23,8 +24,9 @@ export function PendingResponse() {
     api.getClassification(batonId).then(async (c) => {
       setClassification(c)
       const baton = await api.getBaton(batonId)
+      const messages = await api.getMessages(baton.conversationId)
+      setTriggerMessage(messages.find((m) => m.id === baton.triggerMessageId) ?? null)
       if (baton.replyMessageId) {
-        const messages = await api.getMessages(baton.conversationId)
         setReplyMessage(messages.find((m) => m.id === baton.replyMessageId) ?? null)
       }
     })
@@ -73,6 +75,13 @@ export function PendingResponse() {
         <h1 className="font-suit text-3xl font-medium text-strong">⚠ 자동 발송 보류됨</h1>
         <p className="mt-3 text-sm text-muted">{classification.reasoningSummary}</p>
       </Panel>
+
+      {triggerMessage && (
+        <Panel className="mt-6 max-w-3xl">
+          <p className="text-sm font-medium text-strong">내가 보낸 메시지</p>
+          <p className="mt-2 whitespace-pre-wrap text-sm text-muted">{triggerMessage.content}</p>
+        </Panel>
+      )}
 
       <h2 className="font-suit mt-6 text-base font-medium text-strong">상대 답장</h2>
       {replyMessage && (

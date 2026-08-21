@@ -22,6 +22,8 @@ export function ResultConfirm() {
   const [classification, setClassification] = useState<Classification | null>(null)
   const [branches, setBranches] = useState<Branch[]>([])
   const [conversation, setConversation] = useState<Conversation | null>(null)
+  const [triggerMessage, setTriggerMessage] = useState<Message | null>(null)
+  const [replyMessage, setReplyMessage] = useState<Message | null>(null)
   const [sentMessage, setSentMessage] = useState<Message | null>(null)
 
   useEffect(() => {
@@ -33,6 +35,8 @@ export function ResultConfirm() {
       const conv = await api.getConversation(baton.conversationId)
       setConversation(conv)
       const messages = await api.getMessages(baton.conversationId)
+      setTriggerMessage(messages.find((m) => m.id === baton.triggerMessageId) ?? null)
+      setReplyMessage(messages.find((m) => m.id === baton.replyMessageId) ?? null)
       const exec = await api.getExecution(batonId)
       setSentMessage(messages.find((m) => m.id === exec?.resultMessageId) ?? null)
     })
@@ -65,6 +69,30 @@ export function ResultConfirm() {
       <div className="mt-4 grid max-w-5xl grid-cols-[1fr_320px] gap-5">
         <div className="flex flex-col gap-3">
           <Panel>
+            <p className="font-medium text-strong">메시지 흐름</p>
+            <div className="mt-3 flex flex-col gap-3">
+              {triggerMessage && (
+                <div>
+                  <p className="text-sm text-muted">1. 내가 보낸 메시지</p>
+                  <p className="mt-1 whitespace-pre-wrap text-sm text-body">{triggerMessage.content}</p>
+                </div>
+              )}
+              {replyMessage && (
+                <div>
+                  <p className="text-sm text-muted">2. 상대방 답장</p>
+                  <p className="mt-1 whitespace-pre-wrap text-sm text-body">{replyMessage.content}</p>
+                </div>
+              )}
+              {sentMessage && (
+                <div>
+                  <p className="text-sm text-muted">3. Baton이 자동으로 보낸 응답</p>
+                  <p className="mt-1 whitespace-pre-wrap text-sm text-body">{sentMessage.content}</p>
+                </div>
+              )}
+            </div>
+          </Panel>
+
+          <Panel>
             <div className="flex gap-4 text-sm">
               <span className="w-32 font-medium text-strong">선택된 분기</span>
               <span className="text-body">{matchedBranch?.name ?? '—'}</span>
@@ -88,9 +116,7 @@ export function ResultConfirm() {
 
           {sentMessage && (
             <Panel>
-              <p className="font-medium text-strong">실제 발송된 응답</p>
-              <p className="mt-3 text-sm text-muted">{sentMessage.content}</p>
-              <p className="mt-3 text-sm text-muted">
+              <p className="text-sm text-muted">
                 이 메시지는 Baton이 자동으로 발송했습니다. 이후 상대방의 답장은 Slack에서 직접 확인해야 합니다.
               </p>
               <p className="mt-3 text-sm text-muted underline">Slack 원본 스레드 열기</p>
